@@ -14,3 +14,8 @@ A base é pública no Kaggle e não é versionada neste repositório. Para obtê
 curl -L -o olist.zip https://www.kaggle.com/api/v1/datasets/download/olistbr/brazilian-ecommerce
 unzip olist.zip -d data/raw
 ```
+
+## Documentação do projeto
+
+- [Escopo](docs/escopo.md): problema, premissas, arquitetura, etapas e riscos.
+- [Diário de decisões](docs/decisoes.md): cada decisão com contexto, justificativa e alternativas.
