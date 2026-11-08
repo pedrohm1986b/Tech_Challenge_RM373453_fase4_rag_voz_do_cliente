@@ -1,0 +1,11 @@
+# dados: baixados do Kaggle, não versionados (ver README)
+data/
+
+# segredos
+.env
+
+# ambiente e caches
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+*.pyc

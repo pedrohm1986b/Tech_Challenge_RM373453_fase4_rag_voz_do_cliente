@@ -1,0 +1,35 @@
+# Dependências do projeto (Tech Challenge Fase 4)
+# Python 3.12
+# Instalação:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+#   pip install -r requirements.txt
+
+# dados, análise e NLP clássico
+pandas
+numpy>=2
+pyarrow
+scikit-learn
+joblib
+nltk
+matplotlib
+seaborn
+
+# embeddings e recuperação
+sentence-transformers>=3.3
+faiss-cpu>=1.9
+rank_bm25>=0.2.2
+
+# modelo de linguagem, ferramentas e orquestração
+pydantic>=2.9
+python-dotenv
+langchain
+langchain-google-genai
+langchain-openai
+langgraph
+
+# interface de demonstração
+streamlit
+
+# notebooks
+notebook>=7
+ipykernel
