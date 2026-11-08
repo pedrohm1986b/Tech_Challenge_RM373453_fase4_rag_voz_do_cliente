@@ -80,6 +80,7 @@ Regras de comportamento das ferramentas:
 - **Quantidade padrão.** Quando o usuário não diz quantos itens quer ("quais os principais atritos?"), a ferramenta usa um valor padrão: todos os temas, ou os 10 primeiros detalhes. O modelo de linguagem é instruído a não inventar uma quantidade.
 - **Nível de detalhe.** Se o usuário pede mais itens do que existem no nível de tema ("top 7 atritos" com 5 temas), a ferramenta desce para o nível de detalhe, onde há mais itens.
 - **Recorte declarado.** Toda resposta começa dizendo o que considerou, por exemplo: "os 5 temas de insatisfação, ordenados por volume, em toda a base (2016 a 2018)".
+- **Percentuais sobre os comentários.** Quem dá nota baixa comenta duas vezes mais que quem dá nota alta, então os percentuais descrevem os comentários, não os clientes, e a resposta diz isso (D-013).
 - **Filtros são opcionais.** Período, categoria de produto, faixa de nota e estado podem ser aplicados; sem filtro, vale a base inteira, e a resposta diz isso.
 
 ### P5. Ausência de evidência é uma resposta válida
@@ -152,7 +153,7 @@ Cada comentário pode receber **várias etiquetas**, ou nenhuma (classificação
 
 Os temas e detalhes acima são ilustrativos. Como um comentário pode estar em mais de um tema, os percentuais por tema não somam 100%: a resposta informa a parcela de comentários que **mencionam** cada tema.
 
-**Como a lista é construída (etapa 3).** O modelo de linguagem lê duas amostras independentes de cerca de 1.000 comentários, sorteadas em proporção por nota, e propõe temas, detalhes e critérios. As duas propostas são comparadas: temas que aparecem nas duas são estáveis; divergências indicam amostra insuficiente. A proposta é revisada à mão (juntar redundâncias, separar misturas, decidir casos difíceis).
+**Como a lista é construída (etapa 3).** O modelo de linguagem lê duas amostras independentes de cerca de 1.000 comentários e propõe temas, detalhes e critérios. Cada amostra tem 60% de notas 1 e 2, 15% de nota 3 e 25% de notas 4 e 5, sem cópias idênticas, porque os comentários negativos trazem a maior variedade de assuntos e os elogios se concentram em poucos temas (D-014). A lista inclui a etiqueta "elogio geral, sem assunto" para elogios que não citam nenhum aspecto da compra (D-015). As duas propostas são comparadas: temas que aparecem nas duas são estáveis; divergências indicam amostra insuficiente. A proposta é revisada à mão (juntar redundâncias, separar misturas, decidir casos difíceis).
 
 **Campos fechados.** Tema, sentido e detalhe só aceitam valores da lista. Cada lista tem a opção "outro", para que nenhum comentário seja forçado num valor errado; uma proporção alta de "outro" indica item faltando na lista.
 

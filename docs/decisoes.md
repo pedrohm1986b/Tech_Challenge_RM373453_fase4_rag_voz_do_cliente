@@ -142,7 +142,7 @@ A numeração recomeça nesta fase. As decisões das fases anteriores estão nos
 
 **Data:** 08/11/2026 · **Etapa:** Fundação
 
-**Decisão:** a lista de temas e detalhes é proposta pelo modelo de linguagem a partir de duas amostras independentes de cerca de 1.000 comentários cada, sorteadas em proporção por nota. Além da lista, o modelo devolve, para cada etiqueta, definição, critérios de inclusão e exclusão e exemplos reais identificados pelo código da avaliação. As duas propostas são comparadas e a versão final é revisada à mão.
+**Decisão:** a lista de temas e detalhes é proposta pelo modelo de linguagem a partir de duas amostras independentes de cerca de 1.000 comentários cada, sorteadas em proporção por nota (composição revista em D-014). Além da lista, o modelo devolve, para cada etiqueta, definição, critérios de inclusão e exclusão e exemplos reais identificados pelo código da avaliação. As duas propostas são comparadas e a versão final é revisada à mão.
 
 **Contexto:** o primeiro esboço previa descobrir os temas com TF-IDF e NMF (aula 6 de NLP). O NMF agrupa por palavras que aparecem juntas, não por sentido, e tende a gerar grupos redundantes: clientes descrevem o mesmo atraso com vocabulários diferentes ("prazo", "ainda não recebi", "não chegou"), e cada vocabulário pode virar um grupo. Também pode juntar sentidos opostos que compartilham palavras ("chegou rápido" e "chegou quebrado").
 
@@ -163,3 +163,55 @@ A numeração recomeça nesta fase. As decisões das fases anteriores estão nos
 **Justificativa:** com o mesmo manual para os dois lados, uma divergência entre a etiquetagem manual e a do modelo aponta erro de um deles, e não regra mal escrita. O piloto revela as dúvidas num momento em que ainda é possível corrigir a regra sem refazer o gabarito. A opção "outro" evita forçar comentários em valores errados e sinaliza itens ausentes na lista.
 
 **Alternativas consideradas:** etiquetar o gabarito apenas com a lista de nomes, sem critérios (descartada pela incerteza que introduz na medição); campos livres (descartada porque formas diferentes de descrever a mesma coisa seriam contadas como itens diferentes).
+
+---
+
+## D-013 · Percentuais sempre sobre os comentários, nunca sobre os clientes
+
+**Data:** 08/11/2026 · **Etapa:** Análise exploratória
+
+**Decisão:** toda resposta que apresenta percentual informa que a base são os comentários ("X% dos comentários mencionam atraso"), e nunca o generaliza para os clientes ou pedidos.
+
+**Contexto:** a análise exploratória mostrou que 76,5% das avaliações de nota 1 têm comentário escrito, contra 35,8% das de nota 5. Com isso, a nota 1 representa 11,5% das avaliações, mas 21,4% dos comentários.
+
+**Justificativa:** os comentários dão quase o dobro do peso à insatisfação forte. Um percentual calculado sobre eles descreve quem escreveu, e não o conjunto dos clientes.
+
+---
+
+## D-014 · Amostra para a lista de temas com peso maior nos comentários negativos
+
+**Data:** 08/11/2026 · **Etapa:** Análise exploratória
+
+**Decisão:** cada uma das duas amostras de 1.000 comentários usadas na construção da lista de temas (D-011) é composta por 60% de notas 1 e 2, 15% de nota 3 e 25% de notas 4 e 5. Comentários idênticos depois da padronização (minúsculas, sem acento, sem pontuação) entram uma única vez. Esta decisão substitui a amostragem em proporção às notas prevista em D-011.
+
+**Contexto:** testou-se a hipótese de que clientes insatisfeitos descrevem o motivo com mais detalhe, e satisfeitos usam frases genéricas. A repetição de frases idênticas é de 27,6% na nota 5 contra 9,7% na nota 1, e as mais repetidas são elogios genéricos ("muito bom", 598 vezes; "ótimo", 471). Referências a número, troca, pagamento e características do produto aparecem quase só nas notas baixas; os elogios, quando têm conteúdo, concentram-se no prazo de entrega. A nota 3 é a que mais combina elogio e crítica (26,7% dos comentários com conectivo de contraste).
+
+**Justificativa:** a amostra serve para descobrir quais assuntos existem, e os comentários negativos trazem a maior variedade. Uma amostra em proporção às notas teria metade das vagas em elogios de pouca variação. Os 25% de notas 4 e 5 são suficientes para cobrir os poucos temas de elogio, exigidos pela pergunta do enunciado sobre o que os clientes mais elogiam. Remover cópias idênticas evita gastar vagas com a mesma frase; a frequência de cada comentário continua disponível para as contagens.
+
+**Alternativas consideradas:** amostra em proporção às notas (descartada pelo motivo acima); amostra só com comentários negativos (descartada por deixar sem temas a pergunta sobre elogios); amostra equilibrada, 20% por nota (descartada por não refletir a diferença de variedade observada).
+
+**Limitação registrada:** as medidas de repetição e de referência concreta são aproximadas (cópia exata e lista de palavras). Os desvios conhecidos de ambas reduzem a diferença entre notas baixas e altas, de modo que a diferença real tende a ser maior que a observada.
+
+---
+
+## D-015 · Etiqueta para elogio sem assunto
+
+**Data:** 08/11/2026 · **Etapa:** Análise exploratória
+
+**Decisão:** a lista de temas inclui a etiqueta "elogio geral, sem assunto", com sentido positivo, para comentários que elogiam sem citar nenhum aspecto da compra ("muito bom", "recomendo", "nota 10").
+
+**Justificativa:** esses comentários são frequentes nas notas altas. Sem uma etiqueta própria, ou ficariam fora das contagens ou seriam forçados num tema que não citam, distorcendo a frequência daquele tema.
+
+---
+
+## D-016 · Um documento por avaliação, não por linha da tabela
+
+**Data:** 08/11/2026 · **Etapa:** Análise exploratória
+
+**Decisão:** a base de conhecimento tem um documento por código de avaliação (`review_id`). Avaliações replicadas em mais de um pedido entram uma única vez.
+
+**Contexto:** a tabela de avaliações tem 99.224 linhas e 98.410 códigos de avaliação distintos. Em 1.603 linhas (1,6%), a mesma avaliação, com texto e data idênticos, aparece ligada a pedidos diferentes, o que indica uma pesquisa respondida uma vez e replicada para os pedidos de uma mesma compra. Entre as linhas com comentário, 608 estão nessa situação.
+
+**Justificativa:** manter as linhas replicadas faria o mesmo comentário ser contado mais de uma vez nas ferramentas de contagem e aparecer repetido como evidência.
+
+**Pendência registrada:** como uma avaliação pode estar ligada a mais de um pedido, com produtos e prazos possivelmente diferentes, a forma de associar categoria e prazo de entrega a ela é decidida na etapa de enriquecimento.
