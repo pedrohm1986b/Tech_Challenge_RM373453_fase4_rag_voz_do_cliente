@@ -215,3 +215,55 @@ A numeração recomeça nesta fase. As decisões das fases anteriores estão nos
 **Justificativa:** manter as linhas replicadas faria o mesmo comentário ser contado mais de uma vez nas ferramentas de contagem e aparecer repetido como evidência.
 
 **Pendência registrada:** como uma avaliação pode estar ligada a mais de um pedido, com produtos e prazos possivelmente diferentes, a forma de associar categoria e prazo de entrega a ela é decidida na etapa de enriquecimento.
+
+---
+
+## D-017 · Todas as tabelas da base entram, resumidas por pedido, com distância entre vendedor e cliente
+
+**Data:** 08/11/2026 · **Etapa:** Enriquecimento
+
+**Decisão:** a tabela base mantém uma linha por avaliação e recebe informações de todas as tabelas da Olist, resumidas por pedido: datas e status do pedido, estado e cidade do cliente, categorias dos produtos, número de itens, valores de produto e frete, forma de pagamento e parcelas, código e estado do vendedor. A tabela de geolocalização entra como a distância, em quilômetros, entre o CEP do vendedor e o CEP do cliente, e como a localização aproximada do cliente.
+
+**Contexto:** as cinco perguntas do enunciado não dependem de pagamentos, vendedores nem geolocalização. A ausência de pergunta hoje, porém, não torna essas informações dispensáveis: elas sustentam ferramentas futuras ("quais vendedores concentram reclamações?", "reclamações de atraso são mais comuns em entregas longas?").
+
+**Justificativa:** resumir por pedido preserva o grão de uma linha por avaliação. A distância entre vendedor e cliente permite relacionar atraso e reclamação à extensão do trajeto. No modelo da Olist, o produto é enviado pelo próprio vendedor, então o CEP do vendedor é a melhor aproximação disponível da origem.
+
+**Limitação registrada:** a base não informa a localização de centros de distribuição nem se algum vendedor despachava a partir de outro endereço, como um armazém terceirizado. A distância calculada é a do endereço do vendedor ao do cliente, e não a do trajeto real do produto.
+
+**Evolução proposta:** com a localização dos centros de distribuição, seria possível identificar as faixas de distância mais afetadas por atraso e as regiões sem cobertura de um centro próximo, oferecendo base para decisões de operação logística, como onde instalar ou reforçar centros de distribuição.
+
+---
+
+## D-018 · Regras de junção para pedidos com vários produtos, avaliações em vários pedidos e pedidos não entregues
+
+**Data:** 08/11/2026 · **Etapa:** Enriquecimento
+
+**Decisão:**
+
+1. Um pedido com produtos de categorias diferentes recebe todas as suas categorias. O filtro por categoria encontra o comentário se qualquer produto do pedido for daquela categoria.
+2. Uma avaliação ligada a mais de um pedido (D-016) recebe as categorias de todos os pedidos e o maior atraso entre eles.
+3. Um pedido sem data de entrega recebe a faixa "não entregue", em vez de atraso vazio.
+
+**Justificativa:** escolher uma única categoria por pedido descartaria parte dos produtos comprados, sem critério que diga qual deles motivou o comentário. O maior atraso é usado porque a experiência mais negativa da compra tende a ser a que motiva a avaliação. A faixa "não entregue" preserva a situação mais grave da jornada: "não recebi o produto" é a reclamação mais repetida da base.
+
+**Alternativas consideradas:** categoria do produto de maior valor (descartada por supor, sem evidência, que o item mais caro motivou o comentário); atraso médio entre os pedidos (descartado por diluir a experiência negativa).
+
+---
+
+## D-019 · Regras de resumo por pedido
+
+**Data:** 08/11/2026 · **Etapa:** Enriquecimento
+
+**Decisão:**
+
+| Situação | Regra |
+|---|---|
+| pedido com vários vendedores (1,3% dos pedidos) | lista dos vendedores; distância e atraso no despacho pelo pior caso |
+| pedido com vários pagamentos (3,0%) | forma principal é a de maior valor; valor pago é a soma; parcelas é o máximo |
+| prefixo de CEP com vários pontos de geolocalização (94,5% dos prefixos) | mediana da latitude e da longitude |
+| pedido sem item (775) ou produto sem categoria (610) | categoria "sem informação" |
+| CEP sem localização (278 de clientes, 7 de vendedores) | distância vazia |
+
+**Contexto:** a verificação das ligações entre as tabelas confirmou junção direta entre pedido e cliente, item e produto, item e vendedor, e mostrou ligações de um para vários em itens, pagamentos e geolocalização, que precisam ser resumidas para manter uma linha por avaliação.
+
+**Justificativa:** o pior caso entre vendedores segue a lógica de D-018, em que a experiência mais negativa tende a motivar a avaliação. A forma de pagamento de maior valor representa como o pedido foi efetivamente pago, já que os pagamentos múltiplos costumam combinar um meio principal com vouchers. A mediana das coordenadas não é deslocada por pontos registrados fora da área do CEP, que existem na tabela de geolocalização.

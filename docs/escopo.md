@@ -165,7 +165,7 @@ Os temas e detalhes acima são ilustrativos. Como um comentário pode estar em m
 
 | Dentro | Fora |
 |---|---|
-| Avaliações com comentário escrito (40.950 de 99.224) | avaliações sem texto (entram só nas contagens de total) |
+| Avaliações com comentário escrito (40.518 avaliações distintas, de 99.224 linhas) | avaliações sem texto (entram só nas contagens de total) |
 | Tema, sentido e detalhe extraídos do texto | previsão de nota ou de cancelamento |
 | Informações do pedido como filtro (desafio adicional) | recomendação de produto |
 | Ferramentas de contagem e busca de comentários | consulta livre ao banco gerada pelo modelo (texto para SQL) |
@@ -173,7 +173,7 @@ Os temas e detalhes acima são ilustrativos. Como um comentário pode estar em m
 | Interface de demonstração | autenticação, multiusuário, publicação em nuvem |
 | Conjunto de avaliação com métricas | classificador próprio treinado (próximo passo) |
 
-A memória de conversa e o classificador próprio ficam como evolução natural deste MVP. A lista de ferramentas também: novas perguntas entram como novas ferramentas.
+A memória de conversa e o classificador próprio ficam como evolução natural deste MVP. Outra evolução depende de dado externo: com a localização dos centros de distribuição, seria possível identificar as faixas de distância mais afetadas por atraso e as regiões sem cobertura de um centro próximo, apoiando decisões de operação logística (D-017). A lista de ferramentas também: novas perguntas entram como novas ferramentas.
 
 ## 8. Entregáveis
 
