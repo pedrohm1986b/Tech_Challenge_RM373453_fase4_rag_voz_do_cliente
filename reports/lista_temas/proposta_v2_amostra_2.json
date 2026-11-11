@@ -1,0 +1,238 @@
+{
+  "temas": [
+    {
+      "nome": "entrega",
+      "definicao": "aspectos relacionados ao recebimento do produto e prazos",
+      "detalhes": [
+        {
+          "nome": "prazo",
+          "sentidos": [
+            "positivo",
+            "negativo"
+          ],
+          "definicao": "tempo de espera para a chegada do produto",
+          "entra": [
+            "atrasos na entrega",
+            "entrega antecipada",
+            "descumprimento de data prometida"
+          ],
+          "nao_entra": [
+            "problemas com a transportadora ou correios (tema: logística)",
+            "produto não recebido (tema: entrega, detalhe: status)"
+          ],
+          "exemplos": [
+            "C0003",
+            "C0014",
+            "C0030"
+          ]
+        },
+        {
+          "nome": "status",
+          "sentidos": [
+            "negativo"
+          ],
+          "definicao": "situação de não recebimento ou extravio do pedido",
+          "entra": [
+            "produto não entregue",
+            "rastreamento parado",
+            "extravio confirmado"
+          ],
+          "nao_entra": [
+            "atraso na entrega (tema: entrega, detalhe: prazo)"
+          ],
+          "exemplos": [
+            "C0002",
+            "C0005",
+            "C0017"
+          ]
+        },
+        {
+          "nome": "logistica",
+          "sentidos": [
+            "negativo"
+          ],
+          "definicao": "problemas com a forma de envio ou transportadora",
+          "entra": [
+            "necessidade de retirar nos correios",
+            "problemas com a transportadora",
+            "falta de aviso sobre a entrega"
+          ],
+          "nao_entra": [
+            "atraso na entrega (tema: entrega, detalhe: prazo)"
+          ],
+          "exemplos": [
+            "C0024",
+            "C0117",
+            "C0138"
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "produto",
+      "definicao": "características físicas e funcionais do item recebido",
+      "detalhes": [
+        {
+          "nome": "qualidade",
+          "sentidos": [
+            "positivo",
+            "negativo"
+          ],
+          "definicao": "avaliação sobre o material, durabilidade ou funcionamento",
+          "entra": [
+            "produto frágil",
+            "defeito de fabricação",
+            "material bom ou ruim"
+          ],
+          "nao_entra": [
+            "produto errado (tema: produto, detalhe: conformidade)"
+          ],
+          "exemplos": [
+            "C0015",
+            "C0048",
+            "C0058"
+          ]
+        },
+        {
+          "nome": "conformidade",
+          "sentidos": [
+            "negativo"
+          ],
+          "definicao": "divergência entre o que foi comprado e o que foi recebido",
+          "entra": [
+            "produto diferente do anunciado",
+            "cor errada",
+            "modelo errado",
+            "réplica em vez de original"
+          ],
+          "nao_entra": [
+            "defeito de fabricação (tema: produto, detalhe: qualidade)"
+          ],
+          "exemplos": [
+            "C0001",
+            "C0012",
+            "C0025"
+          ]
+        },
+        {
+          "nome": "quantidade",
+          "sentidos": [
+            "negativo"
+          ],
+          "definicao": "divergência na quantidade de itens recebidos",
+          "entra": [
+            "recebimento parcial do pedido",
+            "falta de itens na embalagem"
+          ],
+          "nao_entra": [
+            "produto errado (tema: produto, detalhe: conformidade)"
+          ],
+          "exemplos": [
+            "C0013",
+            "C0021",
+            "C0033"
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "atendimento",
+      "definicao": "interação com a loja ou parceiros para suporte",
+      "detalhes": [
+        {
+          "nome": "suporte",
+          "sentidos": [
+            "negativo"
+          ],
+          "definicao": "dificuldade em contatar a loja ou resolver problemas",
+          "entra": [
+            "falta de resposta",
+            "dificuldade em trocar ou devolver",
+            "atendimento grosseiro"
+          ],
+          "nao_entra": [
+            "cancelamento de pedido (tema: atendimento, detalhe: processo)"
+          ],
+          "exemplos": [
+            "C0027",
+            "C0041",
+            "C0078"
+          ]
+        },
+        {
+          "nome": "processo",
+          "sentidos": [
+            "negativo"
+          ],
+          "definicao": "problemas com etapas administrativas da compra",
+          "entra": [
+            "cancelamento não processado",
+            "problemas com nota fiscal",
+            "demora no estorno"
+          ],
+          "nao_entra": [
+            "falta de resposta (tema: atendimento, detalhe: suporte)"
+          ],
+          "exemplos": [
+            "C0010",
+            "C0032",
+            "C0046"
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "elogio geral",
+      "definicao": "elogios sem especificação de aspecto",
+      "detalhes": [
+        {
+          "nome": "sem assunto",
+          "sentidos": [
+            "positivo"
+          ],
+          "definicao": "elogio genérico à loja",
+          "entra": [
+            "loja de parabéns",
+            "recomendo a loja"
+          ],
+          "nao_entra": [
+            "elogio a um aspecto específico (tema correspondente)"
+          ],
+          "exemplos": [
+            "C0011",
+            "C0016",
+            "C0028"
+          ]
+        }
+      ]
+    }
+  ],
+  "casos_dificeis": [
+    {
+      "situacao": "O cliente reclama que o produto veio errado e também que o atendimento não responde.",
+      "opcoes": [
+        "produto · conformidade",
+        "atendimento · suporte"
+      ],
+      "sugestao": "Classificar como 'produto · conformidade', pois a causa raiz da insatisfação é o erro no envio do item.",
+      "exemplos": [
+        "C0085",
+        "C0091",
+        "C0242"
+      ]
+    },
+    {
+      "situacao": "O cliente reclama que o produto não chegou e que a loja não responde.",
+      "opcoes": [
+        "entrega · status",
+        "atendimento · suporte"
+      ],
+      "sugestao": "Classificar como 'entrega · status', pois o problema principal é a falta do produto.",
+      "exemplos": [
+        "C0027",
+        "C0301",
+        "C0354"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+manual,"atendimento · cancelamento, troca e reembolso · negativo","atendimento · cancelamento, troca e reembolso · positivo",atendimento · contato e resposta · negativo,atendimento · contato e resposta · positivo,atendimento · nota fiscal · negativo,atendimento · outro · negativo,atendimento · outro · positivo,elogio geral · sem assunto · positivo,entrega · avaria no transporte · negativo,entrega · itens faltando · negativo,entrega · não recebido · negativo,entrega · outro · negativo,entrega · outro · positivo,entrega · prazo · negativo,entrega · prazo · positivo,entrega · retirada na agência · negativo,preço · frete · negativo,preço · preço do produto · positivo,produto · conformidade com o anúncio · negativo,produto · conformidade com o anúncio · positivo,produto · outro · negativo,produto · qualidade · negativo,produto · qualidade · positivo
+"atendimento · cancelamento, troca e reembolso · negativo",8,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+"atendimento · cancelamento, troca e reembolso · positivo",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+atendimento · contato e resposta · negativo,1,0,10,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+atendimento · contato e resposta · positivo,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+atendimento · nota fiscal · negativo,0,0,0,0,2,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+atendimento · outro · negativo,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+atendimento · outro · positivo,0,0,0,1,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+elogio geral · sem assunto · positivo,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+entrega · avaria no transporte · negativo,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,2,0
+entrega · itens faltando · negativo,0,0,0,0,0,0,0,0,0,23,0,0,0,0,0,0,0,0,0,0,0,0,0
+entrega · não recebido · negativo,0,0,0,0,0,0,0,0,0,0,19,0,0,4,0,0,0,0,0,0,0,0,0
+entrega · outro · negativo,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0
+entrega · outro · positivo,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+entrega · prazo · negativo,0,0,0,0,0,0,0,0,0,0,0,1,0,18,0,0,0,0,0,0,0,0,0
+entrega · prazo · positivo,0,0,0,0,0,0,0,0,0,0,0,0,0,0,36,0,0,0,0,0,0,0,0
+entrega · retirada na agência · negativo,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,2,0,0,0,0,0,0,0
+preço · frete · negativo,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0
+preço · preço do produto · positivo,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0
+produto · conformidade com o anúncio · negativo,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,21,1,2,3,0
+produto · conformidade com o anúncio · positivo,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0
+produto · outro · negativo,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0
+produto · qualidade · negativo,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,13,0
+produto · qualidade · positivo,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,12

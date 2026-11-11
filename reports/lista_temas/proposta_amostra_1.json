@@ -1,0 +1,186 @@
+{
+  "temas": [
+    {
+      "nome": "entrega",
+      "definicao": "aspectos relacionados ao recebimento do pedido e logística",
+      "detalhes": [
+        {
+          "nome": "prazo",
+          "sentidos": [
+            "positivo",
+            "negativo"
+          ],
+          "definicao": "tempo de entrega do produto",
+          "entra": [
+            "atraso na entrega",
+            "entrega rápida",
+            "entrega antes do prazo"
+          ],
+          "nao_entra": [
+            "produto faltando (entrega · integridade)",
+            "produto errado (produto · conformidade)"
+          ],
+          "exemplos": [
+            "C0002",
+            "C0006",
+            "C0015"
+          ]
+        },
+        {
+          "nome": "integridade",
+          "sentidos": [
+            "positivo",
+            "negativo"
+          ],
+          "definicao": "condição física do pedido ao chegar",
+          "entra": [
+            "produto faltando no pacote",
+            "embalagem danificada",
+            "produto quebrado ou avariado"
+          ],
+          "nao_entra": [
+            "produto com defeito de fabricação (produto · qualidade)",
+            "produto errado (produto · conformidade)"
+          ],
+          "exemplos": [
+            "C0004",
+            "C0012",
+            "C0036"
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "produto",
+      "definicao": "aspectos relacionados ao item adquirido",
+      "detalhes": [
+        {
+          "nome": "conformidade",
+          "sentidos": [
+            "positivo",
+            "negativo"
+          ],
+          "definicao": "se o produto recebido corresponde ao que foi anunciado",
+          "entra": [
+            "receber cor/modelo/tamanho diferente",
+            "produto falsificado",
+            "anúncio enganoso"
+          ],
+          "nao_entra": [
+            "produto faltando (entrega · integridade)",
+            "produto com defeito (produto · qualidade)"
+          ],
+          "exemplos": [
+            "C0001",
+            "C0023",
+            "C0034"
+          ]
+        },
+        {
+          "nome": "qualidade",
+          "sentidos": [
+            "positivo",
+            "negativo"
+          ],
+          "definicao": "características intrínsecas e funcionamento do produto",
+          "entra": [
+            "produto com defeito de fabricação",
+            "material frágil",
+            "acabamento ruim"
+          ],
+          "nao_entra": [
+            "produto errado (produto · conformidade)",
+            "produto quebrado no transporte (entrega · integridade)"
+          ],
+          "exemplos": [
+            "C0011",
+            "C0051",
+            "C0116"
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "atendimento",
+      "definicao": "interação com a loja para suporte ou resolução de problemas",
+      "detalhes": [
+        {
+          "nome": "suporte",
+          "sentidos": [
+            "positivo",
+            "negativo"
+          ],
+          "definicao": "qualidade do contato e resolução de problemas",
+          "entra": [
+            "dificuldade de contato",
+            "falta de retorno",
+            "processo de troca ou cancelamento"
+          ],
+          "nao_entra": [
+            "atraso na entrega (entrega · prazo)"
+          ],
+          "exemplos": [
+            "C0008",
+            "C0020",
+            "C0025"
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "elogio geral",
+      "definicao": "avaliações positivas sem menção a aspectos específicos",
+      "detalhes": [
+        {
+          "nome": "sem assunto",
+          "sentidos": [
+            "positivo"
+          ],
+          "definicao": "elogio genérico à loja ou compra",
+          "entra": [
+            "muito bom",
+            "recomendo",
+            "amei"
+          ],
+          "nao_entra": [
+            "elogio a prazo (entrega · prazo)",
+            "elogio a produto (produto · qualidade)"
+          ],
+          "exemplos": [
+            "C0014",
+            "C0018",
+            "C0028"
+          ]
+        }
+      ]
+    }
+  ],
+  "casos_dificeis": [
+    {
+      "situacao": "O cliente reclama que o produto veio faltando (ex: comprou 2, veio 1) e também reclama que a loja não responde.",
+      "opcoes": [
+        "entrega · integridade",
+        "atendimento · suporte"
+      ],
+      "sugestao": "Priorizar 'entrega · integridade' pois o problema raiz é a falha na entrega do pedido completo.",
+      "exemplos": [
+        "C0010",
+        "C0035",
+        "C0062"
+      ]
+    },
+    {
+      "situacao": "O produto chegou com defeito e o cliente reclama da dificuldade de trocar.",
+      "opcoes": [
+        "produto · qualidade",
+        "atendimento · suporte"
+      ],
+      "sugestao": "Se o foco principal for o defeito do produto, usar 'produto · qualidade'. Se o foco for a dificuldade de contato para resolver, usar 'atendimento · suporte'.",
+      "exemplos": [
+        "C0036",
+        "C0072",
+        "C0157"
+      ]
+    }
+  ]
+}

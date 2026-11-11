@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Etiquetagem manual</title>
+<style>
+  :root {
+    --fundo: #f6f7f9; --cartao: #ffffff; --texto: #1d2330; --suave: #5b6475;
+    --borda: #d9dde5; --destaque: #2f6fdb; --ok: #2e8b57; --alerta: #c47f00; --erro: #c0392b;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--fundo); color: var(--texto); }
+  header { position: sticky; top: 0; z-index: 5; background: var(--cartao); border-bottom: 1px solid var(--borda); padding: 12px 20px; }
+  .linha-topo { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+  h1 { font-size: 18px; margin: 0; }
+  .controles { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  button, select, textarea { font: inherit; }
+  button { border: 1px solid var(--borda); background: var(--cartao); border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+  button.primario { background: var(--destaque); border-color: var(--destaque); color: #fff; }
+  button.pequeno { padding: 3px 9px; font-size: 13px; }
+  .barra { height: 6px; background: var(--borda); border-radius: 3px; margin-top: 10px; overflow: hidden; }
+  .barra > div { height: 100%; background: var(--ok); width: 0; transition: width .2s; }
+  .progresso { font-size: 13px; color: var(--suave); }
+  main { max-width: 980px; margin: 0 auto; padding: 16px 20px 80px; }
+  details.manual { background: var(--cartao); border: 1px solid var(--borda); border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; }
+  details.manual summary { cursor: pointer; font-weight: 600; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 10px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--borda); vertical-align: top; }
+  .cartao { background: var(--cartao); border: 1px solid var(--borda); border-left: 4px solid var(--borda); border-radius: 8px; padding: 14px 16px; margin-bottom: 12px; }
+  .cartao.feito { border-left-color: var(--ok); }
+  .cartao.duvida { border-left-color: var(--alerta); }
+  .cabecalho-cartao { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--suave); margin-bottom: 6px; }
+  .texto { font-size: 16px; line-height: 1.45; margin-bottom: 12px; white-space: pre-wrap; }
+  .etiqueta { display: grid; grid-template-columns: 130px 170px 1fr auto; gap: 8px; align-items: center; margin-bottom: 4px; }
+  .etiqueta select { width: 100%; padding: 5px; border: 1px solid var(--borda); border-radius: 6px; background: #fff; }
+  .etiqueta select:disabled { background: #eef0f4; color: #999; }
+  .definicao { font-size: 12px; color: var(--suave); margin: 0 0 8px 0; min-height: 0; }
+  .opcoes { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 8px; font-size: 14px; }
+  .opcoes label { display: flex; gap: 6px; align-items: center; cursor: pointer; }
+  textarea { width: 100%; margin-top: 8px; min-height: 44px; border: 1px solid var(--borda); border-radius: 6px; padding: 6px; font-size: 14px; }
+  .oculto { display: none; }
+  @media (max-width: 640px) {
+    .etiqueta { grid-template-columns: 1fr 1fr; }
+    .etiqueta select.detalhe { grid-column: 1 / 2; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="linha-topo">
+    <h1>Etiquetagem manual dos comentários</h1>
+    <div class="controles">
+      <label>Lote
+        <select id="filtroLote">
+          <option value="todos">todos (170)</option>
+          <option value="piloto">piloto (20)</option>
+          <option value="gabarito">gabarito (150)</option>
+        </select>
+      </label>
+      <label><input type="checkbox" id="soPendentes"> só pendentes</label>
+      <button class="primario" id="exportar">Exportar CSV</button>
+    </div>
+  </div>
+  <div class="progresso"><span id="progresso"></span> · ao exportar, salve na pasta <b>reports\etiquetagem</b> do projeto <span id="aviso"></span></div>
+  <div class="barra"><div id="barraProgresso"></div></div>
+</header>
+
+<main>
+  <details class="manual">
+    <summary>Manual de etiquetagem (versão 1)</summary>
+    <div id="manual"></div>
+  </details>
+  <div id="lista"></div>
+</main>
+
+<script>
+const DADOS = /*DADOS*/;
+const CHAVE = "etiquetagem_olist_" + DADOS.versao_manual;
+const MANUAL = DADOS.manual;
+
+function carregarEstado() {
+  try { return JSON.parse(localStorage.getItem(CHAVE)) || {}; } catch (e) { return {}; }
+}
+function salvarEstado() {
+  try { localStorage.setItem(CHAVE, JSON.stringify(estado)); } catch (e) { /* sem armazenamento: segue em memória */ }
+}
+let estado = carregarEstado();
+
+function registro(codigo) {
+  if (!estado[codigo]) estado[codigo] = { etiquetas: [{ sentido: "", tema: "", detalhe: "" }], sem_etiqueta: false, duvida: false };
+  return estado[codigo];
+}
+function completa(et) { return et.sentido && et.tema && et.detalhe; }
+function feito(codigo) {
+  const r = estado[codigo];
+  return !!r && (r.sem_etiqueta || r.etiquetas.some(completa));
+}
+
+function temasPara(sentido) {
+  return Object.keys(MANUAL).filter(t => Object.values(MANUAL[t].detalhes).some(d => d.sentidos.includes(sentido)));
+}
+function detalhesPara(tema, sentido) {
+  if (!MANUAL[tema]) return [];
+  return Object.entries(MANUAL[tema].detalhes).filter(([, d]) => d.sentidos.includes(sentido)).map(([nome]) => nome);
+}
+function opcoes(valores, selecionado, vazio) {
+  return [`<option value="">${vazio}</option>`]
+    .concat(valores.map(v => `<option value="${v}"${v === selecionado ? " selected" : ""}>${v}</option>`))
+    .join("");
+}
+function escapar(texto) {
+  return texto.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+}
+
+function htmlEtiqueta(codigo, indice, et, total) {
+  const temas = et.sentido ? temasPara(et.sentido) : [];
+  const detalhes = et.sentido && et.tema ? detalhesPara(et.tema, et.sentido) : [];
+  const definicao = et.tema && et.detalhe ? MANUAL[et.tema].detalhes[et.detalhe].definicao : "";
+  return `
+    <div class="etiqueta" data-codigo="${codigo}" data-indice="${indice}">
+      <select class="sentido">${opcoes(["positivo", "negativo"], et.sentido, "sentido")}</select>
+      <select class="tema" ${et.sentido ? "" : "disabled"}>${opcoes(temas, et.tema, "tema")}</select>
+      <select class="detalhe" ${et.tema ? "" : "disabled"}>${opcoes(detalhes, et.detalhe, "detalhe")}</select>
+      ${total > 1 ? `<button class="pequeno remover" data-codigo="${codigo}" data-indice="${indice}">remover</button>` : "<span></span>"}
+    </div>
+    <p class="definicao">${escapar(definicao)}</p>`;
+}
+
+function htmlCartao(c) {
+  const r = registro(c.codigo);
+  const classes = ["cartao", feito(c.codigo) ? "feito" : "", r.duvida ? "duvida" : ""].join(" ");
+  const etiquetas = r.etiquetas.map((et, i) => htmlEtiqueta(c.codigo, i, et, r.etiquetas.length)).join("");
+  return `
+    <section class="${classes}" id="c-${c.codigo}">
+      <div class="cabecalho-cartao"><span>${c.codigo}</span><span>${c.lote}</span></div>
+      <div class="texto">${escapar(c.texto)}</div>
+      <div class="${r.sem_etiqueta ? "oculto" : ""}">
+        ${etiquetas}
+        <button class="pequeno adicionar" data-codigo="${c.codigo}">+ etiqueta</button>
+      </div>
+      <div class="opcoes">
+        <label><input type="checkbox" class="sem" data-codigo="${c.codigo}" ${r.sem_etiqueta ? "checked" : ""}> sem etiqueta (sem opinião sobre a compra)</label>
+        <label><input type="checkbox" class="duvida" data-codigo="${c.codigo}" ${r.duvida ? "checked" : ""}> tive dúvida</label>
+      </div>
+    </section>`;
+}
+
+function visiveis() {
+  const lote = document.getElementById("filtroLote").value;
+  const pendentes = document.getElementById("soPendentes").checked;
+  return DADOS.comentarios.filter(c => (lote === "todos" || c.lote === lote) && (!pendentes || !feito(c.codigo)));
+}
+
+function desenharLista() {
+  document.getElementById("lista").innerHTML = visiveis().map(htmlCartao).join("") || "<p>Nada pendente neste lote.</p>";
+  atualizarProgresso();
+}
+function redesenharCartao(codigo) {
+  const c = DADOS.comentarios.find(x => x.codigo === codigo);
+  const antigo = document.getElementById("c-" + codigo);
+  if (antigo) antigo.outerHTML = htmlCartao(c);
+  atualizarProgresso();
+}
+function atualizarProgresso() {
+  const lote = document.getElementById("filtroLote").value;
+  const doLote = DADOS.comentarios.filter(c => lote === "todos" || c.lote === lote);
+  const feitos = doLote.filter(c => feito(c.codigo)).length;
+  const duvidas = doLote.filter(c => estado[c.codigo] && estado[c.codigo].duvida).length;
+  document.getElementById("progresso").textContent = `${feitos} de ${doLote.length} etiquetados neste lote · ${duvidas} com dúvida`;
+  document.getElementById("barraProgresso").style.width = (doLote.length ? 100 * feitos / doLote.length : 0) + "%";
+}
+
+function desenharManual() {
+  const linhas = [];
+  for (const [tema, t] of Object.entries(MANUAL)) {
+    for (const [nome, d] of Object.entries(t.detalhes)) {
+      linhas.push(`<tr><td>${tema}</td><td>${nome}</td><td>${d.sentidos.join(", ")}</td><td>${escapar(d.definicao)}</td></tr>`);
+    }
+  }
+  document.getElementById("manual").innerHTML =
+    `<table><thead><tr><th>Tema</th><th>Detalhe</th><th>Sentido</th><th>Definição</th></tr></thead><tbody>${linhas.join("")}</tbody></table>`;
+}
+
+document.addEventListener("change", ev => {
+  const alvo = ev.target;
+  const linha = alvo.closest(".etiqueta");
+  if (linha) {
+    const codigo = linha.dataset.codigo, indice = Number(linha.dataset.indice);
+    const et = registro(codigo).etiquetas[indice];
+    if (alvo.classList.contains("sentido")) { et.sentido = alvo.value; et.tema = ""; et.detalhe = ""; }
+    if (alvo.classList.contains("tema")) { et.tema = alvo.value; et.detalhe = ""; }
+    if (alvo.classList.contains("detalhe")) { et.detalhe = alvo.value; }
+    salvarEstado(); redesenharCartao(codigo); return;
+  }
+  if (alvo.classList.contains("sem")) { registro(alvo.dataset.codigo).sem_etiqueta = alvo.checked; salvarEstado(); redesenharCartao(alvo.dataset.codigo); }
+  if (alvo.classList.contains("duvida")) { registro(alvo.dataset.codigo).duvida = alvo.checked; salvarEstado(); redesenharCartao(alvo.dataset.codigo); }
+  if (alvo.id === "filtroLote" || alvo.id === "soPendentes") desenharLista();
+});
+document.addEventListener("click", ev => {
+  const alvo = ev.target;
+  if (alvo.classList.contains("adicionar")) {
+    registro(alvo.dataset.codigo).etiquetas.push({ sentido: "", tema: "", detalhe: "" });
+    salvarEstado(); redesenharCartao(alvo.dataset.codigo);
+  }
+  if (alvo.classList.contains("remover")) {
+    registro(alvo.dataset.codigo).etiquetas.splice(Number(alvo.dataset.indice), 1);
+    salvarEstado(); redesenharCartao(alvo.dataset.codigo);
+  }
+});
+
+function gerarCsv() {
+  const campo = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+  const linhas = [["codigo", "lote", "n_etiqueta", "sentido", "tema", "detalhe", "sem_etiqueta", "duvida"].join(",")];
+  for (const c of DADOS.comentarios) {
+    const r = estado[c.codigo];
+    if (!r || !feito(c.codigo)) continue;
+    const base = [c.codigo, c.lote];
+    const fim = [r.sem_etiqueta ? 1 : 0, r.duvida ? 1 : 0];
+    if (r.sem_etiqueta) { linhas.push([...base, 0, "", "", "", ...fim].map(campo).join(",")); continue; }
+    r.etiquetas.filter(completa).forEach((et, i) =>
+      linhas.push([...base, i + 1, et.sentido, et.tema, et.detalhe, ...fim].map(campo).join(",")));
+  }
+  return "﻿" + linhas.join("\n");
+}
+
+async function exportar() {
+  const conteudo = gerarCsv();
+  const aviso = document.getElementById("aviso");
+  if (window.showSaveFilePicker) {
+    try {
+      const arquivo = await window.showSaveFilePicker({
+        id: "etiquetagem",
+        suggestedName: "etiquetas_manuais.csv",
+        types: [{ description: "CSV", accept: { "text/csv": [".csv"] } }],
+      });
+      const escrita = await arquivo.createWritable();
+      await escrita.write(conteudo);
+      await escrita.close();
+      aviso.textContent = "· arquivo salvo";
+      return;
+    } catch (erro) {
+      if (erro.name === "AbortError") return;
+    }
+  }
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(new Blob([conteudo], { type: "text/csv;charset=utf-8" }));
+  link.download = "etiquetas_manuais.csv";
+  link.click();
+  aviso.textContent = "· arquivo enviado para Downloads";
+}
+document.getElementById("exportar").addEventListener("click", exportar);
+
+desenharManual();
+desenharLista();
+</script>
+</body>
+</html>

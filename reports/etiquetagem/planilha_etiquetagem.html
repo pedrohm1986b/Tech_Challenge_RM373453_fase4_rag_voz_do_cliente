@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Etiquetagem manual</title>
+<style>
+  :root {
+    --fundo: #f6f7f9; --cartao: #ffffff; --texto: #1d2330; --suave: #5b6475;
+    --borda: #d9dde5; --destaque: #2f6fdb; --ok: #2e8b57; --alerta: #c47f00; --erro: #c0392b;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--fundo); color: var(--texto); }
+  header { position: sticky; top: 0; z-index: 5; background: var(--cartao); border-bottom: 1px solid var(--borda); padding: 12px 20px; }
+  .linha-topo { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+  h1 { font-size: 18px; margin: 0; }
+  .controles { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  button, select, textarea { font: inherit; }
+  button { border: 1px solid var(--borda); background: var(--cartao); border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+  button.primario { background: var(--destaque); border-color: var(--destaque); color: #fff; }
+  button.pequeno { padding: 3px 9px; font-size: 13px; }
+  .barra { height: 6px; background: var(--borda); border-radius: 3px; margin-top: 10px; overflow: hidden; }
+  .barra > div { height: 100%; background: var(--ok); width: 0; transition: width .2s; }
+  .progresso { font-size: 13px; color: var(--suave); }
+  main { max-width: 980px; margin: 0 auto; padding: 16px 20px 80px; }
+  details.manual { background: var(--cartao); border: 1px solid var(--borda); border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; }
+  details.manual summary { cursor: pointer; font-weight: 600; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 10px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--borda); vertical-align: top; }
+  .cartao { background: var(--cartao); border: 1px solid var(--borda); border-left: 4px solid var(--borda); border-radius: 8px; padding: 14px 16px; margin-bottom: 12px; }
+  .cartao.feito { border-left-color: var(--ok); }
+  .cartao.duvida { border-left-color: var(--alerta); }
+  .cabecalho-cartao { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--suave); margin-bottom: 6px; }
+  .texto { font-size: 16px; line-height: 1.45; margin-bottom: 12px; white-space: pre-wrap; }
+  .etiqueta { display: grid; grid-template-columns: 130px 170px 1fr auto; gap: 8px; align-items: center; margin-bottom: 4px; }
+  .etiqueta select { width: 100%; padding: 5px; border: 1px solid var(--borda); border-radius: 6px; background: #fff; }
+  .etiqueta select:disabled { background: #eef0f4; color: #999; }
+  .definicao { font-size: 12px; color: var(--suave); margin: 0 0 8px 0; min-height: 0; }
+  .opcoes { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 8px; font-size: 14px; }
+  .opcoes label { display: flex; gap: 6px; align-items: center; cursor: pointer; }
+  textarea { width: 100%; margin-top: 8px; min-height: 44px; border: 1px solid var(--borda); border-radius: 6px; padding: 6px; font-size: 14px; }
+  .oculto { display: none; }
+  @media (max-width: 640px) {
+    .etiqueta { grid-template-columns: 1fr 1fr; }
+    .etiqueta select.detalhe { grid-column: 1 / 2; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="linha-topo">
+    <h1>Etiquetagem manual dos comentários</h1>
+    <div class="controles">
+      <label>Lote
+        <select id="filtroLote">
+          <option value="todos">todos (170)</option>
+          <option value="piloto">piloto (20)</option>
+          <option value="gabarito">gabarito (150)</option>
+        </select>
+      </label>
+      <label><input type="checkbox" id="soPendentes"> só pendentes</label>
+      <button class="primario" id="exportar">Exportar CSV</button>
+    </div>
+  </div>
+  <div class="progresso"><span id="progresso"></span> · ao exportar, salve na pasta <b>reports\etiquetagem</b> do projeto <span id="aviso"></span></div>
+  <div class="barra"><div id="barraProgresso"></div></div>
+</header>
+
+<main>
+  <details class="manual">
+    <summary>Manual de etiquetagem (versão 1)</summary>
+    <div id="manual"></div>
+  </details>
+  <div id="lista"></div>
+</main>
+
+<script>
+const DADOS = {"versao_manual": "v1", "manual": {"entrega": {"definicao": "Recebimento do pedido: prazo, chegada, condição em que chegou e local de entrega.", "detalhes": {"prazo": {"sentidos": ["positivo", "negativo"], "definicao": "Tempo até a entrega: antes, dentro ou depois do prazo prometido."}, "não recebido": {"sentidos": ["negativo"], "definicao": "O produto não chegou: rastreio parado, extravio, consta como entregue sem ter sido recebido."}, "itens faltando": {"sentidos": ["negativo"], "definicao": "Chegou só parte do pedido: menos unidades ou menos produtos do que o comprado."}, "avaria no transporte": {"sentidos": ["negativo"], "definicao": "Chegou quebrado, amassado, riscado ou com a embalagem danificada."}, "retirada na agência": {"sentidos": ["negativo"], "definicao": "Não foi entregue no endereço: o cliente teve de buscar nos Correios ou em uma agência."}, "outro": {"sentidos": ["positivo", "negativo"], "definicao": "Assunto de entrega que não cabe nos detalhes acima."}}}, "produto": {"definicao": "O item recebido: correspondência com o anúncio e qualidade.", "detalhes": {"conformidade com o anúncio": {"sentidos": ["positivo", "negativo"], "definicao": "Cor, modelo, tamanho, marca ou originalidade em relação ao anúncio; inclui 'conforme o anúncio'."}, "qualidade": {"sentidos": ["positivo", "negativo"], "definicao": "Material, acabamento, funcionamento ou defeito de fabricação."}, "outro": {"sentidos": ["positivo", "negativo"], "definicao": "Assunto de produto que não cabe nos detalhes acima."}}}, "preço": {"definicao": "Custo da compra.", "detalhes": {"preço do produto": {"sentidos": ["positivo", "negativo"], "definicao": "Valor do produto: caro, barato, preço justo, custo-benefício."}, "frete": {"sentidos": ["positivo", "negativo"], "definicao": "Valor do frete."}, "outro": {"sentidos": ["positivo", "negativo"], "definicao": "Assunto de preço que não cabe nos detalhes acima."}}}, "atendimento": {"definicao": "Relação com a loja depois da compra.", "detalhes": {"contato e resposta": {"sentidos": ["positivo", "negativo"], "definicao": "Facilidade de falar com a loja, retorno às mensagens, cordialidade."}, "cancelamento, troca e reembolso": {"sentidos": ["positivo", "negativo"], "definicao": "Como a loja tratou o cancelamento, a troca, a devolução ou o estorno."}, "nota fiscal": {"sentidos": ["negativo"], "definicao": "Nota fiscal não enviada ou com problema."}, "outro": {"sentidos": ["positivo", "negativo"], "definicao": "Assunto de atendimento que não cabe nos detalhes acima."}}}, "elogio geral": {"definicao": "Elogio à compra, à loja ou ao site como um todo, sem citar entrega, produto, preço ou atendimento.", "detalhes": {"sem assunto": {"sentidos": ["positivo"], "definicao": "'Muito bom', 'recomendo', 'loja confiável', 'nota 10'."}}}}, "comentarios": [{"codigo": "G001", "lote": "piloto", "texto": "Gostei de ter feito essas compras por esse site. Obrigada!"}, {"codigo": "G002", "lote": "piloto", "texto": "Bom preço e ótima logística! Super recomendo,!!"}, {"codigo": "G003", "lote": "piloto", "texto": "Ótimo material, feito com um excelente acabamento! Recomendo!"}, {"codigo": "G004", "lote": "piloto", "texto": "Não recebi a panela"}, {"codigo": "G005", "lote": "piloto", "texto": "entregou em apenas 24 horas, show. produto igual a descrição."}, {"codigo": "G006", "lote": "piloto", "texto": "Não recebi minha mercadoria ainda. Pois o prazo já passou e não recebi."}, {"codigo": "G007", "lote": "piloto", "texto": "Antecipei a compra para um presente de aniversário, e passado o dia previsto para a entrega o produto ainda não chegou. A festa é neste sábado. Será que chegarei de mãos vazias?"}, {"codigo": "G008", "lote": "piloto", "texto": "Nossa.... Nunca comprei algo nas lannister que demorasse tanto..... Pensei em desistir. Mas de qualquer forma, o relógio é bom"}, {"codigo": "G009", "lote": "piloto", "texto": "Produto na propaganda e um do que chegou e outro"}, {"codigo": "G010", "lote": "piloto", "texto": "Veio metade"}, {"codigo": "G011", "lote": "piloto", "texto": "Custo x benefício, vale a pena."}, {"codigo": "G012", "lote": "piloto", "texto": "Veio apenas Uma capa dentro da embalagem , quando comprei e paguei por duas."}, {"codigo": "G013", "lote": "piloto", "texto": "Comprei um produto e foi entregue outro"}, {"codigo": "G014", "lote": "piloto", "texto": "Ele é bem potente e confortável!!! Tem bastante fio de fone, distancia é de menos!!! Chegou no prazo o que foi muito bom !!!"}, {"codigo": "G015", "lote": "piloto", "texto": "Achei era mais firme..mas além de frágil... Tem pouca aderência."}, {"codigo": "G016", "lote": "piloto", "texto": "Comprei dois telescópios e só foi entregue 1."}, {"codigo": "G017", "lote": "piloto", "texto": "Entendo que devido a greve dos caminhoneiros tenha atrapalhado as operações, porém, a empresa já teve o tempo hábil para entregar todos os pedidos pendentes."}, {"codigo": "G018", "lote": "piloto", "texto": "Meu produto não foi entregue até hoje e não tenho nehuma resposta! Vou ter que acionar na justiça."}, {"codigo": "G019", "lote": "piloto", "texto": "Demora muito para entrega."}, {"codigo": "G020", "lote": "piloto", "texto": "Chegou dentro do prazo e intacto, pelos Correios não teve erro."}, {"codigo": "G021", "lote": "gabarito", "texto": "Paguei pelo produto e não recebi"}, {"codigo": "G022", "lote": "gabarito", "texto": "Comprei, super indico o pedido chegou antes do prazo"}, {"codigo": "G023", "lote": "gabarito", "texto": "Não sei se por culpa da transportadora ou não, o fato é de que não recebi o produto ainda, e já está fora do prazo de entrega."}, {"codigo": "G024", "lote": "gabarito", "texto": "Chegou uma semana antes do prometido."}, {"codigo": "G025", "lote": "gabarito", "texto": "Não gostei não véi igual da foto é o material e muito ruim e também veio com defeito mal custura"}, {"codigo": "G026", "lote": "gabarito", "texto": "Gostei da colcha, ficou perfeito na cama."}, {"codigo": "G027", "lote": "gabarito", "texto": "O produto que recebi não é da cor que comprei. Já solicitei devolução."}, {"codigo": "G028", "lote": "gabarito", "texto": "Produto veio incompleto, faltando certidão de nascimento e a fralda e não encontrei nenhum telefone ou e-mail de contato para reclamação."}, {"codigo": "G029", "lote": "gabarito", "texto": "Recebi um produto que não consta o selo do ipi Que indica que o produto é original. Tbm não recebi na cx origina"}, {"codigo": "G030", "lote": "gabarito", "texto": "Bom prazo de entrega"}, {"codigo": "G031", "lote": "gabarito", "texto": "Prateleiras com cantos vivo, colunas nao encaixam, faltam arroelas para nao danificar a pintura, prateleiras chegaram todas amassadas."}, {"codigo": "G032", "lote": "gabarito", "texto": "Entrega foi super rápido, é o produto mas não com infravermelho como eu queria não vou trocar pq é uma burocracia."}, {"codigo": "G033", "lote": "gabarito", "texto": "Queria q essas ecomedas fosse entregue na data certa até agora n recebi meu produto"}, {"codigo": "G034", "lote": "gabarito", "texto": "Não recebi meu pedido corretamente comprei 2kits de bexigas com 5 unidades cada kit é só recebi um kit"}, {"codigo": "G035", "lote": "gabarito", "texto": "Comprei dois itens no mesmo pedido um chegou em 5 dias muito rápido o outro demorou 15 dias"}, {"codigo": "G036", "lote": "gabarito", "texto": "Comprei um toner, mas, não funciona. Exijo que seja feita a troca"}, {"codigo": "G037", "lote": "gabarito", "texto": "Não recebi o produto correto. Prefiro acreditar que foi por engano. Já fiz o pedido de troca ou devolução do valor. Estou no aguardo da resposta por e-mail."}, {"codigo": "G038", "lote": "gabarito", "texto": "Comprei e chegou outro produto de cor diferente e qualidade bem inferior. Só transtorno nessa compra."}, {"codigo": "G039", "lote": "gabarito", "texto": "O produto não corresponde com o original, a composição é diferente, mais usando o mesmo nome na embalagem, por esse motivo vou fazer a devolução do mesmo"}, {"codigo": "G040", "lote": "gabarito", "texto": "Em relação à esta entrega está tudo ok mas realizei uma outra compra autorizada no dia 26 deste mês da loja ponto do nerd e não entendo porque até agora não chegou se a loja está na minha cidade"}, {"codigo": "G041", "lote": "gabarito", "texto": "Comprei dois travesseiros e só recebi um. Não consigo falar no canal de atendimento."}, {"codigo": "G042", "lote": "gabarito", "texto": "Nao consigo contato para pedir de volta meu produto uma vez que falaram q estaria disponível ate o dia 5 nos correio o qual voltou dia 2"}, {"codigo": "G043", "lote": "gabarito", "texto": "Provavelmente que tenha sido falha dos correios, mas paguei pelo produto e não recebi."}, {"codigo": "G044", "lote": "gabarito", "texto": "O prazo de entrega já foi melhor, nesta última compra pediram mais de um mês para efetuar a entrega. Acredito que isso possa ser melhorado e muito"}, {"codigo": "G045", "lote": "gabarito", "texto": "Produto mal embalado. A caixinha veio solta dentro da caixa grande do correio, aberta, com os ítens todos espalhados. Deveriam preencher o espaço livre ao menos com jornal."}, {"codigo": "G046", "lote": "gabarito", "texto": "Quando eu fui comprar o produto,me falaram q viria em uma data,após a compra apareceu outra data.ele demorou muito pra sair do pagamento autorizado.a loja lannister de jatai está suja e mal cuidada!!"}, {"codigo": "G047", "lote": "gabarito", "texto": "Não sei se o problema foi a transportadora ou a empresa de cadeiras, mas, das 3 cadeiras \"presidência\", são uma foi entregue."}, {"codigo": "G048", "lote": "gabarito", "texto": "adorei o produto! otima qualidade !"}, {"codigo": "G049", "lote": "gabarito", "texto": "Estou aguardando meu produto ,dei numero errado mais ja dei o certo e ate agora nao recebi o produto"}, {"codigo": "G050", "lote": "gabarito", "texto": "o produto chegou perfeito, otima qualidade, so que é do menor!"}, {"codigo": "G051", "lote": "gabarito", "texto": "recebi sim, porém o moedor elétrico chegou com a tampa quebrada."}, {"codigo": "G052", "lote": "gabarito", "texto": "Primeira vez que recebi os produtos faltando alguns itens"}, {"codigo": "G053", "lote": "gabarito", "texto": "O pedido foi entregue parcialmente, ficando faltando ainda três itens."}, {"codigo": "G054", "lote": "gabarito", "texto": "Produto correspondeu à expectativa. Entrega antes do prazo previsto."}, {"codigo": "G055", "lote": "gabarito", "texto": "material ruim. sem garantia"}, {"codigo": "G056", "lote": "gabarito", "texto": "Cancelaram a minha compra um dia antes da entrega, liguei para a lannister e os atendentes não sabiam o que estava acontecendo, uma bagunça, agora estou esperando para ver se vai ser cobrado"}, {"codigo": "G057", "lote": "gabarito", "texto": "O produto me chegou divergindo em relação ao informado no site sobre o funcionamento do mesmo. Falta o botão redutor de velocidade"}, {"codigo": "G058", "lote": "gabarito", "texto": "Chegou bem antes do prazo....muito antes"}, {"codigo": "G059", "lote": "gabarito", "texto": "Está faltando uma cortina, só chego o codgo do produto 996 e eu pedi Bege me entregaram Verde."}, {"codigo": "G060", "lote": "gabarito", "texto": "Comprei 5 escovas de dentes Black com cerdas pretas. Recebi apenas 2 e não são Black, são coloridas, vermelha e roxa! Um absurdo! Fui roubada! Incompleto e errado!"}, {"codigo": "G061", "lote": "gabarito", "texto": "Era pra ter chego até o dia 06/06/2018, já fui no Correios e nao esta la."}, {"codigo": "G062", "lote": "gabarito", "texto": "Mando emai mais ninguém me responde, não recebi meus produtos. Eu quero meu dinheiro de volta."}, {"codigo": "G063", "lote": "gabarito", "texto": "Recebi meu produto bastante rápido, comprei em um dia e recebi no dia seguinte. Maravilha!!!!!!!"}, {"codigo": "G064", "lote": "gabarito", "texto": "Eu não recebi o outro produto"}, {"codigo": "G065", "lote": "gabarito", "texto": "Isso é uma falta de respeito com o consumidor"}, {"codigo": "G066", "lote": "gabarito", "texto": "Recebi o produto de outro modelo. Desatenção por parte do distribuidor :("}, {"codigo": "G067", "lote": "gabarito", "texto": "Produto com péssimo acabamento interno, já solicitei a devolução do produto."}, {"codigo": "G068", "lote": "gabarito", "texto": "Loja recomendada. Produto de péssima qualidade."}, {"codigo": "G069", "lote": "gabarito", "texto": "otimo processo de entrega. super recomendo"}, {"codigo": "G070", "lote": "gabarito", "texto": "Muito bom sim, mas nada mais que a obrigação fazer tudo direito pagamos pra isso mesmo se fosse de qualquer jeito não teria lógica pagar pelo serviço"}, {"codigo": "G071", "lote": "gabarito", "texto": "Recebi produto de outro cliente totalmente diferente do que comprei...trocaram meu pedido...."}, {"codigo": "G072", "lote": "gabarito", "texto": "Atendimento, produto e entrega perfeitos"}, {"codigo": "G073", "lote": "gabarito", "texto": "Anunciam um produto que não tem em estoque e ainda não cancelaram a compra no meu cartão!"}, {"codigo": "G074", "lote": "gabarito", "texto": "paguei o frete e tive que ir buscar do outro do mundo errado tem que entrega em casa"}, {"codigo": "G075", "lote": "gabarito", "texto": "Controle é bom, levando em conta que não é original. Teclado mole, a única coisa que achei ruim."}, {"codigo": "G076", "lote": "gabarito", "texto": "O brinquedo veio com defeito,a dificuldade em trocar está pq minha filha chora quando proponho para ela esperar uma semana pelo outro."}, {"codigo": "G077", "lote": "gabarito", "texto": "Super indico, ótimo atendimento e entrega super rápida"}, {"codigo": "G078", "lote": "gabarito", "texto": "Porque toda vez que tento rastrear meu produto não é possível"}, {"codigo": "G079", "lote": "gabarito", "texto": "Entrega rápida e bom produto."}, {"codigo": "G080", "lote": "gabarito", "texto": "O produto realmente foi entregue no prazo, entretanto chegou todo quebrado creio que por causa do acondicionamento"}, {"codigo": "G081", "lote": "gabarito", "texto": "ChegoChegou antes do prazo"}, {"codigo": "G082", "lote": "gabarito", "texto": "Ainda não foi utilizado, mas é de excelente qualidade! Satisfeito com a compra"}, {"codigo": "G083", "lote": "gabarito", "texto": "Serviço rapido"}, {"codigo": "G084", "lote": "gabarito", "texto": "A data da entrega foi alterada duas vezes. Resolvi comprar em outra loja (fisica) e depois cancelei o pedido da targaryen (lannister). Depois do cancelamento em 3 dias o produto chegou. E agora?"}, {"codigo": "G085", "lote": "gabarito", "texto": "Não fui informado que os produtos seriam entregues separados.Quando tentei contato pelo telefone de atendimento ao cliente das lannister achei péssimo. O contato com a loja foi rápido e eficiente"}, {"codigo": "G086", "lote": "gabarito", "texto": "Olha talvez vcs precisem de um chat pois émuito dificil fazer troca site e também por tel esperei mais de 25 minutos e desisti . nao gostei seus canais de comunicação nao é eficiente. Na compra sem pr"}, {"codigo": "G087", "lote": "gabarito", "texto": "Não entregaram no prazo, já tá com mais de 30 dias, uma mísera tesoura. Eu tive que comprar uma por aqui. Pq a empresa não se comprometeu nem de manda uma email pra me tranquilizar."}, {"codigo": "G088", "lote": "gabarito", "texto": "Uma empresa tão bem conceituada como o baratheon deveria se preocupar mais com a qualidade dos produtos oferecidos pelo seus parceiros."}, {"codigo": "G089", "lote": "gabarito", "texto": "Não fica bom se instalado em azulejos, pois marca muito nos rejuntes, ficando com muitas bolhas..por isso não indico o produto, a loja entregou super rápido."}, {"codigo": "G090", "lote": "gabarito", "texto": "Achei as toalhas muito feias, na foto pareciam brancas mas são gelo e qualidade bastante inferior."}, {"codigo": "G091", "lote": "gabarito", "texto": "Muito enrolados o produto que comprei no direto stark e bem maior e chegou com tres dias ja essa targaryen faz parcerias horriveis"}, {"codigo": "G092", "lote": "gabarito", "texto": "esse produto chegou certo,mas tive 3 pedidos que levei tufo,não veio,ninguém respondeu nada"}, {"codigo": "G093", "lote": "gabarito", "texto": "Infelizmente recebi o produto errado. Pedi a luminária thomas edison com 6 lâmpadas e recebi o modelo aramado. Gostaria de trocar o produto ou receber o reembolso da compra."}, {"codigo": "G094", "lote": "gabarito", "texto": "Estou aguardando meu pedido, estava com data de entrega ate 20/04/2017, hoje é 22/04/2017 e ainda recebi. Com isso continuo agurando, peço que a lannister tomes devidas providencias. Att, Bian"}, {"codigo": "G095", "lote": "gabarito", "texto": "demora na entrega"}, {"codigo": "G096", "lote": "gabarito", "texto": "Recebei apenas um dos dois produtos. o Rolo de liberação miofascial não foi entregue."}, {"codigo": "G097", "lote": "gabarito", "texto": "Compra efetuada em 12/03/2018, postada dois dias depois e até a presente data, com até agora 2 dias de atraso não recebi a mercadoria"}, {"codigo": "G098", "lote": "gabarito", "texto": "Faturou e não recebi!"}, {"codigo": "G099", "lote": "gabarito", "texto": "Consta na NF 2 itens orem apenas 1 foi entregue. Ja solicitei informaçao sobre o item faltante."}, {"codigo": "G100", "lote": "gabarito", "texto": "Insatisfeita, porque foi entregue faltando 02 panos de prato, vierão somente 05 panos e eu paguei por 07 panos. Vou fica no prejuízo, mas não compro mais nada... E não recomendo este vendedor."}, {"codigo": "G101", "lote": "gabarito", "texto": "Loja completamente descompromissada com o cliente. No ato da compra a data de entrega era uma. Após finalizar a compra, a data era outra diferente do anunciado e mesmo assim até hoje não entregaram."}, {"codigo": "G102", "lote": "gabarito", "texto": "acho as entregas desse site meio demoradas. mas vem td certinho....."}, {"codigo": "G103", "lote": "gabarito", "texto": "Eram 2 unidades so veio 01 unidade e não veio nota,só se for chegar o outro separado ate agora nada"}, {"codigo": "G104", "lote": "gabarito", "texto": "Não é o que espera, mas dá para usar."}, {"codigo": "G105", "lote": "gabarito", "texto": "péssimo, além da demora ainda mandaram o produto errado."}, {"codigo": "G106", "lote": "gabarito", "texto": "ainda não tive resposta sobre a devolução do valor pago, estou esperando respostas sobre o meu pedido, se não tiver nenhum resposta vou colocar uma nota bem grande no reclame aqui."}, {"codigo": "G107", "lote": "gabarito", "texto": "Acho que pelo preço cobrado no frete, deveria haver mais respeito ao cliente em relação ao prazo!!!!"}, {"codigo": "G108", "lote": "gabarito", "texto": "O produto não deveria constar disponível se não está."}, {"codigo": "G109", "lote": "gabarito", "texto": "O produto estava com a medida de 1,0m porém tem 90cm."}, {"codigo": "G110", "lote": "gabarito", "texto": "ATÉ AGORA NÃO TENHO NADA A RECLAMAR"}, {"codigo": "G111", "lote": "gabarito", "texto": "Aproveitei somente a capa. A película não é a melhor."}, {"codigo": "G112", "lote": "gabarito", "texto": "Pedi 3 cadeiras e só enviaram 2. E para piorar, deram como entregue segundo o site. Abri reclamação há dois dias e até hoje nada, nenhuma respostas. Quero os 100 reais de volta logo e urgente!"}, {"codigo": "G113", "lote": "gabarito", "texto": "Este recebi certo."}, {"codigo": "G114", "lote": "gabarito", "texto": "pRODUTO DE BOA QUALIDADE. pRAZO CUMPRIDO. eXCELENTE"}, {"codigo": "G115", "lote": "gabarito", "texto": "comprei 2 quite e so recebi 1 estou aguardando o outro"}, {"codigo": "G116", "lote": "gabarito", "texto": "Meu produto foi comprado em 25/02 e até agora não chegou. E nenhuma resposta foi dada. O prazo era até 19/03. Quero uma posição urgente"}, {"codigo": "G117", "lote": "gabarito", "texto": "Produto conforme anúncio"}, {"codigo": "G118", "lote": "gabarito", "texto": "Eles fizeram a minha mãe assinar uma NF de duas unidades e foi entregue somente uma."}, {"codigo": "G119", "lote": "gabarito", "texto": "Comprei o Kit Shampo, Óleo, Balm E Pente Para Barba Usebarba. Porém, faltou o pente!!!"}, {"codigo": "G120", "lote": "gabarito", "texto": "Comprei uma marca e veio outro bem inferior. Já pedi p devolver. Estou aguardando."}, {"codigo": "G121", "lote": "gabarito", "texto": "pessimo atendimento mercadoria chegandoatrazada vou fazer uma propanda pra nimguem mais comprar ai"}, {"codigo": "G122", "lote": "gabarito", "texto": "comprei 2 celular e so madarm 1, e nato fiscal comprando os dois"}, {"codigo": "G123", "lote": "gabarito", "texto": "Ótimo entregue no prazo"}, {"codigo": "G124", "lote": "gabarito", "texto": "Produto chegou muito antes do prazo, parabéns!!"}, {"codigo": "G125", "lote": "gabarito", "texto": "Atrasou"}, {"codigo": "G126", "lote": "gabarito", "texto": "Gostei muito. Cumpriu com as caracteristicas do produto e entrega muito antes do prazo proposto."}, {"codigo": "G127", "lote": "gabarito", "texto": "Tenho uma sugestão. O prato de microondas que comprei não serve exatamente no meu aparelho. Gostaria que o site nos desse uma lista de aparelhos que fossem compatíveis com o produto. vitando surpresa."}, {"codigo": "G128", "lote": "gabarito", "texto": "Por enquanto só foi entregue o decantar, a tábua ainda não chegou, sendo que os dois produtos aparecem como da mesma loja, chegou um e-mail para eu ir retirar nos correios, porém so chegou um deles!!!"}, {"codigo": "G129", "lote": "gabarito", "texto": "Ainda não testei todas as funcionalidades do produto, mas aparentemente tudo está de acordo, vou testar e posteriormente concluo. O relógio foi entregue em tempo recorde."}, {"codigo": "G130", "lote": "gabarito", "texto": "Até o momento o produto não foi entregue"}, {"codigo": "G131", "lote": "gabarito", "texto": "A caixa do produto chegou amassada. Os correios informaram q o vendedor nao optou pela embalagem apropriada e quem deveria responder por isso seria o proprio vendedor e nao quiseram levar a mercadoria"}, {"codigo": "G132", "lote": "gabarito", "texto": "O drone é lindo , porém a bateria não dura nada, e é um pouco chatinho de montar."}, {"codigo": "G133", "lote": "gabarito", "texto": "O produto não veio em embalagem do fabricante, tudo leva a crer que é falsificado. Irei retornar."}, {"codigo": "G134", "lote": "gabarito", "texto": "bom comprar com lannister"}, {"codigo": "G135", "lote": "gabarito", "texto": "Gostei muito da compra, inclusive o pequeno prazo em que foi entregue."}, {"codigo": "G136", "lote": "gabarito", "texto": "oferece um produto e não entrega pode fechar as portas.. e como faço vou ser reembolsado..."}, {"codigo": "G137", "lote": "gabarito", "texto": "Produto e ótimo, porém não gostei do fornecedor demorou muito, esperava receber antes a tampa veio quebrada.Queria outro"}, {"codigo": "G138", "lote": "gabarito", "texto": "Entrega com boa antecedência! Muito bom! Recomendarei para todos!"}, {"codigo": "G139", "lote": "gabarito", "texto": "Comprei 2 robozinho e paguei e veio so 1 robo de 50 unidades comprei 2 robo pra vim 100 unidades e veio so 1"}, {"codigo": "G140", "lote": "gabarito", "texto": "Ótimo, recebi antes do prazo"}, {"codigo": "G141", "lote": "gabarito", "texto": "O produto veio diferente sem ser o anunciado nas lojas lannister e também veio bloqueado inutilizado para uso. Quero o produto anunciado ou o meu dinheiro de volta ou vou bloquear o pagamento ~do car"}, {"codigo": "G142", "lote": "gabarito", "texto": "Produto Bom e Bonito, mas na descrição do produto na compra era 100% Algodão e veio 80% Algodão e 20% Poliéster, única coisa a reclamar me senti um pouco enganado."}, {"codigo": "G143", "lote": "gabarito", "texto": "Nunca mais compro achei uma falta de respeito com comprador"}, {"codigo": "G144", "lote": "gabarito", "texto": "Atendeu minhas expectativas e chegou no prazo."}, {"codigo": "G145", "lote": "gabarito", "texto": "É UMA VERGONHA, SE O PEDIDO FOI PREPARADO PARA ENVIO DIA 23/04/2018, ATÉ AGORA NADA. VOCÊS VÃO ENTREGAR O PEDIDO OU NÃO! FAVOR ME AVISAR PARA CANCELAR A COMPRA."}, {"codigo": "G146", "lote": "gabarito", "texto": "Produto entregue muito rápido. Fiquei muito satisfeita!Obrigada."}, {"codigo": "G147", "lote": "gabarito", "texto": "Não entregaram meu produto"}, {"codigo": "G148", "lote": "gabarito", "texto": "Excelente produto e entrega antecipada."}, {"codigo": "G149", "lote": "gabarito", "texto": "Comprei uma manta lilás e me enviaram uma cor goiaba,odiei a compra,era um presente e acabei nao dando o presente,e joguei no lixo.Que falta de profissionalismo, pelo jeito o vendedor e bem amador."}, {"codigo": "G150", "lote": "gabarito", "texto": "As toalhas não são boas, muito inferiores"}, {"codigo": "G151", "lote": "gabarito", "texto": "Recebido conforme esperava"}, {"codigo": "G152", "lote": "gabarito", "texto": "Produto não entregue e loja não deu satisfação após contato."}, {"codigo": "G153", "lote": "gabarito", "texto": "A embalagem do perfume não estava lacrada, ou seja, a caixa não estava revestida com o plástico que deveria envolvê-la, além disso, o nível do perfume no frasco estava visivelmente abaixo do normal."}, {"codigo": "G154", "lote": "gabarito", "texto": "A bateria chegou estourada, estão nem consegui ligar o termômetro ainda."}, {"codigo": "G155", "lote": "gabarito", "texto": "Comprei duas unidades , apenas uma foi entregue."}, {"codigo": "G156", "lote": "gabarito", "texto": "Esgotado o prazo e ainda não recebi o produto, nem sequer uma satisfação."}, {"codigo": "G157", "lote": "gabarito", "texto": "Produto de qualidade entregue no prazo e com bom preço."}, {"codigo": "G158", "lote": "gabarito", "texto": "o acabamento poderia ser melhor, nas laterais principalmente. mas está dentro das expectativas."}, {"codigo": "G159", "lote": "gabarito", "texto": "Entrega no tempo previsto. Gostei muito,são bem feito."}, {"codigo": "G160", "lote": "gabarito", "texto": "O produto chegou no prazo e em excelente estado!"}, {"codigo": "G161", "lote": "gabarito", "texto": "Nao posso responder pois o produto ainda nao chegou"}, {"codigo": "G162", "lote": "gabarito", "texto": "NAO GOSTEI PORQUE VEIO AMASSADA"}, {"codigo": "G163", "lote": "gabarito", "texto": "a loja eu recomendo, o que nao recomendo e compras no lannister.com, pessimo atendimento para devoluções e trocas, naõ tem atendimento online, pelo telefone so te enrolam e nao atendem, por email nao"}, {"codigo": "G164", "lote": "gabarito", "texto": "Não foi entegue"}, {"codigo": "G165", "lote": "gabarito", "texto": "Ainda nao recevi o produto."}, {"codigo": "G166", "lote": "gabarito", "texto": "Produto de ótima qualidade preço justo"}, {"codigo": "G167", "lote": "gabarito", "texto": "Comprei um produto e me enviaram outro similar sem me perguntar se eu queria a troca"}, {"codigo": "G168", "lote": "gabarito", "texto": "Parabéns aos envolvidos! Produto foi entregue corretamente e até antes do prazo estabelecido!!"}, {"codigo": "G169", "lote": "gabarito", "texto": "Fiz um pedido com dois perfumes mas so foi entregue um produto"}, {"codigo": "G170", "lote": "gabarito", "texto": "Preço do frente abusivo, prazo de entrega demorado e confuso, disseram que era pra eu cancelar a compra por problemas na entrega e dias depois entregaram o produto."}]};
+const CHAVE = "etiquetagem_olist_" + DADOS.versao_manual;
+const MANUAL = DADOS.manual;
+
+function carregarEstado() {
+  try { return JSON.parse(localStorage.getItem(CHAVE)) || {}; } catch (e) { return {}; }
+}
+function salvarEstado() {
+  try { localStorage.setItem(CHAVE, JSON.stringify(estado)); } catch (e) { /* sem armazenamento: segue em memória */ }
+}
+let estado = carregarEstado();
+
+function registro(codigo) {
+  if (!estado[codigo]) estado[codigo] = { etiquetas: [{ sentido: "", tema: "", detalhe: "" }], sem_etiqueta: false, duvida: false };
+  return estado[codigo];
+}
+function completa(et) { return et.sentido && et.tema && et.detalhe; }
+function feito(codigo) {
+  const r = estado[codigo];
+  return !!r && (r.sem_etiqueta || r.etiquetas.some(completa));
+}
+
+function temasPara(sentido) {
+  return Object.keys(MANUAL).filter(t => Object.values(MANUAL[t].detalhes).some(d => d.sentidos.includes(sentido)));
+}
+function detalhesPara(tema, sentido) {
+  if (!MANUAL[tema]) return [];
+  return Object.entries(MANUAL[tema].detalhes).filter(([, d]) => d.sentidos.includes(sentido)).map(([nome]) => nome);
+}
+function opcoes(valores, selecionado, vazio) {
+  return [`<option value="">${vazio}</option>`]
+    .concat(valores.map(v => `<option value="${v}"${v === selecionado ? " selected" : ""}>${v}</option>`))
+    .join("");
+}
+function escapar(texto) {
+  return texto.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+}
+
+function htmlEtiqueta(codigo, indice, et, total) {
+  const temas = et.sentido ? temasPara(et.sentido) : [];
+  const detalhes = et.sentido && et.tema ? detalhesPara(et.tema, et.sentido) : [];
+  const definicao = et.tema && et.detalhe ? MANUAL[et.tema].detalhes[et.detalhe].definicao : "";
+  return `
+    <div class="etiqueta" data-codigo="${codigo}" data-indice="${indice}">
+      <select class="sentido">${opcoes(["positivo", "negativo"], et.sentido, "sentido")}</select>
+      <select class="tema" ${et.sentido ? "" : "disabled"}>${opcoes(temas, et.tema, "tema")}</select>
+      <select class="detalhe" ${et.tema ? "" : "disabled"}>${opcoes(detalhes, et.detalhe, "detalhe")}</select>
+      ${total > 1 ? `<button class="pequeno remover" data-codigo="${codigo}" data-indice="${indice}">remover</button>` : "<span></span>"}
+    </div>
+    <p class="definicao">${escapar(definicao)}</p>`;
+}
+
+function htmlCartao(c) {
+  const r = registro(c.codigo);
+  const classes = ["cartao", feito(c.codigo) ? "feito" : "", r.duvida ? "duvida" : ""].join(" ");
+  const etiquetas = r.etiquetas.map((et, i) => htmlEtiqueta(c.codigo, i, et, r.etiquetas.length)).join("");
+  return `
+    <section class="${classes}" id="c-${c.codigo}">
+      <div class="cabecalho-cartao"><span>${c.codigo}</span><span>${c.lote}</span></div>
+      <div class="texto">${escapar(c.texto)}</div>
+      <div class="${r.sem_etiqueta ? "oculto" : ""}">
+        ${etiquetas}
+        <button class="pequeno adicionar" data-codigo="${c.codigo}">+ etiqueta</button>
+      </div>
+      <div class="opcoes">
+        <label><input type="checkbox" class="sem" data-codigo="${c.codigo}" ${r.sem_etiqueta ? "checked" : ""}> sem etiqueta (sem opinião sobre a compra)</label>
+        <label><input type="checkbox" class="duvida" data-codigo="${c.codigo}" ${r.duvida ? "checked" : ""}> tive dúvida</label>
+      </div>
+    </section>`;
+}
+
+function visiveis() {
+  const lote = document.getElementById("filtroLote").value;
+  const pendentes = document.getElementById("soPendentes").checked;
+  return DADOS.comentarios.filter(c => (lote === "todos" || c.lote === lote) && (!pendentes || !feito(c.codigo)));
+}
+
+function desenharLista() {
+  document.getElementById("lista").innerHTML = visiveis().map(htmlCartao).join("") || "<p>Nada pendente neste lote.</p>";
+  atualizarProgresso();
+}
+function redesenharCartao(codigo) {
+  const c = DADOS.comentarios.find(x => x.codigo === codigo);
+  const antigo = document.getElementById("c-" + codigo);
+  if (antigo) antigo.outerHTML = htmlCartao(c);
+  atualizarProgresso();
+}
+function atualizarProgresso() {
+  const lote = document.getElementById("filtroLote").value;
+  const doLote = DADOS.comentarios.filter(c => lote === "todos" || c.lote === lote);
+  const feitos = doLote.filter(c => feito(c.codigo)).length;
+  const duvidas = doLote.filter(c => estado[c.codigo] && estado[c.codigo].duvida).length;
+  document.getElementById("progresso").textContent = `${feitos} de ${doLote.length} etiquetados neste lote · ${duvidas} com dúvida`;
+  document.getElementById("barraProgresso").style.width = (doLote.length ? 100 * feitos / doLote.length : 0) + "%";
+}
+
+function desenharManual() {
+  const linhas = [];
+  for (const [tema, t] of Object.entries(MANUAL)) {
+    for (const [nome, d] of Object.entries(t.detalhes)) {
+      linhas.push(`<tr><td>${tema}</td><td>${nome}</td><td>${d.sentidos.join(", ")}</td><td>${escapar(d.definicao)}</td></tr>`);
+    }
+  }
+  document.getElementById("manual").innerHTML =
+    `<table><thead><tr><th>Tema</th><th>Detalhe</th><th>Sentido</th><th>Definição</th></tr></thead><tbody>${linhas.join("")}</tbody></table>`;
+}
+
+document.addEventListener("change", ev => {
+  const alvo = ev.target;
+  const linha = alvo.closest(".etiqueta");
+  if (linha) {
+    const codigo = linha.dataset.codigo, indice = Number(linha.dataset.indice);
+    const et = registro(codigo).etiquetas[indice];
+    if (alvo.classList.contains("sentido")) { et.sentido = alvo.value; et.tema = ""; et.detalhe = ""; }
+    if (alvo.classList.contains("tema")) { et.tema = alvo.value; et.detalhe = ""; }
+    if (alvo.classList.contains("detalhe")) { et.detalhe = alvo.value; }
+    salvarEstado(); redesenharCartao(codigo); return;
+  }
+  if (alvo.classList.contains("sem")) { registro(alvo.dataset.codigo).sem_etiqueta = alvo.checked; salvarEstado(); redesenharCartao(alvo.dataset.codigo); }
+  if (alvo.classList.contains("duvida")) { registro(alvo.dataset.codigo).duvida = alvo.checked; salvarEstado(); redesenharCartao(alvo.dataset.codigo); }
+  if (alvo.id === "filtroLote" || alvo.id === "soPendentes") desenharLista();
+});
+document.addEventListener("click", ev => {
+  const alvo = ev.target;
+  if (alvo.classList.contains("adicionar")) {
+    registro(alvo.dataset.codigo).etiquetas.push({ sentido: "", tema: "", detalhe: "" });
+    salvarEstado(); redesenharCartao(alvo.dataset.codigo);
+  }
+  if (alvo.classList.contains("remover")) {
+    registro(alvo.dataset.codigo).etiquetas.splice(Number(alvo.dataset.indice), 1);
+    salvarEstado(); redesenharCartao(alvo.dataset.codigo);
+  }
+});
+
+function gerarCsv() {
+  const campo = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+  const linhas = [["codigo", "lote", "n_etiqueta", "sentido", "tema", "detalhe", "sem_etiqueta", "duvida"].join(",")];
+  for (const c of DADOS.comentarios) {
+    const r = estado[c.codigo];
+    if (!r || !feito(c.codigo)) continue;
+    const base = [c.codigo, c.lote];
+    const fim = [r.sem_etiqueta ? 1 : 0, r.duvida ? 1 : 0];
+    if (r.sem_etiqueta) { linhas.push([...base, 0, "", "", "", ...fim].map(campo).join(",")); continue; }
+    r.etiquetas.filter(completa).forEach((et, i) =>
+      linhas.push([...base, i + 1, et.sentido, et.tema, et.detalhe, ...fim].map(campo).join(",")));
+  }
+  return "﻿" + linhas.join("\n");
+}
+
+async function exportar() {
+  const conteudo = gerarCsv();
+  const aviso = document.getElementById("aviso");
+  if (window.showSaveFilePicker) {
+    try {
+      const arquivo = await window.showSaveFilePicker({
+        id: "etiquetagem",
+        suggestedName: "etiquetas_manuais.csv",
+        types: [{ description: "CSV", accept: { "text/csv": [".csv"] } }],
+      });
+      const escrita = await arquivo.createWritable();
+      await escrita.write(conteudo);
+      await escrita.close();
+      aviso.textContent = "· arquivo salvo";
+      return;
+    } catch (erro) {
+      if (erro.name === "AbortError") return;
+    }
+  }
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(new Blob([conteudo], { type: "text/csv;charset=utf-8" }));
+  link.download = "etiquetas_manuais.csv";
+  link.click();
+  aviso.textContent = "· arquivo enviado para Downloads";
+}
+document.getElementById("exportar").addEventListener("click", exportar);
+
+desenharManual();
+desenharLista();
+</script>
+</body>
+</html>

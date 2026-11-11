@@ -1,0 +1,247 @@
+codigo,lote,n_etiqueta,sentido,tema,detalhe,sem_etiqueta,trecho,justificativa,trecho_no_comentario,sentido_permitido
+G001,piloto,1,positivo,elogio geral,sem assunto,0,Gostei de ter feito essas compras por esse site. Obrigada!,"O comentário expressa um elogio geral à compra sem citar aspectos específicos de entrega, produto, preço ou atendimento.",True,True
+G002,piloto,1,positivo,preço,preço do produto,0,Bom preço,"Refere-se ao valor do produto de forma positiva, enquadrando-se em preço do produto.",True,True
+G002,piloto,2,positivo,entrega,prazo,0,ótima logística!,"Elogia a eficiência da entrega, correspondendo ao tema de entrega.",True,True
+G003,piloto,1,positivo,produto,qualidade,0,"Ótimo material, feito com um excelente acabamento!","Avalia positivamente a qualidade física do produto, cobrindo o tema de qualidade.",True,True
+G004,piloto,1,negativo,entrega,não recebido,0,Não recebi a panela,"Indica que o produto não chegou ao destinatário, configurando não recebido.",True,True
+G005,piloto,1,positivo,entrega,prazo,0,"entregou em apenas 24 horas, show.","Destaca a rapidez da entrega em relação ao tempo, encaixando-se em prazo.",True,True
+G005,piloto,2,positivo,produto,conformidade com o anúncio,0,produto igual a descrição.,"Confirma que o produto condiz com o anunciado, correspondendo à conformidade com o anúncio.",True,True
+G006,piloto,1,negativo,entrega,não recebido,0,Não recebi minha mercadoria ainda. Pois o prazo já passou e não recebi.,"Relata que a entrega ultrapassou o prazo e o produto não chegou, configurando não recebido.",True,True
+G007,piloto,1,negativo,entrega,prazo,0,passado o dia previsto para a entrega o produto ainda não chegou.,Aponta que o produto não foi entregue dentro do prazo estipulado.,True,True
+G008,piloto,1,negativo,entrega,prazo,0,Nunca comprei algo nas lannister que demorasse tanto.....,Reclama da demora excessiva na entrega do pedido.,True,True
+G008,piloto,2,positivo,produto,qualidade,0,o relógio é bom,Elogia a qualidade do produto adquirido.,True,True
+G009,piloto,1,negativo,produto,conformidade com o anúncio,0,Produto na propaganda e um do que chegou e outro,"Indica divergência entre o que foi anunciado e o que foi entregue, referindo-se à conformidade com o anúncio.",True,True
+G010,piloto,1,negativo,entrega,itens faltando,0,Veio metade,"Informa que o pedido chegou incompleto, faltando itens.",True,True
+G011,piloto,1,positivo,preço,preço do produto,0,"Custo x benefício, vale a pena.",Avalia positivamente o custo-benefício do produto.,True,True
+G012,piloto,1,negativo,entrega,itens faltando,0,"Veio apenas Uma capa dentro da embalagem , quando comprei e paguei por duas.","Relata o recebimento de quantidade inferior à comprada, configurando itens faltando.",True,True
+G013,piloto,1,negativo,produto,conformidade com o anúncio,0,Comprei um produto e foi entregue outro,"Descreve o envio de um item incorreto em vez do comprado, tratando-se de conformidade com o anúncio.",True,True
+G014,piloto,1,positivo,produto,qualidade,0,Ele é bem potente e confortável!!!,Elogia o funcionamento e as características físicas do produto.,True,True
+G014,piloto,2,positivo,entrega,prazo,0,Chegou no prazo o que foi muito bom,Destaca que a entrega ocorreu dentro do prazo prometido.,True,True
+G015,piloto,1,negativo,produto,qualidade,0,Achei era mais firme..mas além de frágil... Tem pouca aderência.,"Critica a fragilidade e a falta de firmeza e aderência, referindo-se à qualidade do produto.",True,True
+G016,piloto,1,negativo,entrega,itens faltando,0,Comprei dois telescópios e só foi entregue 1.,Indica que o pedido veio com quantidade menor de produtos do que a comprada.,True,True
+G017,piloto,1,negativo,entrega,prazo,0,a empresa já teve o tempo hábil para entregar todos os pedidos pendentes.,Reclama do atraso e da demora na entrega dos pedidos pendentes.,True,True
+G018,piloto,1,negativo,entrega,não recebido,0,Meu produto não foi entregue até hoje,Informa a ausência de recebimento do produto adquirido.,True,True
+G018,piloto,2,negativo,atendimento,contato e resposta,0,e não tenho nehuma resposta!,Reclama da falta de retorno ou atendimento por parte da loja.,True,True
+G019,piloto,1,negativo,entrega,prazo,0,Demora muito para entrega.,Reclama do tempo excessivo levado para realizar a entrega.,True,True
+G020,piloto,1,positivo,entrega,prazo,0,Chegou dentro do prazo e intacto,Afirma que a entrega ocorreu no prazo e o produto chegou sem danos.,True,True
+G021,gabarito,1,negativo,entrega,não recebido,0,Paguei pelo produto e não recebi,Relata que o item comprado nunca chegou ao destinatário.,True,True
+G022,gabarito,1,positivo,entrega,prazo,0,o pedido chegou antes do prazo,Elogia o recebimento antecipado do pedido em relação ao prazo.,True,True
+G023,gabarito,1,negativo,entrega,não recebido,0,"não recebi o produto ainda, e já está fora do prazo de entrega.",Aponta que o produto não foi entregue e o prazo estipulado já expirou.,True,True
+G024,gabarito,1,positivo,entrega,prazo,0,Chegou uma semana antes do prometido.,Destaca a entrega antecipada em relação ao prazo prometido.,True,True
+G025,gabarito,1,negativo,produto,conformidade com o anúncio,0,não véi igual da foto,Aponta que o produto recebido difere do que foi anunciado.,True,True
+G025,gabarito,2,negativo,produto,qualidade,0,o material e muito ruim e também veio com defeito mal custura,Reclama da baixa qualidade do material e da presença de defeito de fabricação.,True,True
+G026,gabarito,1,positivo,produto,conformidade com o anúncio,0,"Gostei da colcha, ficou perfeito na cama.","Elogia o produto e sua adequação, indicando conformidade e satisfação com a qualidade.",True,True
+G027,gabarito,1,negativo,produto,conformidade com o anúncio,0,O produto que recebi não é da cor que comprei.,Indica que o produto veio com cor diferente da anunciada.,True,True
+G027,gabarito,2,negativo,atendimento,"cancelamento, troca e reembolso",0,Já solicitei devolução.,Relata o processo de solicitação de devolução junto à loja.,True,True
+G028,gabarito,1,negativo,entrega,itens faltando,0,"Produto veio incompleto, faltando certidão de nascimento e a fralda","Aponta que partes do pedido não foram entregues, configurando itens faltando.",True,True
+G028,gabarito,2,negativo,atendimento,contato e resposta,0,não encontrei nenhum telefone ou e-mail de contato para reclamação.,Reclama da dificuldade de falar com a loja ou obter canais de atendimento.,True,True
+G029,gabarito,1,negativo,produto,conformidade com o anúncio,0,Recebi um produto que não consta o selo do ipi Que indica que o produto é original. Tbm não recebi na cx origina,Aponta problema na originalidade e embalagem original em relação ao anúncio.,True,True
+G030,gabarito,1,positivo,entrega,prazo,0,Bom prazo de entrega,Elogia o tempo de entrega do pedido.,True,True
+G031,gabarito,1,negativo,entrega,avaria no transporte,0,prateleiras chegaram todas amassadas.,Descreve que o produto chegou amassado devido ao transporte.,True,True
+G031,gabarito,2,negativo,produto,qualidade,0,"Prateleiras com cantos vivo, colunas nao encaixam",Aponta falhas estruturais e de acabamento de fabricação do produto.,True,True
+G032,gabarito,1,positivo,entrega,prazo,0,Entrega foi super rápido,Elogia a rapidez na entrega.,True,True
+G032,gabarito,2,negativo,produto,conformidade com o anúncio,0,é o produto mas não com infravermelho como eu queria,Indica divergência nas especificações do produto em relação ao esperado/anunciado.,True,True
+G033,gabarito,1,negativo,entrega,prazo,0,Queria q essas ecomedas fosse entregue na data certa até agora n recebi meu produto,Reclama que o produto não foi entregue na data combinada e ainda não foi recebido.,True,True
+G034,gabarito,1,negativo,entrega,itens faltando,0,comprei 2kits de bexigas com 5 unidades cada kit é só recebi um kit,Relata que o pedido chegou com menos produtos do que o comprado.,True,True
+G035,gabarito,1,positivo,entrega,prazo,0,um chegou em 5 dias muito rápido,Elogia o prazo de entrega de um dos itens.,True,True
+G035,gabarito,2,negativo,entrega,prazo,0,o outro demorou 15 dias,Reclama da demora na entrega do outro item.,True,True
+G036,gabarito,1,negativo,produto,qualidade,0,não funciona.,Aponta defeito de funcionamento do produto.,True,True
+G036,gabarito,2,negativo,atendimento,"cancelamento, troca e reembolso",0,Exijo que seja feita a troca,Solicita a troca do produto com defeito junto ao atendimento.,True,True
+G037,gabarito,1,negativo,produto,conformidade com o anúncio,0,Não recebi o produto correto.,Indica divergência com o produto anunciado.,True,True
+G037,gabarito,2,negativo,atendimento,"cancelamento, troca e reembolso",0,Já fiz o pedido de troca ou devolução do valor. Estou no aguardo da resposta por e-mail.,Trata do processo de solicitação de troca/devolução e contato com a loja.,True,True
+G038,gabarito,1,negativo,produto,conformidade com o anúncio,0,chegou outro produto de cor diferente,Aponta que o produto veio com cor diferente da anunciada.,True,True
+G038,gabarito,2,negativo,produto,qualidade,0,qualidade bem inferior.,Reclama da baixa qualidade do material do produto.,True,True
+G039,gabarito,1,negativo,produto,conformidade com o anúncio,0,"O produto não corresponde com o original, a composição é diferente",Indica que o produto não é original e diverge da composição anunciada.,True,True
+G039,gabarito,2,negativo,atendimento,"cancelamento, troca e reembolso",0,por esse motivo vou fazer a devolução do mesmo,Menciona a intenção ou processo de devolução do produto.,True,True
+G040,gabarito,1,positivo,entrega,prazo,0,Em relação à esta entrega está tudo ok,Elogia o andamento ou prazo desta entrega.,True,True
+G040,gabarito,2,negativo,entrega,prazo,0,não entendo porque até agora não chegou se a loja está na minha cidade,Reclama do atraso na entrega de outra compra.,True,True
+G041,gabarito,1,negativo,entrega,itens faltando,0,Comprei dois travesseiros e só recebi um.,Aponta que o pedido veio com quantidade menor do que a comprada.,True,True
+G041,gabarito,2,negativo,atendimento,contato e resposta,0,Não consigo falar no canal de atendimento.,Reclama da dificuldade de contato com a loja.,True,True
+G042,gabarito,1,negativo,atendimento,contato e resposta,0,Nao consigo contato para pedir de volta meu produto,Reclama da dificuldade de falar com o atendimento da loja.,True,True
+G042,gabarito,2,negativo,entrega,retirada na agência,0,uma vez que falaram q estaria disponível ate o dia 5 nos correio o qual voltou dia 2,Relata problema relacionado à retirada na agência dos Correios.,True,True
+G043,gabarito,1,negativo,entrega,não recebido,0,paguei pelo produto e não recebi.,Informa que o produto não foi entregue.,True,True
+G044,gabarito,1,negativo,entrega,prazo,0,"O prazo de entrega já foi melhor, nesta última compra pediram mais de um mês para efetuar a entrega.",Reclama do prazo de entrega excessivamente longo.,True,True
+G045,gabarito,1,negativo,entrega,avaria no transporte,0,"Produto mal embalado. A caixinha veio solta dentro da caixa grande do correio, aberta, com os ítens todos espalhados.",Descreve embalagem danificada e itens espalhados devido ao transporte.,True,True
+G046,gabarito,1,negativo,entrega,prazo,0,ele demorou muito pra sair do pagamento autorizado.,Reclama da demora na etapa que antecede a entrega do pedido.,True,True
+G047,gabarito,1,negativo,entrega,itens faltando,0,"das 3 cadeiras ""presidência"", são uma foi entregue.","Aponta que o pedido chegou incompleto, faltando itens.",True,True
+G048,gabarito,1,positivo,produto,qualidade,0,adorei o produto! otima qualidade !,Elogia positivamente a qualidade do produto.,True,True
+G049,gabarito,1,negativo,entrega,não recebido,0,Estou aguardando meu produto... ate agora nao recebi o produto,Relata que o produto ainda não foi entregue.,False,True
+G050,gabarito,1,positivo,produto,qualidade,0,"o produto chegou perfeito, otima qualidade",Elogia a boa qualidade e o perfeito estado do produto.,True,True
+G050,gabarito,2,negativo,produto,conformidade com o anúncio,0,so que é do menor!,Aponta divergência no tamanho do produto em relação ao esperado/anunciado.,True,True
+G051,gabarito,1,negativo,entrega,avaria no transporte,0,o moedor elétrico chegou com a tampa quebrada.,"O trecho indica que o produto chegou danificado, o que se enquadra em avaria no transporte.",True,True
+G052,gabarito,1,negativo,entrega,itens faltando,0,recebi os produtos faltando alguns itens,O trecho relata que o pedido veio incompleto com menos produtos do que o comprado.,True,True
+G053,gabarito,1,negativo,entrega,itens faltando,0,"O pedido foi entregue parcialmente, ficando faltando ainda três itens.",O trecho aponta a ausência de unidades/itens no pedido recebido.,True,True
+G054,gabarito,1,positivo,produto,conformidade com o anúncio,0,Produto correspondeu à expectativa.,O trecho elogia a conformidade do produto em relação ao esperado.,True,True
+G054,gabarito,2,positivo,entrega,prazo,0,Entrega antes do prazo previsto.,O trecho relata que a entrega ocorreu antes do prazo prometido.,True,True
+G055,gabarito,1,negativo,produto,qualidade,0,material ruim.,"O trecho critica o material do produto, referindo-se à sua qualidade.",True,True
+G055,gabarito,2,negativo,produto,outro,0,sem garantia,"O trecho aponta falta de garantia, o que se refere ao produto e não se encaixa em outros detalhes específicos.",True,True
+G056,gabarito,1,negativo,atendimento,"cancelamento, troca e reembolso",0,Cancelaram a minha compra um dia antes da entrega,O trecho relata a ocorrência de cancelamento da compra.,True,True
+G056,gabarito,2,negativo,atendimento,contato e resposta,0,liguei para a lannister e os atendentes não sabiam o que estava acontecendo,O trecho critica a falta de preparo e retorno dos atendentes ao telefone.,True,True
+G057,gabarito,1,negativo,produto,conformidade com o anúncio,0,O produto me chegou divergindo em relação ao informado no site sobre o funcionamento do mesmo. Falta o botão redutor de velocidade,O trecho aponta divergência em relação ao anúncio e falta de item/função descrita.,True,True
+G058,gabarito,1,positivo,entrega,prazo,0,Chegou bem antes do prazo....muito antes,"O trecho elogia o tempo de entrega, que ocorreu antes do prazo prometido.",True,True
+G059,gabarito,1,negativo,entrega,itens faltando,0,Está faltando uma cortina,O trecho relata que faltou um item no pedido.,True,True
+G059,gabarito,2,negativo,produto,conformidade com o anúncio,0,eu pedi Bege me entregaram Verde.,O trecho relata que a cor do produto entregue divergem do anunciado.,True,True
+G060,gabarito,1,negativo,entrega,itens faltando,0,Recebi apenas 2,O trecho relata que veio apenas parte da quantidade comprada.,True,True
+G060,gabarito,2,negativo,produto,conformidade com o anúncio,0,"não são Black, são coloridas, vermelha e roxa!",O trecho indica que a cor do produto entregue não confere com o anúncio.,True,True
+G061,gabarito,1,negativo,entrega,prazo,0,"Era pra ter chego até o dia 06/06/2018, já fui no Correios e nao esta la.",O trecho relata atraso e que o produto ainda não foi recebido (ou não está disponível).,True,True
+G062,gabarito,1,negativo,atendimento,contato e resposta,0,Mando emai mais ninguém me responde,O trecho reclama da falta de retorno aos contatos enviados.,True,True
+G062,gabarito,2,negativo,entrega,não recebido,0,não recebi meus produtos.,O trecho relata que a mercadoria não chegou.,True,True
+G063,gabarito,1,positivo,entrega,prazo,0,"Recebi meu produto bastante rápido, comprei em um dia e recebi no dia seguinte.",O trecho elogia a rapidez e o cumprimento do prazo de entrega.,True,True
+G064,gabarito,1,negativo,entrega,não recebido,0,Eu não recebi o outro produto,O trecho relata que o produto não foi entregue.,True,True
+G065,gabarito,1,negativo,atendimento,outro,0,Isso é uma falta de respeito com o consumidor,O trecho expressa insatisfação genérica com o atendimento prestado.,True,True
+G066,gabarito,1,negativo,produto,conformidade com o anúncio,0,Recebi o produto de outro modelo.,O trecho indica que o modelo do produto recebido não confere com o anunciado.,True,True
+G067,gabarito,1,negativo,produto,qualidade,0,Produto com péssimo acabamento interno,"O trecho critica o acabamento, referindo-se à qualidade do produto.",True,True
+G068,gabarito,1,positivo,elogio geral,sem assunto,0,Loja recomendada.,"O trecho recomenda a loja, expressando elogio geral.",True,True
+G068,gabarito,2,negativo,produto,qualidade,0,Produto de péssima qualidade.,O trecho critica a qualidade do produto.,True,True
+G069,gabarito,1,positivo,entrega,prazo,0,otimo processo de entrega.,O trecho elogia o processo de entrega.,True,True
+G070,gabarito,1,positivo,elogio geral,sem assunto,0,"Muito bom sim, mas nada mais que a obrigação fazer tudo direito",O trecho expressa satisfação geral com o serviço prestado na compra.,True,True
+G071,gabarito,1,negativo,produto,conformidade com o anúncio,0,Recebi produto de outro cliente totalmente diferente do que comprei...trocaram meu pedido....,"O trecho relata recebimento de produto incorreto, divergindo do anúncio e do pedido.",True,True
+G072,gabarito,1,positivo,elogio geral,sem assunto,0,"Atendimento, produto e entrega perfeitos","O trecho elogia o atendimento, o produto e a entrega.",True,True
+G073,gabarito,1,negativo,produto,outro,0,Anunciam um produto que não tem em estoque,O trecho aponta falha no estoque e disponibilidade anunciada.,True,True
+G073,gabarito,2,negativo,atendimento,"cancelamento, troca e reembolso",0,ainda não cancelaram a compra no meu cartão!,O trecho reclama da demora ou falha no cancelamento e estorno.,True,True
+G074,gabarito,1,negativo,entrega,retirada na agência,0,paguei o frete e tive que ir buscar do outro do mundo errado tem que entrega em casa,O trecho relata que o produto não foi entregue no endereço e o cliente teve de buscar na agência.,True,True
+G075,gabarito,1,positivo,produto,qualidade,0,Controle é bom,O trecho elogia o produto de forma positiva.,True,True
+G075,gabarito,2,negativo,produto,qualidade,0,"Teclado mole, a única coisa que achei ruim.",O trecho aponta uma falha na qualidade ou funcionamento do teclado.,True,True
+G076,gabarito,1,negativo,produto,qualidade,0,O brinquedo veio com defeito,O trecho relata defeito de fabricação no produto.,True,True
+G076,gabarito,2,negativo,atendimento,"cancelamento, troca e reembolso",0,dificuldade em trocar está pq minha filha chora quando proponho para ela esperar uma semana pelo outro.,O trecho descreve a situação em relação ao processo de troca.,True,True
+G077,gabarito,1,positivo,atendimento,contato e resposta,0,ótimo atendimento,O trecho elogia a qualidade do atendimento.,True,True
+G077,gabarito,2,positivo,entrega,prazo,0,entrega super rápida,O trecho elogia a rapidez da entrega.,True,True
+G078,gabarito,1,negativo,entrega,não recebido,0,Porque toda vez que tento rastrear meu produto não é possível,O trecho aponta problema no rastreio da entrega.,True,True
+G079,gabarito,1,positivo,entrega,prazo,0,Entrega rápida,O trecho elogia o prazo de entrega.,True,True
+G079,gabarito,2,positivo,produto,qualidade,0,bom produto.,O trecho elogia a qualidade do produto.,True,True
+G080,gabarito,1,positivo,entrega,prazo,0,O produto realmente foi entregue no prazo,O trecho confirma que a entrega ocorreu no prazo prometido.,True,True
+G080,gabarito,2,negativo,entrega,avaria no transporte,0,entretanto chegou todo quebrado,O trecho relata que o produto chegou quebrado devido ao transporte.,True,True
+G081,gabarito,1,positivo,entrega,prazo,0,ChegoChegou antes do prazo,O trecho elogia o recebimento antes do prazo estipulado.,True,True
+G082,gabarito,1,positivo,produto,qualidade,0,é de excelente qualidade!,O trecho elogia a qualidade do produto.,True,True
+G083,gabarito,1,positivo,entrega,prazo,0,Serviço rapido,O trecho elogia a rapidez do serviço/entrega.,True,True
+G084,gabarito,1,negativo,entrega,prazo,0,A data da entrega foi alterada duas vezes.,O trecho relata alteração e problemas com o prazo de entrega.,True,True
+G084,gabarito,2,negativo,atendimento,"cancelamento, troca e reembolso",0,Depois do cancelamento em 3 dias o produto chegou. E agora?,O trecho questiona a situação após o pedido de cancelamento.,True,True
+G085,gabarito,1,negativo,atendimento,contato e resposta,0,Quando tentei contato pelo telefone de atendimento ao cliente das lannister achei péssimo.,O trecho critica negativamente o atendimento telefônico da empresa.,True,True
+G085,gabarito,2,positivo,atendimento,contato e resposta,0,O contato com a loja foi rápido e eficiente,O trecho elogia o contato rápido e eficiente com a loja.,True,True
+G086,gabarito,1,negativo,atendimento,contato e resposta,0,émuito dificil fazer troca site e também por tel esperei mais de 25 minutos e desisti . nao gostei seus canais de comunicação nao é eficiente.,O trecho critica a dificuldade de comunicação e no processo de troca.,True,True
+G087,gabarito,1,negativo,entrega,prazo,0,"Não entregaram no prazo, já tá com mais de 30 dias",O trecho aponta atraso severo na entrega.,True,True
+G087,gabarito,2,negativo,atendimento,contato e resposta,0,Pq a empresa não se comprometeu nem de manda uma email pra me tranquilizar.,O trecho reclama da falta de retorno e comunicação da empresa.,True,True
+G088,gabarito,1,negativo,produto,qualidade,0,deveria se preocupar mais com a qualidade dos produtos oferecidos,O trecho critica a qualidade dos produtos oferecidos.,True,True
+G089,gabarito,1,negativo,produto,qualidade,0,por isso não indico o produto,O trecho expressa insatisfação com o desempenho/qualidade do produto.,True,True
+G089,gabarito,2,positivo,entrega,prazo,0,a loja entregou super rápido.,O trecho elogia a rapidez da entrega feita pela loja.,True,True
+G090,gabarito,1,negativo,produto,conformidade com o anúncio,0,na foto pareciam brancas mas são gelo,O trecho indica que a cor do produto difere da anunciada.,True,True
+G090,gabarito,2,negativo,produto,qualidade,0,qualidade bastante inferior.,O trecho critica a baixa qualidade do produto.,True,True
+G091,gabarito,1,positivo,entrega,prazo,0,chegou com tres dias,O trecho elogia o prazo rápido de entrega.,True,True
+G091,gabarito,2,negativo,atendimento,outro,0,essa targaryen faz parcerias horriveis,O trecho critica negativamente o atendimento/serviço da empresa.,True,True
+G092,gabarito,1,positivo,entrega,prazo,0,esse produto chegou certo,O trecho confirma que o produto chegou corretamente.,True,True
+G092,gabarito,2,negativo,entrega,não recebido,0,"tive 3 pedidos que levei tufo,não veio,ninguém respondeu nada",O trecho relata que os pedidos não foram entregues e houve falta de resposta.,True,True
+G093,gabarito,1,negativo,produto,conformidade com o anúncio,0,Infelizmente recebi o produto errado. Pedi a luminária thomas edison com 6 lâmpadas e recebi o modelo aramado.,O trecho relata que o modelo recebido diverge do anunciado.,True,True
+G093,gabarito,2,negativo,atendimento,"cancelamento, troca e reembolso",0,Gostaria de trocar o produto ou receber o reembolso da compra.,O trecho menciona a necessidade de troca ou reembolso.,True,True
+G094,gabarito,1,negativo,entrega,prazo,0,"estava com data de entrega ate 20/04/2017, hoje é 22/04/2017 e ainda recebi.",O trecho relata atraso e que o produto ainda não foi recebido.,True,True
+G095,gabarito,1,negativo,entrega,prazo,0,demora na entrega,O trecho reclama do atraso no prazo de entrega.,True,True
+G096,gabarito,1,negativo,entrega,itens faltando,0,Recebei apenas um dos dois produtos. o Rolo de liberação miofascial não foi entregue.,O trecho relata que um dos itens do pedido veio faltando.,True,True
+G097,gabarito,1,negativo,entrega,prazo,0,com até agora 2 dias de atraso não recebi a mercadoria,O trecho aponta atraso e não recebimento da mercadoria no prazo.,True,True
+G098,gabarito,1,negativo,entrega,não recebido,0,Faturou e não recebi!,O trecho relata que o produto faturado não foi entregue.,True,True
+G099,gabarito,1,negativo,entrega,itens faltando,0,Consta na NF 2 itens orem apenas 1 foi entregue.,O trecho relata que o pedido veio faltando um dos itens constantes na nota.,True,True
+G100,gabarito,1,negativo,entrega,itens faltando,0,"foi entregue faltando 02 panos de prato, vierão somente 05 panos e eu paguei por 07 panos.",O trecho relata a falta de unidades de produtos comprados.,True,True
+G101,gabarito,1,negativo,entrega,outro,0,"No ato da compra a data de entrega era uma. Após finalizar a compra, a data era outra diferente do anunciado","O trecho relata divergência na data de entrega prometida, classificando-se como entrega · outro.",True,True
+G101,gabarito,2,negativo,entrega,não recebido,0,mesmo assim até hoje não entregaram,"O trecho relata que o produto ainda não foi entregue, classificando-se como entrega · não recebido.",True,True
+G102,gabarito,1,negativo,entrega,prazo,0,acho as entregas desse site meio demoradas,"O trecho reclama do tempo demorado das entregas, indicando problema no prazo.",True,True
+G102,gabarito,2,positivo,produto,conformidade com o anúncio,0,mas vem td certinho,"O trecho indica que os produtos chegam corretamente, sem avarias ou problemas de conformidade.",True,True
+G103,gabarito,1,negativo,entrega,itens faltando,0,Eram 2 unidades so veio 01 unidade,O trecho relata que faltaram unidades do produto comprado.,True,True
+G103,gabarito,2,negativo,atendimento,nota fiscal,0,e não veio nota,O trecho aponta a ausência da nota fiscal.,True,True
+G104,gabarito,1,negativo,produto,conformidade com o anúncio,0,Não é o que espera,O trecho indica insatisfação com o produto recebido em relação às expectativas.,True,True
+G105,gabarito,1,negativo,entrega,prazo,0,além da demora,"O trecho aponta demora na entrega, referindo-se ao prazo.",True,True
+G105,gabarito,2,negativo,produto,conformidade com o anúncio,0,mandaram o produto errado,O trecho relata o envio de produto incorreto em relação ao anúncio.,True,True
+G106,gabarito,1,negativo,atendimento,"cancelamento, troca e reembolso",0,ainda não tive resposta sobre a devolução do valor pago,O trecho relata demora ou falta de retorno da loja sobre o reembolso.,True,True
+G107,gabarito,1,negativo,preço,frete,0,"Acho que pelo preço cobrado no frete, deveria haver mais respeito ao cliente em relação ao prazo!!!!",O trecho reclama do valor do frete em conjunto com falhas no prazo de entrega.,True,True
+G107,gabarito,2,negativo,entrega,prazo,0,em relação ao prazo,O trecho menciona insatisfação com o prazo de entrega.,True,True
+G108,gabarito,1,negativo,produto,outro,0,O produto não deveria constar disponível se não está.,O trecho reclama de um problema relacionado ao estoque e disponibilidade do produto na loja.,True,True
+G109,gabarito,1,negativo,produto,conformidade com o anúncio,0,"O produto estava com a medida de 1,0m porém tem 90cm.",O trecho aponta divergência nas medidas do produto em relação ao anunciado.,True,True
+G110,gabarito,1,positivo,elogio geral,sem assunto,0,ATÉ AGORA NÃO TENHO NADA A RECLAMAR,O trecho expressa satisfação geral com a compra sem especificar detalhes.,True,True
+G111,gabarito,1,negativo,produto,qualidade,0,A película não é a melhor.,O trecho avalia negativamente a qualidade do material da película.,True,True
+G112,gabarito,1,negativo,entrega,itens faltando,0,Pedi 3 cadeiras e só enviaram 2.,O trecho relata que faltaram unidades do produto comprado.,True,True
+G112,gabarito,2,negativo,entrega,não recebido,0,deram como entregue segundo o site,O trecho relata que o rastreio consta como entregue sem ter sido recebido.,True,True
+G112,gabarito,3,negativo,atendimento,contato e resposta,0,"Abri reclamação há dois dias e até hoje nada, nenhuma respostas.",O trecho reclama da falta de retorno da loja ao atendimento.,True,True
+G112,gabarito,4,negativo,atendimento,"cancelamento, troca e reembolso",0,Quero os 100 reais de volta logo e urgente!,O trecho menciona a cobrança de reembolso.,True,True
+G113,gabarito,1,positivo,produto,conformidade com o anúncio,0,Este recebi certo.,O trecho indica que o produto foi recebido conforme esperado.,True,True
+G114,gabarito,1,positivo,produto,qualidade,0,pRODUTO DE BOA QUALIDADE.,O trecho elogia a qualidade do produto.,True,True
+G114,gabarito,2,positivo,entrega,prazo,0,pRAZO CUMPRIDO.,O trecho elogia o cumprimento do prazo de entrega.,True,True
+G115,gabarito,1,negativo,entrega,itens faltando,0,comprei 2 quite e so recebi 1,O trecho relata que faltaram kits no pedido recebido.,True,True
+G116,gabarito,1,negativo,entrega,não recebido,0,Até agora não chegou.,O trecho relata a falta de recebimento do produto.,True,True
+G116,gabarito,2,negativo,entrega,prazo,0,O prazo era até 19/03.,O trecho aponta o descumprimento do prazo de entrega.,True,True
+G116,gabarito,3,negativo,atendimento,contato e resposta,0,E nenhuma resposta foi dada.,O trecho reclama da falta de retorno da loja.,True,True
+G117,gabarito,1,positivo,produto,conformidade com o anúncio,0,Produto conforme anúncio,O trecho afirma que o produto está de acordo com o anúncio.,True,True
+G118,gabarito,1,negativo,entrega,itens faltando,0,foi entregue somente uma.,O trecho relata que faltaram unidades do produto na entrega.,True,True
+G118,gabarito,2,negativo,atendimento,nota fiscal,0,assinaran uma NF de duas unidades,O trecho menciona um problema com a nota fiscal emitida.,False,True
+G119,gabarito,1,negativo,entrega,itens faltando,0,faltou o pente,O trecho relata que faltou um item específico do kit comprado.,True,True
+G120,gabarito,1,negativo,produto,conformidade com o anúncio,0,Comprei uma marca e veio outro bem inferior.,O trecho relata o envio de uma marca diferente e inferior à anunciada.,True,True
+G120,gabarito,2,positivo,atendimento,"cancelamento, troca e reembolso",0,Já pedi p devolver. Estou aguardando.,O trecho relata solicitação de devolução em andamento.,True,True
+G121,gabarito,1,negativo,atendimento,contato e resposta,0,pessimo atendimento,O trecho classifica o atendimento da loja como péssimo.,True,True
+G121,gabarito,2,negativo,entrega,prazo,0,mercadoria chegandoatrazada,O trecho relata atraso na entrega da mercadoria.,True,True
+G122,gabarito,1,negativo,entrega,itens faltando,0,comprei 2 celular e so madarm 1,O trecho relata falta de unidades do produto na entrega.,True,True
+G122,gabarito,2,negativo,atendimento,nota fiscal,0,nato fiscal comprando os dois,O trecho menciona um problema na nota fiscal emitida.,True,True
+G123,gabarito,1,positivo,entrega,prazo,0,entregue no prazo,O trecho elogia o cumprimento do prazo de entrega.,True,True
+G124,gabarito,1,positivo,entrega,prazo,0,Produto chegou muito antes do prazo,O trecho elogia a entrega realizada antes do prazo estimado.,True,True
+G125,gabarito,1,negativo,entrega,prazo,0,Atrasou,O trecho aponta atraso na entrega.,True,True
+G126,gabarito,1,positivo,produto,conformidade com o anúncio,0,Cumpriu com as caracteristicas do produto,O trecho elogia a conformidade do produto com as características anunciadas.,True,True
+G126,gabarito,2,positivo,entrega,prazo,0,entrega muito antes do prazo proposto,O trecho elogia a entrega antecipada.,True,True
+G127,gabarito,1,negativo,produto,outro,0,O prato de microondas que comprei não serve exatamente no meu aparelho.,"O trecho aponta que o produto não é compatível ou adequado ao uso esperado, classificando-se como produto · outro.",True,True
+G128,gabarito,1,negativo,entrega,itens faltando,0,a tábua ainda não chegou,O trecho relata que um dos produtos do pedido não foi entregue.,True,True
+G128,gabarito,2,negativo,entrega,retirada na agência,0,chegou um e-mail para eu ir retirar nos correios,O trecho menciona que o cliente precisou ir buscar a encomenda na agência.,True,True
+G129,gabarito,1,positivo,produto,conformidade com o anúncio,0,aparentemente tudo está de acordo,O trecho indica que o produto está conforme o esperado.,True,True
+G129,gabarito,2,positivo,entrega,prazo,0,O relógio foi entregue em tempo recorde.,O trecho elogia a rapidez na entrega.,True,True
+G130,gabarito,1,negativo,entrega,não recebido,0,Até o momento o produto não foi entregue,O trecho relata que a mercadoria ainda não chegou.,True,True
+G131,gabarito,1,negativo,entrega,avaria no transporte,0,A caixa do produto chegou amassada.,O trecho relata avaria na embalagem durante o transporte.,True,True
+G132,gabarito,1,negativo,produto,qualidade,0,a bateria não dura nada,O trecho aponta problema no funcionamento e na qualidade do produto.,True,True
+G133,gabarito,1,negativo,produto,conformidade com o anúncio,0,"O produto não veio em embalagem do fabricante, tudo leva a crer que é falsificado.",O trecho relata suspeita de falsificação e divergência com a originalidade do produto.,True,True
+G134,gabarito,1,positivo,elogio geral,sem assunto,0,bom comprar com lannister,O trecho elogia a experiência de compra com a loja de forma geral.,True,True
+G135,gabarito,1,positivo,elogio geral,sem assunto,0,Gostei muito da compra,O trecho expressa satisfação geral com a compra.,True,True
+G135,gabarito,2,positivo,entrega,prazo,0,pequeno prazo em que foi entregue,O trecho elogia a rapidez na entrega.,True,True
+G136,gabarito,1,negativo,entrega,não recebido,0,não entrega,O trecho relata a falta de recebimento do produto.,True,True
+G137,gabarito,1,positivo,produto,qualidade,0,Produto e ótimo,O trecho elogia a qualidade do produto.,True,True
+G137,gabarito,2,negativo,entrega,prazo,0,fornecedor demorou muito,O trecho aponta demora na entrega pelo fornecedor.,True,True
+G137,gabarito,3,negativo,entrega,avaria no transporte,0,a tampa veio quebrada,O trecho relata avaria física no produto recebido.,True,True
+G138,gabarito,1,positivo,entrega,prazo,0,Entrega com boa antecedência! Muito bom! Recomendarei para todos!,O trecho elogia a entrega antecipada e recomenda a compra.,True,True
+G139,gabarito,1,negativo,entrega,itens faltando,0,veio so 1 robo,O trecho relata que faltaram unidades do produto na entrega.,True,True
+G140,gabarito,1,positivo,entrega,prazo,0,recebi antes do prazo,O trecho elogia o recebimento antes do prazo estipulado.,True,True
+G141,gabarito,1,negativo,produto,conformidade com o anúncio,0,O produto veio diferente sem ser o anunciado,O trecho relata divergência entre o produto recebido e o anunciado.,True,True
+G141,gabarito,2,negativo,produto,qualidade,0,também veio bloqueado inutilizado para uso,O trecho aponta defeito ou problema no funcionamento do produto.,True,True
+G142,gabarito,1,negativo,produto,conformidade com o anúncio,0,na descrição do produto na compra era 100% Algodão e veio 80% Algodão e 20% Poliéster,O trecho aponta divergência no material do produto em relação ao anúncio.,True,True
+G143,gabarito,1,negativo,atendimento,outro,0,Nunca mais compro achei uma falta de respeito com comprador,O trecho expressa forte insatisfação geral com o serviço e atendimento da loja.,True,True
+G144,gabarito,1,positivo,produto,conformidade com o anúncio,0,Atendeu minhas expectativas,O trecho indica que o produto atendeu ao esperado.,True,True
+G144,gabarito,2,positivo,entrega,prazo,0,chegou no prazo,O trecho elogia o cumprimento do prazo de entrega.,True,True
+G145,gabarito,1,negativo,entrega,não recebido,0,ATÉ AGORA NADA,O trecho relata que o pedido ainda não foi entregue.,True,True
+G146,gabarito,1,positivo,entrega,prazo,0,Produto entregue muito rápido,O trecho elogia a rapidez na entrega.,True,True
+G147,gabarito,1,negativo,entrega,não recebido,0,Não entregaram meu produto,O trecho relata que o produto não foi entregue.,True,True
+G148,gabarito,1,positivo,produto,qualidade,0,Excelente produto,O trecho elogia a qualidade do produto.,True,True
+G148,gabarito,2,positivo,entrega,prazo,0,entrega antecipada,O trecho elogia a entrega realizada antes do prazo.,True,True
+G149,gabarito,1,negativo,produto,conformidade com o anúncio,0,Comprei uma manta lilás e me enviaram uma cor goiaba,O trecho relata o envio de um produto com cor diferente da anunciada.,True,True
+G150,gabarito,1,negativo,produto,qualidade,0,"As toalhas não são boas, muito inferiores",O trecho avalia negativamente a qualidade das toalhas.,True,True
+G151,gabarito,0,,,,1,,O comentário apenas relata o recebimento conforme o esperado sem emitir uma avaliação detalhada.,True,True
+G152,gabarito,1,negativo,entrega,não recebido,0,Produto não entregue,"O trecho indica que a compra não chegou ao destino, correspondendo ao detalhe de não recebido na entrega.",True,True
+G152,gabarito,2,negativo,atendimento,contato e resposta,0,loja não deu satisfação após contato,"O trecho aponta falha no retorno às mensagens após tentativa de contato com o vendedor, caracterizando problema de atendimento.",True,True
+G153,gabarito,1,negativo,produto,qualidade,0,A embalagem do perfume não estava lacrada,O trecho aponta uma inconformidade no estado do produto recebido em relação ao esperado.,True,True
+G153,gabarito,2,negativo,produto,qualidade,0,o nível do perfume no frasco estava visivelmente abaixo do normal,O trecho descreve uma falha no produto relacionado ao conteúdo incompleto do frasco.,True,True
+G154,gabarito,1,negativo,entrega,avaria no transporte,0,A bateria chegou estourada,O trecho descreve um dano físico ocorrido no transporte do produto até o cliente.,True,True
+G155,gabarito,1,negativo,entrega,itens faltando,0,apenas uma foi entregue,O trecho relata que faltaram unidades do produto comprado no recebimento.,True,True
+G156,gabarito,1,negativo,entrega,não recebido,0,Esgotado o prazo e ainda não recebi o produto,"O trecho indica que o tempo limite passou sem que a mercadoria chegasse, caracterizando não recebimento.",True,True
+G156,gabarito,2,negativo,atendimento,contato e resposta,0,nem sequer uma satisfação,O trecho aponta a falta de retorno e suporte da loja diante do problema.,True,True
+G157,gabarito,1,positivo,produto,qualidade,0,Produto de qualidade,O trecho elogia diretamente a qualidade do produto adquirido.,True,True
+G157,gabarito,2,positivo,entrega,prazo,0,entregue no prazo,O trecho aponta que a entrega ocorreu dentro do tempo prometido.,True,True
+G157,gabarito,3,positivo,preço,preço do produto,0,com bom preço,O trecho avalia positivamente o custo-benefício do produto.,True,True
+G158,gabarito,1,negativo,produto,qualidade,0,o acabamento poderia ser melhor,"O trecho critica o acabamento, o que se refere à qualidade do produto.",True,True
+G159,gabarito,1,positivo,entrega,prazo,0,Entrega no tempo previsto,O trecho elogia o cumprimento do prazo de entrega.,True,True
+G159,gabarito,2,positivo,produto,qualidade,0,são bem feito,O trecho elogia a fabricação e o acabamento do produto.,True,True
+G160,gabarito,1,positivo,entrega,prazo,0,chegou no prazo,O trecho indica que a entrega ocorreu dentro do prazo prometido.,True,True
+G160,gabarito,2,positivo,produto,qualidade,0,em excelente estado!,O trecho elogia as condições físicas e de qualidade em que o produto chegou.,True,True
+G161,gabarito,0,,,,1,,"O comentário apenas relata que o produto ainda não chegou, sem expressar uma avaliação ou opinião avaliativa.",True,True
+G162,gabarito,1,negativo,entrega,avaria no transporte,0,VEIO AMASSADA,O trecho relata que o item chegou danificado por problemas no transporte.,True,True
+G163,gabarito,1,negativo,atendimento,"cancelamento, troca e reembolso",0,pessimo atendimento para devoluções e trocas,O trecho critica a forma como a loja tratou a questão de troca e devolução.,True,True
+G163,gabarito,2,negativo,atendimento,contato e resposta,0,"naõ tem atendimento online, pelo telefone so te enrolam e nao atendem, por email nao",O trecho relata dificuldade de falar com a loja e falta de retorno adequado às mensagens.,True,True
+G164,gabarito,1,negativo,entrega,não recebido,0,Não foi entegue,O trecho informa que a mercadoria não chegou ao destino.,True,True
+G165,gabarito,0,,,,1,,"O comentário apenas declara o fato de que ainda não recebeu o produto, sem emitir juízo de valor.",True,True
+G166,gabarito,1,positivo,produto,qualidade,0,Produto de ótima qualidade,O trecho elogia positivamente a qualidade do produto.,True,True
+G166,gabarito,2,positivo,preço,preço do produto,0,preço justo,O trecho avalia positivamente o valor cobrado pelo produto.,True,True
+G167,gabarito,1,negativo,atendimento,"cancelamento, troca e reembolso",0,me enviaram outro similar sem me perguntar se eu queria a troca,O trecho aponta um problema relacionado ao envio incorreto e à forma de gerenciar substituições.,True,True
+G168,gabarito,1,positivo,entrega,prazo,0,Produto foi entregue corretamente,O trecho relata que a entrega ocorreu de forma correta.,True,True
+G168,gabarito,2,positivo,entrega,prazo,0,até antes do prazo estabelecido,O trecho elogia o recebimento antecipado em relação ao prazo prometido.,True,True
+G169,gabarito,1,negativo,entrega,itens faltando,0,so foi entregue um produto,O trecho relata que faltaram produtos do pedido original na entrega.,True,True
+G170,gabarito,1,negativo,preço,frete,0,Preço do frente abusivo,O trecho critica o valor cobrado pelo frete.,True,True
+G170,gabarito,2,negativo,entrega,prazo,0,prazo de entrega demorado e confuso,O trecho aponta problemas com a demora e a confusão relativas ao prazo de entrega.,True,True
+G170,gabarito,3,negativo,atendimento,"cancelamento, troca e reembolso",0,disseram que era pra eu cancelar a compra por problemas na entrega e dias depois entregaram o produto.,O trecho relata falha na orientação e no atendimento prestado pela loja sobre o cancelamento e entrega.,True,True
