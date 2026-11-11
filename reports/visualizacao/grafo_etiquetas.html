@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="pt-BR" data-tema="escuro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa das etiquetas</title>
+<style>
+  :root, [data-tema="escuro"] {
+    --fundo: #05070d;
+    --texto: #e6e9f2;
+    --suave: #98a1b6;
+    --painel: rgba(13, 17, 28, 0.82);
+    --borda: rgba(255, 255, 255, 0.10);
+    --botao: rgba(255, 255, 255, 0.06);
+    --ativo: #e6e9f2;
+    --ativo-texto: #05070d;
+  }
+  [data-tema="claro"] {
+    --fundo: #f3f4f7;
+    --texto: #1b2030;
+    --suave: #5b6478;
+    --painel: rgba(255, 255, 255, 0.90);
+    --borda: rgba(0, 0, 0, 0.10);
+    --botao: rgba(0, 0, 0, 0.04);
+    --ativo: #1b2030;
+    --ativo-texto: #ffffff;
+  }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: var(--fundo); color: var(--texto);
+    font-family: system-ui, "Segoe UI", Roboto, sans-serif; }
+  #app { position: fixed; inset: 0; }
+  .painel { position: absolute; top: 16px; left: 16px; width: 300px; max-width: calc(100vw - 32px); box-sizing: border-box;
+    padding: 16px 18px; background: var(--painel); border: 1px solid var(--borda); border-radius: 12px;
+    backdrop-filter: blur(8px); font-size: 13px; line-height: 1.45; z-index: 2; }
+  .painel h1 { font-size: 16px; margin: 0 0 2px; font-weight: 650; }
+  .painel .sub { color: var(--suave); margin: 0 0 12px; }
+  .grupo { display: flex; gap: 6px; margin-bottom: 10px; }
+  .grupo button { flex: 1; padding: 6px 0; font: inherit; color: var(--texto); background: var(--botao);
+    border: 1px solid var(--borda); border-radius: 8px; cursor: pointer; }
+  .grupo button.ativo { background: var(--ativo); color: var(--ativo-texto); border-color: var(--ativo); }
+  .total { font-size: 22px; font-weight: 650; margin: 6px 0 0; font-variant-numeric: tabular-nums; }
+  .total-legenda { color: var(--suave); margin: 0 0 12px; }
+  .legenda { margin: 0; padding: 10px 0 0; border-top: 1px solid var(--borda); list-style: none; color: var(--suave); }
+  .legenda li { margin-bottom: 6px; }
+  .legenda b { color: var(--texto); font-weight: 600; }
+  .barra { display: flex; align-items: center; gap: 6px; margin: 2px 0 8px; font-size: 12px; }
+  .barra span.g { flex: 1; height: 8px; border-radius: 4px; }
+  .controles { position: absolute; bottom: 16px; left: 16px; right: 16px; text-align: center; color: var(--suave);
+    font-size: 12px; z-index: 2; pointer-events: none; }
+  .tema { position: absolute; top: 16px; right: 16px; z-index: 2; padding: 6px 12px; font: 13px system-ui, sans-serif;
+    color: var(--texto); background: var(--painel); border: 1px solid var(--borda); border-radius: 8px; cursor: pointer; }
+  .scene-tooltip, .float-tooltip-kap { font: 13px/1.45 system-ui, "Segoe UI", sans-serif !important; }
+  .dica { padding: 8px 10px; border-radius: 8px; background: var(--painel); color: var(--texto); border: 1px solid var(--borda); }
+  .dica .t { font-weight: 650; margin-bottom: 2px; }
+  .dica .s { color: var(--suave); }
+  @media (max-width: 600px) { .painel { font-size: 12px; padding: 12px 14px; } .legenda { display: none; } }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+  window.DADOS = {"base": 40518, "corte": 30, "totais": {"negativo": 15969, "positivo": 26425, "ambos": 39491}, "nos": [{"id": "negativo · atendimento · cancelamento, troca e reembolso", "sentido": "negativo", "tema": "atendimento", "detalhe": "cancelamento, troca e reembolso", "n": 1468, "pct": 0.03623, "nota": 1.514}, {"id": "negativo · atendimento · contato e resposta", "sentido": "negativo", "tema": "atendimento", "detalhe": "contato e resposta", "n": 1752, "pct": 0.04324, "nota": 1.372}, {"id": "negativo · atendimento · nota fiscal", "sentido": "negativo", "tema": "atendimento", "detalhe": "nota fiscal", "n": 235, "pct": 0.0058, "nota": 2.23}, {"id": "negativo · atendimento · outro", "sentido": "negativo", "tema": "atendimento", "detalhe": "outro", "n": 259, "pct": 0.00639, "nota": 2.208}, {"id": "negativo · entrega · avaria no transporte", "sentido": "negativo", "tema": "entrega", "detalhe": "avaria no transporte", "n": 966, "pct": 0.02384, "nota": 2.382}, {"id": "negativo · entrega · itens faltando", "sentido": "negativo", "tema": "entrega", "detalhe": "itens faltando", "n": 2508, "pct": 0.0619, "nota": 1.804}, {"id": "negativo · entrega · não recebido", "sentido": "negativo", "tema": "entrega", "detalhe": "não recebido", "n": 4101, "pct": 0.10121, "nota": 1.395}, {"id": "negativo · entrega · outro", "sentido": "negativo", "tema": "entrega", "detalhe": "outro", "n": 315, "pct": 0.00777, "nota": 2.965}, {"id": "negativo · entrega · prazo", "sentido": "negativo", "tema": "entrega", "detalhe": "prazo", "n": 1683, "pct": 0.04154, "nota": 2.461}, {"id": "negativo · entrega · retirada na agência", "sentido": "negativo", "tema": "entrega", "detalhe": "retirada na agência", "n": 458, "pct": 0.0113, "nota": 2.524}, {"id": "negativo · geral · sem assunto", "sentido": "negativo", "tema": "geral", "detalhe": "sem assunto", "n": 346, "pct": 0.00854, "nota": 1.24}, {"id": "negativo · preço · frete", "sentido": "negativo", "tema": "preço", "detalhe": "frete", "n": 467, "pct": 0.01153, "nota": 2.921}, {"id": "negativo · preço · preço do produto", "sentido": "negativo", "tema": "preço", "detalhe": "preço do produto", "n": 210, "pct": 0.00518, "nota": 2.467}, {"id": "negativo · produto · conformidade com o anúncio", "sentido": "negativo", "tema": "produto", "detalhe": "conformidade com o anúncio", "n": 3141, "pct": 0.07752, "nota": 2.152}, {"id": "negativo · produto · outro", "sentido": "negativo", "tema": "produto", "detalhe": "outro", "n": 248, "pct": 0.00612, "nota": 3.137}, {"id": "negativo · produto · qualidade", "sentido": "negativo", "tema": "produto", "detalhe": "qualidade", "n": 2659, "pct": 0.06563, "nota": 2.267}, {"id": "positivo · atendimento · cancelamento, troca e reembolso", "sentido": "positivo", "tema": "atendimento", "detalhe": "cancelamento, troca e reembolso", "n": 164, "pct": 0.00405, "nota": 2.64}, {"id": "positivo · atendimento · contato e resposta", "sentido": "positivo", "tema": "atendimento", "detalhe": "contato e resposta", "n": 1156, "pct": 0.02853, "nota": 4.609}, {"id": "positivo · atendimento · outro", "sentido": "positivo", "tema": "atendimento", "detalhe": "outro", "n": 138, "pct": 0.00341, "nota": 4.739}, {"id": "positivo · entrega · outro", "sentido": "positivo", "tema": "entrega", "detalhe": "outro", "n": 893, "pct": 0.02204, "nota": 4.766}, {"id": "positivo · entrega · prazo", "sentido": "positivo", "tema": "entrega", "detalhe": "prazo", "n": 12408, "pct": 0.30623, "nota": 4.672}, {"id": "positivo · geral · sem assunto", "sentido": "positivo", "tema": "geral", "detalhe": "sem assunto", "n": 13396, "pct": 0.33062, "nota": 4.73}, {"id": "positivo · preço · preço do produto", "sentido": "positivo", "tema": "preço", "detalhe": "preço do produto", "n": 848, "pct": 0.02093, "nota": 4.508}, {"id": "positivo · produto · conformidade com o anúncio", "sentido": "positivo", "tema": "produto", "detalhe": "conformidade com o anúncio", "n": 2811, "pct": 0.06938, "nota": 4.586}, {"id": "positivo · produto · outro", "sentido": "positivo", "tema": "produto", "detalhe": "outro", "n": 211, "pct": 0.00521, "nota": 4.777}, {"id": "positivo · produto · qualidade", "sentido": "positivo", "tema": "produto", "detalhe": "qualidade", "n": 8753, "pct": 0.21603, "nota": 4.636}], "arestas": [{"source": "positivo · entrega · prazo", "target": "positivo · geral · sem assunto", "n": 4656, "pct": 0.11491, "lift": 1.135}, {"source": "positivo · entrega · prazo", "target": "positivo · produto · qualidade", "n": 4141, "pct": 0.1022, "lift": 1.545}, {"source": "positivo · geral · sem assunto", "target": "positivo · produto · qualidade", "n": 2291, "pct": 0.05654, "lift": 0.792}, {"source": "positivo · entrega · prazo", "target": "positivo · produto · conformidade com o anúncio", "n": 1529, "pct": 0.03774, "lift": 1.776}, {"source": "positivo · geral · sem assunto", "target": "positivo · produto · conformidade com o anúncio", "n": 797, "pct": 0.01967, "lift": 0.858}, {"source": "positivo · produto · conformidade com o anúncio", "target": "positivo · produto · qualidade", "n": 663, "pct": 0.01636, "lift": 1.092}, {"source": "positivo · entrega · outro", "target": "positivo · entrega · prazo", "n": 635, "pct": 0.01567, "lift": 2.322}, {"source": "negativo · atendimento · contato e resposta", "target": "negativo · entrega · não recebido", "n": 634, "pct": 0.01565, "lift": 3.575}, {"source": "positivo · atendimento · contato e resposta", "target": "positivo · entrega · prazo", "n": 473, "pct": 0.01167, "lift": 1.336}, {"source": "negativo · produto · conformidade com o anúncio", "target": "negativo · produto · qualidade", "n": 436, "pct": 0.01076, "lift": 2.115}, {"source": "positivo · preço · preço do produto", "target": "positivo · produto · qualidade", "n": 432, "pct": 0.01066, "lift": 2.358}, {"source": "positivo · entrega · prazo", "target": "positivo · preço · preço do produto", "n": 395, "pct": 0.00975, "lift": 1.521}, {"source": "negativo · atendimento · contato e resposta", "target": "negativo · entrega · itens faltando", "n": 365, "pct": 0.00901, "lift": 3.366}, {"source": "negativo · atendimento · cancelamento, troca e reembolso", "target": "negativo · produto · conformidade com o anúncio", "n": 350, "pct": 0.00864, "lift": 3.076}, {"source": "negativo · produto · conformidade com o anúncio", "target": "positivo · produto · qualidade", "n": 349, "pct": 0.00861, "lift": 0.514}, {"source": "positivo · atendimento · contato e resposta", "target": "positivo · geral · sem assunto", "n": 340, "pct": 0.00839, "lift": 0.89}, {"source": "negativo · produto · qualidade", "target": "positivo · entrega · prazo", "n": 325, "pct": 0.00802, "lift": 0.399}, {"source": "positivo · entrega · outro", "target": "positivo · geral · sem assunto", "n": 317, "pct": 0.00782, "lift": 1.074}, {"source": "positivo · geral · sem assunto", "target": "positivo · preço · preço do produto", "n": 264, "pct": 0.00652, "lift": 0.942}, {"source": "negativo · atendimento · cancelamento, troca e reembolso", "target": "negativo · entrega · não recebido", "n": 260, "pct": 0.00642, "lift": 1.75}, {"source": "negativo · produto · qualidade", "target": "positivo · produto · qualidade", "n": 244, "pct": 0.00602, "lift": 0.425}, {"source": "negativo · atendimento · cancelamento, troca e reembolso", "target": "negativo · atendimento · contato e resposta", "n": 227, "pct": 0.0056, "lift": 3.576}, {"source": "negativo · produto · conformidade com o anúncio", "target": "positivo · entrega · prazo", "n": 224, "pct": 0.00553, "lift": 0.233}, {"source": "positivo · atendimento · contato e resposta", "target": "positivo · produto · qualidade", "n": 222, "pct": 0.00548, "lift": 0.889}, {"source": "positivo · entrega · outro", "target": "positivo · produto · qualidade", "n": 214, "pct": 0.00528, "lift": 1.109}, {"source": "negativo · atendimento · contato e resposta", "target": "negativo · produto · conformidade com o anúncio", "n": 208, "pct": 0.00513, "lift": 1.531}, {"source": "negativo · atendimento · cancelamento, troca e reembolso", "target": "negativo · produto · qualidade", "n": 208, "pct": 0.00513, "lift": 2.159}, {"source": "negativo · entrega · prazo", "target": "positivo · produto · qualidade", "n": 184, "pct": 0.00454, "lift": 0.506}, {"source": "negativo · entrega · avaria no transporte", "target": "negativo · produto · qualidade", "n": 166, "pct": 0.0041, "lift": 2.619}, {"source": "negativo · atendimento · contato e resposta", "target": "negativo · entrega · prazo", "n": 156, "pct": 0.00385, "lift": 2.144}, {"source": "negativo · entrega · avaria no transporte", "target": "positivo · entrega · prazo", "n": 150, "pct": 0.0037, "lift": 0.507}, {"source": "negativo · produto · qualidade", "target": "positivo · produto · conformidade com o anúncio", "n": 140, "pct": 0.00346, "lift": 0.759}, {"source": "negativo · entrega · itens faltando", "target": "negativo · entrega · não recebido", "n": 130, "pct": 0.00321, "lift": 0.512}, {"source": "negativo · entrega · prazo", "target": "positivo · geral · sem assunto", "n": 127, "pct": 0.00313, "lift": 0.228}, {"source": "negativo · entrega · itens faltando", "target": "negativo · produto · conformidade com o anúncio", "n": 126, "pct": 0.00311, "lift": 0.648}, {"source": "negativo · entrega · avaria no transporte", "target": "positivo · produto · qualidade", "n": 121, "pct": 0.00299, "lift": 0.58}, {"source": "negativo · entrega · não recebido", "target": "negativo · entrega · prazo", "n": 114, "pct": 0.00281, "lift": 0.669}, {"source": "negativo · produto · qualidade", "target": "positivo · geral · sem assunto", "n": 112, "pct": 0.00276, "lift": 0.127}, {"source": "negativo · entrega · retirada na agência", "target": "negativo · preço · frete", "n": 111, "pct": 0.00274, "lift": 21.028}, {"source": "positivo · entrega · prazo", "target": "positivo · produto · outro", "n": 107, "pct": 0.00264, "lift": 1.656}, {"source": "positivo · entrega · outro", "target": "positivo · produto · conformidade com o anúncio", "n": 102, "pct": 0.00252, "lift": 1.646}, {"source": "negativo · produto · conformidade com o anúncio", "target": "positivo · geral · sem assunto", "n": 99, "pct": 0.00244, "lift": 0.095}, {"source": "negativo · atendimento · cancelamento, troca e reembolso", "target": "negativo · entrega · avaria no transporte", "n": 97, "pct": 0.00239, "lift": 2.772}, {"source": "negativo · entrega · itens faltando", "target": "positivo · entrega · prazo", "n": 96, "pct": 0.00237, "lift": 0.125}, {"source": "negativo · preço · preço do produto", "target": "negativo · produto · qualidade", "n": 96, "pct": 0.00237, "lift": 6.966}, {"source": "negativo · atendimento · contato e resposta", "target": "negativo · produto · qualidade", "n": 96, "pct": 0.00237, "lift": 0.835}, {"source": "negativo · atendimento · cancelamento, troca e reembolso", "target": "negativo · entrega · itens faltando", "n": 93, "pct": 0.0023, "lift": 1.023}, {"source": "positivo · preço · preço do produto", "target": "positivo · produto · conformidade com o anúncio", "n": 92, "pct": 0.00227, "lift": 1.564}, {"source": "negativo · entrega · avaria no transporte", "target": "negativo · produto · conformidade com o anúncio", "n": 89, "pct": 0.0022, "lift": 1.188}, {"source": "negativo · entrega · itens faltando", "target": "negativo · produto · qualidade", "n": 87, "pct": 0.00215, "lift": 0.529}, {"source": "negativo · entrega · prazo", "target": "positivo · entrega · prazo", "n": 81, "pct": 0.002, "lift": 0.157}, {"source": "negativo · entrega · não recebido", "target": "negativo · geral · sem assunto", "n": 67, "pct": 0.00165, "lift": 1.913}, {"source": "negativo · atendimento · cancelamento, troca e reembolso", "target": "negativo · entrega · prazo", "n": 66, "pct": 0.00163, "lift": 1.082}, {"source": "negativo · entrega · itens faltando", "target": "positivo · produto · qualidade", "n": 64, "pct": 0.00158, "lift": 0.118}, {"source": "negativo · atendimento · contato e resposta", "target": "negativo · entrega · avaria no transporte", "n": 63, "pct": 0.00155, "lift": 1.508}, {"source": "negativo · entrega · prazo", "target": "negativo · produto · conformidade com o anúncio", "n": 63, "pct": 0.00155, "lift": 0.483}, {"source": "negativo · preço · frete", "target": "positivo · entrega · prazo", "n": 62, "pct": 0.00153, "lift": 0.434}, {"source": "negativo · entrega · prazo", "target": "positivo · produto · conformidade com o anúncio", "n": 60, "pct": 0.00148, "lift": 0.514}, {"source": "negativo · produto · qualidade", "target": "positivo · preço · preço do produto", "n": 60, "pct": 0.00148, "lift": 1.078}, {"source": "negativo · entrega · avaria no transporte", "target": "negativo · entrega · itens faltando", "n": 57, "pct": 0.00141, "lift": 0.953}, {"source": "negativo · entrega · não recebido", "target": "positivo · geral · sem assunto", "n": 57, "pct": 0.00141, "lift": 0.042}, {"source": "negativo · entrega · prazo", "target": "negativo · preço · frete", "n": 55, "pct": 0.00136, "lift": 2.835}, {"source": "positivo · atendimento · contato e resposta", "target": "positivo · produto · conformidade com o anúncio", "n": 53, "pct": 0.00131, "lift": 0.661}, {"source": "negativo · entrega · itens faltando", "target": "negativo · entrega · prazo", "n": 53, "pct": 0.00131, "lift": 0.509}, {"source": "negativo · entrega · não recebido", "target": "negativo · preço · frete", "n": 52, "pct": 0.00128, "lift": 1.1}, {"source": "negativo · preço · frete", "target": "positivo · produto · qualidade", "n": 50, "pct": 0.00123, "lift": 0.496}, {"source": "negativo · preço · preço do produto", "target": "negativo · produto · conformidade com o anúncio", "n": 50, "pct": 0.00123, "lift": 3.071}, {"source": "positivo · atendimento · outro", "target": "positivo · entrega · prazo", "n": 49, "pct": 0.00121, "lift": 1.159}, {"source": "negativo · produto · qualidade", "target": "positivo · atendimento · cancelamento, troca e reembolso", "n": 48, "pct": 0.00118, "lift": 4.46}, {"source": "negativo · produto · conformidade com o anúncio", "target": "positivo · atendimento · cancelamento, troca e reembolso", "n": 48, "pct": 0.00118, "lift": 3.776}, {"source": "negativo · produto · outro", "target": "positivo · produto · qualidade", "n": 48, "pct": 0.00118, "lift": 0.896}, {"source": "negativo · atendimento · contato e resposta", "target": "negativo · geral · sem assunto", "n": 47, "pct": 0.00116, "lift": 3.141}, {"source": "positivo · geral · sem assunto", "target": "positivo · produto · outro", "n": 47, "pct": 0.00116, "lift": 0.674}, {"source": "negativo · produto · conformidade com o anúncio", "target": "positivo · produto · conformidade com o anúncio", "n": 47, "pct": 0.00116, "lift": 0.216}, {"source": "negativo · entrega · outro", "target": "positivo · entrega · prazo", "n": 46, "pct": 0.00114, "lift": 0.477}, {"source": "negativo · geral · sem assunto", "target": "negativo · produto · conformidade com o anúncio", "n": 46, "pct": 0.00114, "lift": 1.715}, {"source": "negativo · atendimento · contato e resposta", "target": "positivo · entrega · prazo", "n": 45, "pct": 0.00111, "lift": 0.084}, {"source": "negativo · entrega · não recebido", "target": "positivo · entrega · prazo", "n": 44, "pct": 0.00109, "lift": 0.035}, {"source": "negativo · preço · frete", "target": "positivo · geral · sem assunto", "n": 43, "pct": 0.00106, "lift": 0.278}, {"source": "negativo · entrega · prazo", "target": "negativo · produto · qualidade", "n": 42, "pct": 0.00104, "lift": 0.38}, {"source": "negativo · atendimento · cancelamento, troca e reembolso", "target": "positivo · entrega · prazo", "n": 40, "pct": 0.00099, "lift": 0.089}, {"source": "negativo · entrega · itens faltando", "target": "positivo · geral · sem assunto", "n": 38, "pct": 0.00094, "lift": 0.046}, {"source": "negativo · entrega · avaria no transporte", "target": "positivo · geral · sem assunto", "n": 38, "pct": 0.00094, "lift": 0.119}, {"source": "negativo · preço · preço do produto", "target": "positivo · produto · qualidade", "n": 37, "pct": 0.00091, "lift": 0.816}, {"source": "negativo · entrega · avaria no transporte", "target": "positivo · produto · conformidade com o anúncio", "n": 37, "pct": 0.00091, "lift": 0.552}, {"source": "negativo · atendimento · nota fiscal", "target": "negativo · entrega · não recebido", "n": 37, "pct": 0.00091, "lift": 1.556}, {"source": "negativo · entrega · itens faltando", "target": "positivo · atendimento · contato e resposta", "n": 36, "pct": 0.00089, "lift": 0.503}, {"source": "negativo · entrega · avaria no transporte", "target": "negativo · entrega · prazo", "n": 35, "pct": 0.00086, "lift": 0.872}, {"source": "negativo · atendimento · nota fiscal", "target": "negativo · entrega · itens faltando", "n": 35, "pct": 0.00086, "lift": 2.406}, {"source": "negativo · entrega · não recebido", "target": "negativo · produto · conformidade com o anúncio", "n": 35, "pct": 0.00086, "lift": 0.11}, {"source": "negativo · entrega · itens faltando", "target": "negativo · preço · frete", "n": 33, "pct": 0.00081, "lift": 1.142}, {"source": "negativo · produto · conformidade com o anúncio", "target": "positivo · atendimento · contato e resposta", "n": 33, "pct": 0.00081, "lift": 0.368}, {"source": "negativo · entrega · retirada na agência", "target": "positivo · entrega · prazo", "n": 33, "pct": 0.00081, "lift": 0.235}, {"source": "positivo · atendimento · contato e resposta", "target": "positivo · entrega · outro", "n": 32, "pct": 0.00079, "lift": 1.256}, {"source": "negativo · atendimento · contato e resposta", "target": "negativo · entrega · retirada na agência", "n": 32, "pct": 0.00079, "lift": 1.616}, {"source": "negativo · entrega · não recebido", "target": "negativo · entrega · retirada na agência", "n": 32, "pct": 0.00079, "lift": 0.69}, {"source": "negativo · entrega · prazo", "target": "positivo · atendimento · contato e resposta", "n": 30, "pct": 0.00074, "lift": 0.625}, {"source": "negativo · entrega · retirada na agência", "target": "positivo · produto · qualidade", "n": 30, "pct": 0.00074, "lift": 0.303}]};
+</script>
+<script type="module">
+import React, { useEffect, useMemo, useRef, useState } from "https://esm.sh/react@18.3.1";
+import { createRoot } from "https://esm.sh/react-dom@18.3.1/client?deps=react@18.3.1";
+import htm from "https://esm.sh/htm@3.1.1";
+import * as THREE from "https://esm.sh/three@0.180.0";
+import ForceGraph3D from "https://esm.sh/react-force-graph-3d@1.24.3?deps=react@18.3.1,react-dom@18.3.1,three@0.180.0";
+import SpriteText from "https://esm.sh/three-spritetext@1.8.2?deps=three@0.180.0";
+
+const html = htm.bind(React.createElement);
+const D = window.DADOS;
+const fmt = (v, casas = 0) => v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
+const pct = v => fmt(100 * v, 1) + "%";
+const idDe = v => (typeof v === "object" ? v.id : v);
+
+// intensidade pela régua absoluta de 1 a 5: negativo mais forte perto de 1, positivo mais forte perto de 5
+const intensidade = no => (no.sentido === "negativo" ? (5 - no.nota) / 4 : (no.nota - 1) / 4);
+const corDe = (sentido, t, tema) => {
+  const matiz = sentido === "negativo" ? 2 : 145;
+  return tema === "escuro"
+    ? `hsl(${matiz}, ${15 + 80 * t}%, ${16 + 46 * t}%)`
+    : `hsl(${matiz}, ${20 + 65 * t}%, ${88 - 50 * t}%)`;
+};
+
+function texturaBrilho() {
+  const c = document.createElement("canvas"); c.width = c.height = 128;
+  const g = c.getContext("2d"), r = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+  r.addColorStop(0, "rgba(255,255,255,1)"); r.addColorStop(0.25, "rgba(255,255,255,0.35)"); r.addColorStop(1, "rgba(255,255,255,0)");
+  g.fillStyle = r; g.fillRect(0, 0, 128, 128);
+  return new THREE.CanvasTexture(c);
+}
+const BRILHO = texturaBrilho();
+
+function campoDeEstrelas() {
+  const pos = new Float32Array(2400 * 3);
+  for (let i = 0; i < 2400; i++) {
+    const r = 1400 + Math.random() * 1600, th = Math.random() * 2 * Math.PI, ph = Math.acos(2 * Math.random() - 1);
+    pos.set([r * Math.sin(ph) * Math.cos(th), r * Math.sin(ph) * Math.sin(th), r * Math.cos(ph)], i * 3);
+  }
+  const geo = new THREE.BufferGeometry(); geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  return new THREE.Points(geo, new THREE.PointsMaterial({ color: 0xaab4cc, size: 2.2, sizeAttenuation: false, transparent: true, opacity: 0.7 }));
+}
+
+function temaInicial() {
+  try { return localStorage.getItem("grafo-tema") || "escuro"; } catch { return "escuro"; }
+}
+
+function App() {
+  const ref = useRef();
+  const estrelas = useRef(null);
+  const enquadrado = useRef(false);
+  const [sentido, setSentidoBruto] = useState("negativo");
+  const setSentido = s => { enquadrado.current = false; setSentidoBruto(s); };
+  const [tema, setTema] = useState(temaInicial);
+  const maxAresta = useMemo(() => Math.max(...D.arestas.map(a => a.n)), []);
+
+  useEffect(() => {
+    document.documentElement.dataset.tema = tema;
+    try { localStorage.setItem("grafo-tema", tema); } catch {}
+    if (estrelas.current) estrelas.current.visible = tema === "escuro";
+  }, [tema]);
+
+  const dados = useMemo(() => {
+    const nos = D.nos.filter(n => sentido === "ambos" || n.sentido === sentido);
+    const ids = new Set(nos.map(n => n.id));
+    const arestas = D.arestas.filter(a => ids.has(idDe(a.source)) && ids.has(idDe(a.target)));
+    return { nodes: nos, links: arestas };
+  }, [sentido]);
+
+  useEffect(() => {
+    const fg = ref.current; if (!fg) return;
+    fg.d3Force("link").distance(a => Math.min(380, Math.max(28, 150 / Math.sqrt(a.lift))));
+    // repulsão com alcance limitado: pontos sem ligação não são empurrados para longe do aglomerado
+    fg.d3Force("charge").strength(-110).distanceMax(220);
+    fg.d3ReheatSimulation();
+  }, [dados]);
+
+  useEffect(() => {
+    const fg = ref.current; if (!fg) return;
+    const ctrl = fg.controls();
+    ctrl.mouseButtons = { LEFT: THREE.MOUSE.ROTATE, MIDDLE: THREE.MOUSE.ROTATE, RIGHT: THREE.MOUSE.PAN };
+    ctrl.noZoom = true;
+    // luz: ambiente fraca e uma luz presa à câmera, vinda do alto à esquerda, para dar volume às esferas
+    fg.scene().traverse(o => { if (o.isAmbientLight) o.intensity = 0.55; if (o.isDirectionalLight) o.intensity = 0.4; });
+    const luz = new THREE.PointLight(0xffffff, 3.2, 0, 0);
+    luz.position.set(-250, 300, 100);
+    fg.camera().add(luz);
+    fg.scene().add(fg.camera());
+    estrelas.current = campoDeEstrelas();
+    estrelas.current.visible = tema === "escuro";
+    fg.scene().add(estrelas.current);
+    fg.cameraPosition({ x: 0, y: 0, z: 520 });
+
+    const el = document.getElementById("app");
+    const semAutoRolagem = e => { if (e.button === 1) e.preventDefault(); };
+    const zoom = e => {
+      if (!e.shiftKey) return;
+      e.preventDefault(); e.stopPropagation();
+      const delta = e.deltaY || e.deltaX;  // com Shift, alguns navegadores mandam a rolagem no eixo horizontal
+      if (!delta) return;
+      const cam = fg.camera(), alvo = ctrl.target;
+      const dir = cam.position.clone().sub(alvo).multiplyScalar(delta > 0 ? 1.12 : 1 / 1.12);
+      const dist = dir.length();
+      if (dist < 40 || dist > 2600) return;
+      cam.position.copy(alvo.clone().add(dir));
+    };
+    el.addEventListener("mousedown", semAutoRolagem, true);
+    el.addEventListener("wheel", zoom, { passive: false, capture: true });
+    return () => { el.removeEventListener("mousedown", semAutoRolagem, true); el.removeEventListener("wheel", zoom, true); };
+  }, []);
+
+  const objetoDoNo = useMemo(() => no => {
+    const grupo = new THREE.Group();
+    const r = 0.9 * Math.cbrt(no.n);
+    const cor = new THREE.Color(corDe(no.sentido, intensidade(no), tema));
+    grupo.add(new THREE.Mesh(new THREE.SphereGeometry(r, 48, 32),
+      new THREE.MeshPhongMaterial({ color: cor, emissive: cor, emissiveIntensity: tema === "escuro" ? 0.08 : 0.03,
+        specular: 0x555555, shininess: 70 })));
+    const brilho = new THREE.Sprite(new THREE.SpriteMaterial({ map: BRILHO, color: cor, transparent: true, depthWrite: false,
+      opacity: tema === "escuro" ? 0.35 : 0.2, blending: tema === "escuro" ? THREE.AdditiveBlending : THREE.NormalBlending }));
+    brilho.scale.set(r * 4.2, r * 4.2, 1);
+    grupo.add(brilho);
+    const rotulo = new SpriteText(`${no.tema} · ${no.detalhe}`, 6, tema === "escuro" ? "#eef1f8" : "#1b2030");
+    rotulo.fontFace = "system-ui, Segoe UI, sans-serif"; rotulo.fontWeight = "600";
+    rotulo.position.set(0, r + 6, 0);
+    grupo.add(rotulo);
+    return grupo;
+  }, [tema]);
+
+  const dicaNo = no => `<div class="dica"><div class="t">${no.tema} · ${no.detalhe} (${no.sentido})</div>
+    <div>${fmt(no.n)} comentários · ${pct(no.pct)} da base</div>
+    <div class="s">nota média ${fmt(no.nota, 2)}</div></div>`;
+  const dicaAresta = a => {
+    const s = D.nos.find(n => n.id === idDe(a.source)), t = D.nos.find(n => n.id === idDe(a.target));
+    return `<div class="dica"><div class="t">${s.tema} · ${s.detalhe} (${s.sentido})<br>+ ${t.tema} · ${t.detalhe} (${t.sentido})</div>
+      <div>juntas em ${fmt(a.n)} comentários · ${pct(a.pct)} da base</div>
+      <div class="s">lift ${fmt(a.lift, 1)}: ${a.lift >= 1 ? fmt(a.lift, 1) + " vezes o esperado pelo acaso" : "menos que o esperado pelo acaso"}</div></div>`;
+  };
+
+  const total = D.totais[sentido];
+  const rotuloTotal = { negativo: "comentários com etiqueta negativa", positivo: "comentários com etiqueta positiva",
+    ambos: "comentários com alguma etiqueta" }[sentido];
+  const grad = s => `linear-gradient(90deg, ${corDe(s, 0.2, tema)}, ${corDe(s, 1, tema)})`;
+
+  return html`
+    <${ForceGraph3D} ref=${ref} graphData=${dados} backgroundColor=${tema === "escuro" ? "#05070d" : "#f3f4f7"}
+      nodeThreeObject=${objetoDoNo} nodeLabel=${dicaNo} linkLabel=${dicaAresta}
+      linkWidth=${a => 0.4 + 4.2 * Math.sqrt(a.n / maxAresta)} linkOpacity=${tema === "escuro" ? 0.35 : 0.45}
+      linkColor=${() => (tema === "escuro" ? "#8f9bbb" : "#7a849c")} showNavInfo=${false}
+      cooldownTicks=${300} warmupTicks=${40}
+      onEngineStop=${() => { if (!enquadrado.current) { enquadrado.current = true; ref.current.zoomToFit(800, 40); } }} />
+    <button class="tema" onClick=${() => setTema(tema === "escuro" ? "claro" : "escuro")}>
+      ${tema === "escuro" ? "Tema claro" : "Tema escuro"}</button>
+    <div class="painel">
+      <h1>Mapa das etiquetas</h1>
+      <p class="sub">${fmt(D.base)} avaliações da Olist com comentário</p>
+      <div class="grupo">
+        ${["negativo", "positivo", "ambos"].map(s => html`<button key=${s} class=${sentido === s ? "ativo" : ""}
+          onClick=${() => setSentido(s)}>${{ negativo: "Negativas", positivo: "Positivas", ambos: "Ambas" }[s]}</button>`)}
+      </div>
+      <p class="total">${fmt(total)} · ${pct(total / D.base)}</p>
+      <p class="total-legenda">${rotuloTotal}, em % da base</p>
+      <ul class="legenda">
+        <li><b>Cor</b>: vermelho negativo, verde positivo; quanto mais forte, mais extrema a nota média</li>
+        <li><div class="barra">nota 5<span class="g" style=${{ background: grad("negativo") }}></span>nota 1</div>
+            <div class="barra">nota 1<span class="g" style=${{ background: grad("positivo") }}></span>nota 5</div></li>
+        <li><b>Tamanho</b>: comentários com a etiqueta</li>
+        <li><b>Linha</b>: etiquetas no mesmo comentário; grossura pela quantidade</li>
+        <li><b>Distância</b>: quanto mais perto, mais as etiquetas aparecem juntas acima do acaso (lift)</li>
+        <li>Etiquetas e ligações com menos de ${D.corte} comentários ficam ocultas</li>
+      </ul>
+    </div>
+    <div class="controles">Rodinha pressionada ou botão esquerdo: girar · Shift + rodinha: zoom · Botão direito: mover · Arrastar um ponto: puxar</div>`;
+}
+
+createRoot(document.getElementById("app")).render(html`<${App} />`);
+</script>
+</body>
+</html>

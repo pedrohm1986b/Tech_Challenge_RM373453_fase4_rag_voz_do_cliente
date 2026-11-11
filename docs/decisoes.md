@@ -367,3 +367,17 @@ Produto quebrado: "chegou quebrado" ou "veio danificado" é entrega · avaria no
 **Limitações:** cerca de 3 das 44 etiquetas levadas para "outro" eram reclamações com o sentido trocado (por exemplo, "São dois produtos, recebi um"); ficam como resíduo. O `gemini-3.5-flash-lite` ignora o parâmetro de temperatura e usa amostragem fixa, então uma nova execução pode produzir etiquetas diferentes; a reprodução exata depende dos lotes gravados.
 
 **Alternativas consideradas:** marcar as reclamações genéricas como sem etiqueta (descartada: perde a insatisfação declarada); etiquetar de novo os comentários afetados com um manual corrigido (descartada: a correção direta é determinística e não tem custo).
+
+---
+
+## D-027 · Mapa das etiquetas em 3D
+
+**Data:** 11/11/2026 · **Etapa:** Etiquetagem
+
+**Decisão:** um grafo 3D interativo mostra as etiquetas e as ligações entre elas. Cada ponto é uma combinação de sentido, tema e detalhe, com tamanho pela quantidade de comentários e cor vermelha (negativo) ou verde (positivo), com intensidade pela nota média na régua de 1 a 5. Cada linha liga duas etiquetas que aparecem no mesmo comentário, com grossura pela quantidade de comentários. O comprimento da ligação segue o lift: quanto mais as duas etiquetas aparecem juntas acima do esperado se fossem independentes, mais perto ficam. O filtro de sentido começa nas negativas. Os percentuais usam como base os 40.518 comentários. Etiquetas e ligações com menos de 30 comentários ficam fora. A página `reports/visualizacao/grafo_etiquetas.html` é gerada pelo desenv_04 a partir de `src/visualizacao/modelo_grafo.html`, em React com `react-force-graph-3d`, e abre no navegador sem instalação.
+
+**Contexto:** a contagem por etiqueta mostra o tamanho de cada problema, mas não quais problemas andam juntos.
+
+**Justificativa:** a contagem bruta de ligações aproximaria os pontos grandes de todos os outros só pelo volume. O lift corrige isso e forma aglomerados de problemas associados de fato, como não recebido com contato sem resposta (3,6 vezes o acaso) e retirada na agência com frete (21 vezes). A régua absoluta de nota mantém visíveis as exceções, como a etiqueta positiva de cancelamento, troca e reembolso, com nota média 2,6.
+
+**Alternativas consideradas:** distância pela contagem bruta (descartada pelo efeito do volume); régua de cor pela faixa observada em cada sentido (descartada: nos positivos, a faixa de 4,5 a 4,8 exageraria diferenças pequenas).

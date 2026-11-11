@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="pt-BR" data-tema="escuro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa das etiquetas</title>
+<style>
+  :root, [data-tema="escuro"] {
+    --fundo: #05070d;
+    --texto: #e6e9f2;
+    --suave: #98a1b6;
+    --painel: rgba(13, 17, 28, 0.82);
+    --borda: rgba(255, 255, 255, 0.10);
+    --botao: rgba(255, 255, 255, 0.06);
+    --ativo: #e6e9f2;
+    --ativo-texto: #05070d;
+  }
+  [data-tema="claro"] {
+    --fundo: #f3f4f7;
+    --texto: #1b2030;
+    --suave: #5b6478;
+    --painel: rgba(255, 255, 255, 0.90);
+    --borda: rgba(0, 0, 0, 0.10);
+    --botao: rgba(0, 0, 0, 0.04);
+    --ativo: #1b2030;
+    --ativo-texto: #ffffff;
+  }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: var(--fundo); color: var(--texto);
+    font-family: system-ui, "Segoe UI", Roboto, sans-serif; }
+  #app { position: fixed; inset: 0; }
+  .painel { position: absolute; top: 16px; left: 16px; width: 300px; max-width: calc(100vw - 32px); box-sizing: border-box;
+    padding: 16px 18px; background: var(--painel); border: 1px solid var(--borda); border-radius: 12px;
+    backdrop-filter: blur(8px); font-size: 13px; line-height: 1.45; z-index: 2; }
+  .painel h1 { font-size: 16px; margin: 0 0 2px; font-weight: 650; }
+  .painel .sub { color: var(--suave); margin: 0 0 12px; }
+  .grupo { display: flex; gap: 6px; margin-bottom: 10px; }
+  .grupo button { flex: 1; padding: 6px 0; font: inherit; color: var(--texto); background: var(--botao);
+    border: 1px solid var(--borda); border-radius: 8px; cursor: pointer; }
+  .grupo button.ativo { background: var(--ativo); color: var(--ativo-texto); border-color: var(--ativo); }
+  .total { font-size: 22px; font-weight: 650; margin: 6px 0 0; font-variant-numeric: tabular-nums; }
+  .total-legenda { color: var(--suave); margin: 0 0 12px; }
+  .legenda { margin: 0; padding: 10px 0 0; border-top: 1px solid var(--borda); list-style: none; color: var(--suave); }
+  .legenda li { margin-bottom: 6px; }
+  .legenda b { color: var(--texto); font-weight: 600; }
+  .barra { display: flex; align-items: center; gap: 6px; margin: 2px 0 8px; font-size: 12px; }
+  .barra span.g { flex: 1; height: 8px; border-radius: 4px; }
+  .controles { position: absolute; bottom: 16px; left: 16px; right: 16px; text-align: center; color: var(--suave);
+    font-size: 12px; z-index: 2; pointer-events: none; }
+  .tema { position: absolute; top: 16px; right: 16px; z-index: 2; padding: 6px 12px; font: 13px system-ui, sans-serif;
+    color: var(--texto); background: var(--painel); border: 1px solid var(--borda); border-radius: 8px; cursor: pointer; }
+  .scene-tooltip, .float-tooltip-kap { font: 13px/1.45 system-ui, "Segoe UI", sans-serif !important; }
+  .dica { padding: 8px 10px; border-radius: 8px; background: var(--painel); color: var(--texto); border: 1px solid var(--borda); }
+  .dica .t { font-weight: 650; margin-bottom: 2px; }
+  .dica .s { color: var(--suave); }
+  @media (max-width: 600px) { .painel { font-size: 12px; padding: 12px 14px; } .legenda { display: none; } }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+  window.DADOS = /*DADOS*/null;
+</script>
+<script type="module">
+import React, { useEffect, useMemo, useRef, useState } from "https://esm.sh/react@18.3.1";
+import { createRoot } from "https://esm.sh/react-dom@18.3.1/client?deps=react@18.3.1";
+import htm from "https://esm.sh/htm@3.1.1";
+import * as THREE from "https://esm.sh/three@0.180.0";
+import ForceGraph3D from "https://esm.sh/react-force-graph-3d@1.24.3?deps=react@18.3.1,react-dom@18.3.1,three@0.180.0";
+import SpriteText from "https://esm.sh/three-spritetext@1.8.2?deps=three@0.180.0";
+
+const html = htm.bind(React.createElement);
+const D = window.DADOS;
+const fmt = (v, casas = 0) => v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
+const pct = v => fmt(100 * v, 1) + "%";
+const idDe = v => (typeof v === "object" ? v.id : v);
+
+// intensidade pela régua absoluta de 1 a 5: negativo mais forte perto de 1, positivo mais forte perto de 5
+const intensidade = no => (no.sentido === "negativo" ? (5 - no.nota) / 4 : (no.nota - 1) / 4);
+const corDe = (sentido, t, tema) => {
+  const matiz = sentido === "negativo" ? 2 : 145;
+  return tema === "escuro"
+    ? `hsl(${matiz}, ${15 + 80 * t}%, ${16 + 46 * t}%)`
+    : `hsl(${matiz}, ${20 + 65 * t}%, ${88 - 50 * t}%)`;
+};
+
+function texturaBrilho() {
+  const c = document.createElement("canvas"); c.width = c.height = 128;
+  const g = c.getContext("2d"), r = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+  r.addColorStop(0, "rgba(255,255,255,1)"); r.addColorStop(0.25, "rgba(255,255,255,0.35)"); r.addColorStop(1, "rgba(255,255,255,0)");
+  g.fillStyle = r; g.fillRect(0, 0, 128, 128);
+  return new THREE.CanvasTexture(c);
+}
+const BRILHO = texturaBrilho();
+
+function campoDeEstrelas() {
+  const pos = new Float32Array(2400 * 3);
+  for (let i = 0; i < 2400; i++) {
+    const r = 1400 + Math.random() * 1600, th = Math.random() * 2 * Math.PI, ph = Math.acos(2 * Math.random() - 1);
+    pos.set([r * Math.sin(ph) * Math.cos(th), r * Math.sin(ph) * Math.sin(th), r * Math.cos(ph)], i * 3);
+  }
+  const geo = new THREE.BufferGeometry(); geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  return new THREE.Points(geo, new THREE.PointsMaterial({ color: 0xaab4cc, size: 2.2, sizeAttenuation: false, transparent: true, opacity: 0.7 }));
+}
+
+function temaInicial() {
+  try { return localStorage.getItem("grafo-tema") || "escuro"; } catch { return "escuro"; }
+}
+
+function App() {
+  const ref = useRef();
+  const estrelas = useRef(null);
+  const enquadrado = useRef(false);
+  const [sentido, setSentidoBruto] = useState("negativo");
+  const setSentido = s => { enquadrado.current = false; setSentidoBruto(s); };
+  const [tema, setTema] = useState(temaInicial);
+  const maxAresta = useMemo(() => Math.max(...D.arestas.map(a => a.n)), []);
+
+  useEffect(() => {
+    document.documentElement.dataset.tema = tema;
+    try { localStorage.setItem("grafo-tema", tema); } catch {}
+    if (estrelas.current) estrelas.current.visible = tema === "escuro";
+  }, [tema]);
+
+  const dados = useMemo(() => {
+    const nos = D.nos.filter(n => sentido === "ambos" || n.sentido === sentido);
+    const ids = new Set(nos.map(n => n.id));
+    const arestas = D.arestas.filter(a => ids.has(idDe(a.source)) && ids.has(idDe(a.target)));
+    return { nodes: nos, links: arestas };
+  }, [sentido]);
+
+  useEffect(() => {
+    const fg = ref.current; if (!fg) return;
+    fg.d3Force("link").distance(a => Math.min(380, Math.max(28, 150 / Math.sqrt(a.lift))));
+    // repulsão com alcance limitado: pontos sem ligação não são empurrados para longe do aglomerado
+    fg.d3Force("charge").strength(-110).distanceMax(220);
+    fg.d3ReheatSimulation();
+  }, [dados]);
+
+  useEffect(() => {
+    const fg = ref.current; if (!fg) return;
+    const ctrl = fg.controls();
+    ctrl.mouseButtons = { LEFT: THREE.MOUSE.ROTATE, MIDDLE: THREE.MOUSE.ROTATE, RIGHT: THREE.MOUSE.PAN };
+    ctrl.noZoom = true;
+    // luz: ambiente fraca e uma luz presa à câmera, vinda do alto à esquerda, para dar volume às esferas
+    fg.scene().traverse(o => { if (o.isAmbientLight) o.intensity = 0.55; if (o.isDirectionalLight) o.intensity = 0.4; });
+    const luz = new THREE.PointLight(0xffffff, 3.2, 0, 0);
+    luz.position.set(-250, 300, 100);
+    fg.camera().add(luz);
+    fg.scene().add(fg.camera());
+    estrelas.current = campoDeEstrelas();
+    estrelas.current.visible = tema === "escuro";
+    fg.scene().add(estrelas.current);
+    fg.cameraPosition({ x: 0, y: 0, z: 520 });
+
+    const el = document.getElementById("app");
+    const semAutoRolagem = e => { if (e.button === 1) e.preventDefault(); };
+    const zoom = e => {
+      if (!e.shiftKey) return;
+      e.preventDefault(); e.stopPropagation();
+      const delta = e.deltaY || e.deltaX;  // com Shift, alguns navegadores mandam a rolagem no eixo horizontal
+      if (!delta) return;
+      const cam = fg.camera(), alvo = ctrl.target;
+      const dir = cam.position.clone().sub(alvo).multiplyScalar(delta > 0 ? 1.12 : 1 / 1.12);
+      const dist = dir.length();
+      if (dist < 40 || dist > 2600) return;
+      cam.position.copy(alvo.clone().add(dir));
+    };
+    el.addEventListener("mousedown", semAutoRolagem, true);
+    el.addEventListener("wheel", zoom, { passive: false, capture: true });
+    return () => { el.removeEventListener("mousedown", semAutoRolagem, true); el.removeEventListener("wheel", zoom, true); };
+  }, []);
+
+  const objetoDoNo = useMemo(() => no => {
+    const grupo = new THREE.Group();
+    const r = 0.9 * Math.cbrt(no.n);
+    const cor = new THREE.Color(corDe(no.sentido, intensidade(no), tema));
+    grupo.add(new THREE.Mesh(new THREE.SphereGeometry(r, 48, 32),
+      new THREE.MeshPhongMaterial({ color: cor, emissive: cor, emissiveIntensity: tema === "escuro" ? 0.08 : 0.03,
+        specular: 0x555555, shininess: 70 })));
+    const brilho = new THREE.Sprite(new THREE.SpriteMaterial({ map: BRILHO, color: cor, transparent: true, depthWrite: false,
+      opacity: tema === "escuro" ? 0.35 : 0.2, blending: tema === "escuro" ? THREE.AdditiveBlending : THREE.NormalBlending }));
+    brilho.scale.set(r * 4.2, r * 4.2, 1);
+    grupo.add(brilho);
+    const rotulo = new SpriteText(`${no.tema} · ${no.detalhe}`, 6, tema === "escuro" ? "#eef1f8" : "#1b2030");
+    rotulo.fontFace = "system-ui, Segoe UI, sans-serif"; rotulo.fontWeight = "600";
+    rotulo.position.set(0, r + 6, 0);
+    grupo.add(rotulo);
+    return grupo;
+  }, [tema]);
+
+  const dicaNo = no => `<div class="dica"><div class="t">${no.tema} · ${no.detalhe} (${no.sentido})</div>
+    <div>${fmt(no.n)} comentários · ${pct(no.pct)} da base</div>
+    <div class="s">nota média ${fmt(no.nota, 2)}</div></div>`;
+  const dicaAresta = a => {
+    const s = D.nos.find(n => n.id === idDe(a.source)), t = D.nos.find(n => n.id === idDe(a.target));
+    return `<div class="dica"><div class="t">${s.tema} · ${s.detalhe} (${s.sentido})<br>+ ${t.tema} · ${t.detalhe} (${t.sentido})</div>
+      <div>juntas em ${fmt(a.n)} comentários · ${pct(a.pct)} da base</div>
+      <div class="s">lift ${fmt(a.lift, 1)}: ${a.lift >= 1 ? fmt(a.lift, 1) + " vezes o esperado pelo acaso" : "menos que o esperado pelo acaso"}</div></div>`;
+  };
+
+  const total = D.totais[sentido];
+  const rotuloTotal = { negativo: "comentários com etiqueta negativa", positivo: "comentários com etiqueta positiva",
+    ambos: "comentários com alguma etiqueta" }[sentido];
+  const grad = s => `linear-gradient(90deg, ${corDe(s, 0.2, tema)}, ${corDe(s, 1, tema)})`;
+
+  return html`
+    <${ForceGraph3D} ref=${ref} graphData=${dados} backgroundColor=${tema === "escuro" ? "#05070d" : "#f3f4f7"}
+      nodeThreeObject=${objetoDoNo} nodeLabel=${dicaNo} linkLabel=${dicaAresta}
+      linkWidth=${a => 0.4 + 4.2 * Math.sqrt(a.n / maxAresta)} linkOpacity=${tema === "escuro" ? 0.35 : 0.45}
+      linkColor=${() => (tema === "escuro" ? "#8f9bbb" : "#7a849c")} showNavInfo=${false}
+      cooldownTicks=${300} warmupTicks=${40}
+      onEngineStop=${() => { if (!enquadrado.current) { enquadrado.current = true; ref.current.zoomToFit(800, 40); } }} />
+    <button class="tema" onClick=${() => setTema(tema === "escuro" ? "claro" : "escuro")}>
+      ${tema === "escuro" ? "Tema claro" : "Tema escuro"}</button>
+    <div class="painel">
+      <h1>Mapa das etiquetas</h1>
+      <p class="sub">${fmt(D.base)} avaliações da Olist com comentário</p>
+      <div class="grupo">
+        ${["negativo", "positivo", "ambos"].map(s => html`<button key=${s} class=${sentido === s ? "ativo" : ""}
+          onClick=${() => setSentido(s)}>${{ negativo: "Negativas", positivo: "Positivas", ambos: "Ambas" }[s]}</button>`)}
+      </div>
+      <p class="total">${fmt(total)} · ${pct(total / D.base)}</p>
+      <p class="total-legenda">${rotuloTotal}, em % da base</p>
+      <ul class="legenda">
+        <li><b>Cor</b>: vermelho negativo, verde positivo; quanto mais forte, mais extrema a nota média</li>
+        <li><div class="barra">nota 5<span class="g" style=${{ background: grad("negativo") }}></span>nota 1</div>
+            <div class="barra">nota 1<span class="g" style=${{ background: grad("positivo") }}></span>nota 5</div></li>
+        <li><b>Tamanho</b>: comentários com a etiqueta</li>
+        <li><b>Linha</b>: etiquetas no mesmo comentário; grossura pela quantidade</li>
+        <li><b>Distância</b>: quanto mais perto, mais as etiquetas aparecem juntas acima do acaso (lift)</li>
+        <li>Etiquetas e ligações com menos de ${D.corte} comentários ficam ocultas</li>
+      </ul>
+    </div>
+    <div class="controles">Rodinha pressionada ou botão esquerdo: girar · Shift + rodinha: zoom · Botão direito: mover · Arrastar um ponto: puxar</div>`;
+}
+
+createRoot(document.getElementById("app")).render(html`<${App} />`);
+</script>
+</body>
+</html>
