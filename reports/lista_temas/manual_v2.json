@@ -1,0 +1,140 @@
+{
+  "entrega": {
+    "definicao": "Recebimento do pedido: prazo, chegada, condição em que chegou e local de entrega.",
+    "detalhes": {
+      "prazo": {
+        "sentidos": [
+          "positivo",
+          "negativo"
+        ],
+        "definicao": "Tempo até a entrega de um pedido que chegou: antes, dentro ou depois do prazo prometido. Se o produto ainda não chegou, a etiqueta é não recebido."
+      },
+      "não recebido": {
+        "sentidos": [
+          "negativo"
+        ],
+        "definicao": "O produto não chegou até o momento do comentário: rastreio parado, extravio, consta como entregue sem ter sido recebido. Vale mesmo quando o comentário cita o prazo vencido."
+      },
+      "itens faltando": {
+        "sentidos": [
+          "negativo"
+        ],
+        "definicao": "Chegou só parte do pedido: menos unidades ou menos produtos do que o comprado, inclusive quando o cliente diz que não recebeu um dos produtos."
+      },
+      "avaria no transporte": {
+        "sentidos": [
+          "negativo"
+        ],
+        "definicao": "Chegou quebrado, amassado, riscado ou com a embalagem danificada."
+      },
+      "retirada na agência": {
+        "sentidos": [
+          "negativo"
+        ],
+        "definicao": "Não foi entregue no endereço: o cliente teve de buscar nos Correios ou em uma agência."
+      },
+      "outro": {
+        "sentidos": [
+          "positivo",
+          "negativo"
+        ],
+        "definicao": "Assunto de entrega que não cabe nos detalhes acima."
+      }
+    }
+  },
+  "produto": {
+    "definicao": "O item recebido: correspondência com o anúncio e qualidade.",
+    "detalhes": {
+      "conformidade com o anúncio": {
+        "sentidos": [
+          "positivo",
+          "negativo"
+        ],
+        "definicao": "Cor, modelo, tamanho, marca ou originalidade em relação ao anúncio; inclui 'conforme o anúncio'."
+      },
+      "qualidade": {
+        "sentidos": [
+          "positivo",
+          "negativo"
+        ],
+        "definicao": "Material, acabamento, funcionamento ou defeito de fabricação."
+      },
+      "outro": {
+        "sentidos": [
+          "positivo",
+          "negativo"
+        ],
+        "definicao": "Assunto de produto que não cabe nos detalhes acima."
+      }
+    }
+  },
+  "preço": {
+    "definicao": "Custo da compra.",
+    "detalhes": {
+      "preço do produto": {
+        "sentidos": [
+          "positivo",
+          "negativo"
+        ],
+        "definicao": "Valor do produto: caro, barato, preço justo, custo-benefício."
+      },
+      "frete": {
+        "sentidos": [
+          "positivo",
+          "negativo"
+        ],
+        "definicao": "Valor do frete."
+      },
+      "outro": {
+        "sentidos": [
+          "positivo",
+          "negativo"
+        ],
+        "definicao": "Assunto de preço que não cabe nos detalhes acima."
+      }
+    }
+  },
+  "atendimento": {
+    "definicao": "Relação com a loja depois da compra.",
+    "detalhes": {
+      "contato e resposta": {
+        "sentidos": [
+          "positivo",
+          "negativo"
+        ],
+        "definicao": "Facilidade de falar com a loja, retorno às mensagens, cordialidade."
+      },
+      "cancelamento, troca e reembolso": {
+        "sentidos": [
+          "positivo",
+          "negativo"
+        ],
+        "definicao": "Como a loja tratou o cancelamento, a troca, a devolução ou o estorno."
+      },
+      "nota fiscal": {
+        "sentidos": [
+          "negativo"
+        ],
+        "definicao": "Nota fiscal não enviada ou com problema. Quando a nota fiscal só é citada como prova de outro problema, vale a etiqueta desse problema."
+      },
+      "outro": {
+        "sentidos": [
+          "positivo",
+          "negativo"
+        ],
+        "definicao": "Assunto de atendimento que não cabe nos detalhes acima."
+      }
+    }
+  },
+  "elogio geral": {
+    "definicao": "Elogio à compra, à loja ou ao site como um todo, sem citar entrega, produto, preço ou atendimento.",
+    "detalhes": {
+      "sem assunto": {
+        "sentidos": [
+          "positivo"
+        ],
+        "definicao": "'Muito bom', 'recomendo', 'nota 10', e elogios à compra, à loja ou ao site como um todo ('loja confiável', 'gostei de comprar nesse site')."
+      }
+    }
+  }
+}

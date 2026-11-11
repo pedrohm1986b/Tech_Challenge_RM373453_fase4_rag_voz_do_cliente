@@ -267,3 +267,117 @@ A numeração recomeça nesta fase. As decisões das fases anteriores estão nos
 **Contexto:** a verificação das ligações entre as tabelas confirmou junção direta entre pedido e cliente, item e produto, item e vendedor, e mostrou ligações de um para vários em itens, pagamentos e geolocalização, que precisam ser resumidas para manter uma linha por avaliação.
 
 **Justificativa:** o pior caso entre vendedores segue a lógica de D-018, em que a experiência mais negativa tende a motivar a avaliação. A forma de pagamento de maior valor representa como o pedido foi efetivamente pago, já que os pagamentos múltiplos costumam combinar um meio principal com vouchers. A mediana das coordenadas não é deslocada por pontos registrados fora da área do CEP, que existem na tabela de geolocalização.
+
+---
+
+## D-020 · Manual de etiquetagem, versão 1
+
+**Data:** 10/11/2026 · **Etapa:** Lista de temas
+
+**Decisão:** o manual tem cinco temas e treze detalhes, mais a opção "outro" em cada tema:
+
+| Tema | Detalhes |
+|---|---|
+| entrega | prazo, não recebido, itens faltando, avaria no transporte, retirada na agência |
+| produto | conformidade com o anúncio, qualidade |
+| preço | preço do produto, frete |
+| atendimento | contato e resposta; cancelamento, troca e reembolso; nota fiscal |
+| elogio geral | sem assunto |
+
+Produto quebrado: "chegou quebrado" ou "veio danificado" é entrega · avaria no transporte; "parou de funcionar" ou "defeito depois de usar" é produto · qualidade. O manual fica em `reports/lista_temas/manual_v1.json`.
+
+**Contexto:** as quatro propostas do modelo (duas amostras, com e sem exemplos de tema nas regras) concordaram em quatro temas: entrega, produto, atendimento e elogio geral. O teste sem exemplos, feito para verificar se os exemplos tinham ancorado o modelo, não trouxe tema novo. A busca por palavras na base inteira encontrou assuntos pequenos ausentes das propostas: preço e frete (3,2% dos comentários), cancelamento (1,3%), nota fiscal (1,1%) e a retirada do produto nos Correios por quem pagou o frete. Relatos sobre o site ou o aplicativo não apareceram: as menções ao site são elogios.
+
+**Justificativa:** os temas estáveis entre as propostas formam a estrutura do manual; os detalhes que divergiram entre as propostas foram decididos na revisão, priorizando reclamações frequentes ("não recebido" é a mais repetida da base). O valor do frete ficou em preço, por ser reclamação de custo; a retirada na agência ficou em entrega, porque aparece também em comentários que não citam o frete. As sugestões do modelo de escolher um único tema em comentários com dois assuntos foram descartadas, em favor de D-012.
+
+**Alternativas consideradas:** frete como tema próprio, com os detalhes valor e retirada na agência (descartada porque a retirada na agência aparece sem menção ao frete e ficaria fora do tema); usar apenas os temas propostos pelo modelo (descartada pelos assuntos encontrados na busca).
+
+---
+
+## D-021 · Etiquetagem às cegas da mesma amostra, com racional do modelo
+
+**Data:** 10/11/2026 · **Etapa:** Etiquetagem
+
+**Decisão:** a etiquetagem manual e a do modelo usam os mesmos 170 comentários e o mesmo manual, sem a nota da avaliação. Os comentários das amostras lidas pelo modelo na construção do manual ficam de fora. O modelo registra, para cada etiqueta, o trecho exato do comentário que a motiva e uma justificativa, antes da etiqueta. O resultado do modelo não é consultado antes do fim da etiquetagem manual. A planilha manual tem menus encadeados (sentido, tema, detalhe), aceita várias etiquetas por comentário e a marcação "sem etiqueta".
+
+**Justificativa:** a nota poderia induzir o sentido. Comentários já lidos pelo modelo comprometeriam a independência do gabarito. O trecho e a justificativa permitem avaliar se o raciocínio do modelo coincide com o da etiquetagem manual, e não apenas a etiqueta, e permitem conferir que o trecho existe no comentário. A divisão prévia do comentário em pedaços de sentido único foi considerada e descartada: o trecho citado em cada etiqueta cumpre esse papel sem os erros de um corte por regra (por exemplo, no "mas").
+
+---
+
+## D-022 · Medida de acordo entre etiquetagens
+
+**Data:** 10/11/2026 · **Etapa:** Etiquetagem
+
+**Decisão:** cada etiqueta vale 1, e cada campo que coincide vale um terço: sentido, tema e detalhe. O detalhe só conta quando o tema também coincide. Exemplo: entrega · prazo · negativo contra entrega · não recebido · negativo vale 1/3 + 1/3 = 0,67. A nota do comentário é a do par de etiquetas, uma manual e uma do modelo, que mais pontua; a média dessas notas é a medida principal. Quando as duas etiquetagens marcam "sem etiqueta", a nota é 1; quando só uma marca, é 0. Complementam a medida principal: a cobertura dos assuntos (todas as etiquetas pareadas sem considerar a ordem, com nota zero para etiqueta sem par), o acerto por campo e a proporção de comentários com ao menos uma etiqueta idêntica.
+
+**Justificativa:** errar o sentido ou o tema muda a leitura do comentário; o crédito parcial evita tratar como erro total um comentário em que só o detalhe diverge, muitas vezes por interpretação entre detalhes vizinhos (prazo e não recebido, por exemplo). Usar a etiqueta que melhor coincide aceita interpretações diferentes sobre os assuntos secundários de um comentário com várias etiquetas. Essa escolha é generosa com etiquetas a mais, que inflam as contagens das ferramentas, e por isso a cobertura dos assuntos acompanha a medida principal. A ordem das etiquetas nunca é considerada.
+
+---
+
+## D-023 · Gemini 3.5 Flash-Lite para etiquetar a base inteira
+
+**Data:** 11/11/2026 · **Etapa:** Etiquetagem
+
+**Decisão:** a etiquetagem dos 40.518 comentários usa o `gemini-3.5-flash-lite`, sem o trecho e a justificativa, que ficam restritos à comparação na amostra.
+
+**Contexto:** três modelos etiquetaram os mesmos 170 comentários, com o mesmo manual, a mesma instrução e os mesmos lotes, e foram medidos contra a etiquetagem manual. O `gemini-3.5-flash-lite` teve F1 de 0,771 por etiqueta completa (recall 0,768, precisão 0,775), contra 0,748 do `gemini-3.1-flash-lite` (recall 0,732, precisão 0,766). O ganho se concentra na principal confusão do modelo anterior: o recall de "entrega · não recebido" passou de 0,46 para 0,68. O `gemini-3.8-flash` não concluiu a amostra em 20 minutos; num teste com 5 comentários, levou 2 minutos e 21 segundos, sem tokens de raciocínio, o que projeta cerca de 3 dias para a base inteira.
+
+**Justificativa:** o 3.5 Flash-Lite reduz justamente a confusão entre não recebido e prazo, que distorce as contagens de problemas de entrega. O custo projetado para a base inteira, sem o racional, fica na ordem de poucos dólares, e o tempo, abaixo de uma hora e meia com chamadas em paralelo. A reexecução do 3.1 Flash-Lite reproduziu o resultado da primeira execução, o que indica estabilidade dos modelos nessa tarefa.
+
+**Alternativas consideradas:** `gemini-3.1-flash-lite` (descartado pelo recall menor, com diferença de custo pequena); `gemini-3.8-flash` (descartado pela lentidão no teste); modelos Claude (fora da comparação: os de custo comparável não trariam ganho de prazo, e os maiores ficariam caros na base inteira).
+
+---
+
+## D-024 · O gabarito manual não é revisado depois da comparação
+
+**Data:** 11/11/2026 · **Etapa:** Etiquetagem
+
+**Decisão:** a etiquetagem manual dos 170 comentários permanece como foi feita, sem revisão (adjudicação) à luz das respostas dos modelos. A medição com o manual v1 é a referência de acerto.
+
+**Contexto:** nas divergências, a etiquetagem manual e a do modelo identificaram o mesmo problema no comentário e escolheram detalhes vizinhos para ele (por exemplo, não recebido e prazo, ou não recebido e itens faltando). O manual v1 não tinha regra de desempate para esses casos.
+
+**Justificativa:** são diferenças de interpretação em fronteiras que o manual não definia, e não etiquetas sem relação com o texto. Que as duas etiquetagens tenham reconhecido o mesmo problema em cada caso é evidência de que o modelo não inventa assuntos ausentes do comentário. Revisar o gabarito depois de ver as respostas do modelo tenderia a favorecê-lo.
+
+**Alternativas consideradas:** revisar as divergências com as regras do manual v2 e reportar uma medição adjudicada ao lado da original (descartada: o ganho de informação é pequeno diante do risco de favorecer o modelo).
+
+---
+
+## D-025 · Manual de etiquetagem, versão 2
+
+**Data:** 11/11/2026 · **Etapa:** Etiquetagem
+
+**Decisão:** o manual v2 acrescenta quatro regras de desempate e ajusta as definições correspondentes: produto que ainda não chegou é entrega · não recebido, mesmo citando o prazo, e entrega · prazo negativo é para pedido que chegou atrasado; parte do pedido que não veio é entrega · itens faltando; nota fiscal citada apenas como prova de outro problema não recebe a etiqueta de nota fiscal; elogio à compra, à loja ou ao site como um todo é elogio geral · sem assunto. O manual fica em `reports/lista_temas/manual_v2.json` e é o usado na etiquetagem da base inteira.
+
+**Contexto:** a comparação entre a etiquetagem manual e a dos modelos mostrou que as divergências se concentram nessas fronteiras, com destaque para a confusão entre não recebido e prazo.
+
+**Justificativa:** as regras transformam em critério escrito as decisões que, no manual v1, dependiam de interpretação. Como foram escritas a partir das divergências da amostra de 170 comentários, uma nova medição nessa mesma amostra seria otimista e não substitui a medição com o manual v1.
+
+---
+
+## D-026 · Etiquetagem da base inteira e correção dos sentidos não permitidos
+
+**Data:** 11/11/2026 · **Etapa:** Etiquetagem
+
+**Decisão:** o `gemini-3.5-flash-lite` etiquetou os 40.518 comentários com o manual v2, sem trecho nem justificativa, em lotes de 50 comentários e 8 chamadas simultâneas, com cada lote gravado para retomada. As etiquetas com sentido não permitido pelo manual foram corrigidas sobre o resultado gravado, sem nova chamada ao modelo: avaria no transporte, itens faltando, retirada na agência e nota fiscal com sentido positivo passam para o detalhe "outro" do mesmo tema; o tema "elogio geral" passa a se chamar "geral", e o detalhe "sem assunto" aceita os dois sentidos. O resultado fica em `data/processed/etiquetas_base.parquet`, com uma linha por etiqueta e a coluna `corrigida`.
+
+**Contexto:** a execução levou 14 minutos e custou US$ 9,07, sem lotes com erro e sem comentários sem resposta: 39.491 comentários receberam ao menos uma etiqueta (1,56 por comentário, em média) e 1.027 ficaram sem etiqueta. 1.097 etiquetas (1,8%) saíram com sentido não permitido. A leitura desses comentários mostrou elogios sem lugar no manual ("chegou bem embalado e intacto", "veio tudo certinho", "veio com nota fiscal") e reclamações genéricas ("não recomendo", "loja não é confiável").
+
+**Justificativa:** são lacunas do manual, e não erros de leitura do modelo. O elogio sem defeito cabe no "outro" do tema, que já aceita o sentido positivo. A reclamação genérica é o espelho do elogio genérico e continua sendo um sinal de insatisfação; descartá-la esconderia esses clientes da contagem de atritos.
+
+**Limitações:** cerca de 3 das 44 etiquetas levadas para "outro" eram reclamações com o sentido trocado (por exemplo, "São dois produtos, recebi um"); ficam como resíduo. O `gemini-3.5-flash-lite` ignora o parâmetro de temperatura e usa amostragem fixa, então uma nova execução pode produzir etiquetas diferentes; a reprodução exata depende dos lotes gravados.
+
+**Alternativas consideradas:** marcar as reclamações genéricas como sem etiqueta (descartada: perde a insatisfação declarada); etiquetar de novo os comentários afetados com um manual corrigido (descartada: a correção direta é determinística e não tem custo).
+
+---
+
+## D-027 · Mapa das etiquetas em 3D
+
+**Data:** 11/11/2026 · **Etapa:** Etiquetagem
+
+**Decisão:** um grafo 3D interativo mostra as etiquetas e as ligações entre elas. Cada ponto é uma combinação de sentido, tema e detalhe, com tamanho pela quantidade de comentários e cor vermelha (negativo) ou verde (positivo), com intensidade pela nota média na régua de 1 a 5. Cada linha liga duas etiquetas que aparecem no mesmo comentário, com grossura pela quantidade de comentários. O comprimento da ligação segue o lift: quanto mais as duas etiquetas aparecem juntas acima do esperado se fossem independentes, mais perto ficam. O filtro de sentido começa nas negativas. Os percentuais usam como base os 40.518 comentários. Etiquetas e ligações com menos de 30 comentários ficam fora. A página `reports/visualizacao/grafo_etiquetas.html` é gerada pelo desenv_04 a partir de `src/visualizacao/modelo_grafo.html`, em React com `react-force-graph-3d`, e abre no navegador sem instalação.
+
+**Contexto:** a contagem por etiqueta mostra o tamanho de cada problema, mas não quais problemas andam juntos.
+
+**Justificativa:** a contagem bruta de ligações aproximaria os pontos grandes de todos os outros só pelo volume. O lift corrige isso e forma aglomerados de problemas associados de fato, como não recebido com contato sem resposta (3,6 vezes o acaso) e retirada na agência com frete (21 vezes). A régua absoluta de nota mantém visíveis as exceções, como a etiqueta positiva de cancelamento, troca e reembolso, com nota média 2,6.
+
+**Alternativas consideradas:** distância pela contagem bruta (descartada pelo efeito do volume); régua de cor pela faixa observada em cada sentido (descartada: nos positivos, a faixa de 4,5 a 4,8 exageraria diferenças pequenas).

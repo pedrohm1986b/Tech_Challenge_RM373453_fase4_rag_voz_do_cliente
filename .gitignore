@@ -1,5 +1,8 @@
-# dados: baixados do Kaggle, não versionados (ver README)
-data/
+# dados: baixados do Kaggle, não versionados (ver README); exceção: etiquetas geradas pelo modelo (D-026)
+data/*
+!data/processed/
+data/processed/*
+!data/processed/etiquetas_base.parquet
 
 # segredos
 .env
