@@ -428,3 +428,32 @@ No teste com 18 perguntas, o modelo preencheu os 17 formulários com gabarito co
 **Limitações:** o modelo ignora a temperatura, então a mesma pergunta pode ser interpretada de outro jeito em outra execução. As regras de interpretação foram ajustadas sobre as mesmas perguntas do teste, o que torna o 17 de 17 otimista; a avaliação da etapa 7 usa perguntas novas e repetições. A conferência de números aceita qualquer número presente no contexto, inclusive os dos comentários, e um arredondamento para inteiro. Perguntas ambíguas ("entregas insatisfatórias") recebem uma das leituras possíveis, declarada no início da resposta. A divergência entre nota e texto, prevista no escopo, ficou fora do MVP.
 
 **Alternativas consideradas:** uma ferramenta por tipo de pergunta (descartada: rígida, cada pergunta nova exige uma ferramenta); consulta livre escrita pelo modelo em SQL ou pandas (descartada: erro silencioso e execução de código vindo do texto do usuário); o modelo escolhendo e chamando as ferramentas sozinho com `bind_tools` (descartada: o caminho de cada pergunta fica menos previsível, e a prova da consulta dependeria do modelo lembrar de buscar); recusar todo recorte com menos de 30 comentários (descartada: perde a informação que existe).
+
+---
+
+## D-030 · Avaliação com perguntas novas, três rodadas e juiz automático
+
+**Data:** 12/11/2026 · **Etapa:** Avaliação
+
+**Decisão:** o sistema da etapa 6 é avaliado com 25 perguntas novas, que não foram usadas em nenhum ajuste, em sete grupos: ranking e tema (6, três delas do contexto do enunciado), metadados (5), medidas e comparação (3), padrões e evolução (2), busca direta (3), amostra pequena (2) e recusa (4). Cada pergunta tem um gabarito escrito e congelado antes da execução: o tipo, a faixa do recorte e, quando há formulário, a medida, o agrupamento e o recorte esperados, com alternativas quando mais de uma leitura é razoável. Cada pergunta roda três vezes pelo grafo inteiro. As métricas automáticas conferem a interpretação, a estabilidade entre as rodadas, as recusas, a faixa do recorte, as citações e os números. A fundamentação é julgada pelo `gemini-3.8-flash`, maior e diferente do modelo que escreve as respostas, nas 21 respostas escritas da primeira rodada: cada afirmação é sustentada, parcialmente sustentada ou não sustentada pelo contexto que o sistema recebeu. O código aprovado no desenv_06 foi promovido para `src/fluxo.py`, sem mudança de lógica, e é ele que a avaliação e a aplicação importam.
+
+**Contexto:** os testes da etapa 6 usaram as mesmas perguntas para construir e ajustar as instruções, o que torna o resultado deles otimista. O modelo ignora a temperatura e pode interpretar a mesma pergunta de formas diferentes em execuções diferentes. As conferências do código verificam a forma da resposta, e não se as afirmações são sustentadas pelos comentários citados.
+
+**Justificativa:** as perguntas novas e o gabarito congelado medem o sistema como ele vai ser usado; as três rodadas medem a variação; o juiz cobre o critério que o enunciado mais destaca, respostas coerentes com as evidências.
+
+| Critério | Resultado |
+|---|---|
+| interpretação igual ao gabarito | 96% (72 de 75 execuções) |
+| mesma interpretação nas três rodadas | 96% (24 de 25 perguntas) |
+| recusa só quando devia | 99% (74 de 75) |
+| faixa do recorte certa | 98% (65 de 66) |
+| citações válidas e números presentes no contexto | 100% (75 de 75) |
+| afirmações sustentadas (juiz) | 98% (114 de 116) |
+| respostas fundamentadas (juiz) | 90% (19 de 21) |
+| respostas que respondem à pergunta (juiz) | 95% (20 de 21) |
+
+Os três erros de interpretação são da mesma pergunta (comparação do gasto de quem reclama e de quem elogia a qualidade): em duas rodadas, o modelo agrupou por sentido dentro da etiqueta, caminho que separa os mesmos dois grupos, e na terceira recusou por falta de dado. A resposta não fundamentada citou, como exemplo de demora, um comentário com a etiqueta de prazo que fala de um produto que não funciona: um erro de etiquetagem que passou para a resposta. Nenhuma resposta inventou causa, fato ou número. A avaliação custou US$ 0,21 (US$ 0,10 nas 75 execuções e US$ 0,11 no juiz).
+
+**Limitações:** por decisão de prazo, o veredito do juiz foi tomado como correto, sem uma amostra julgada à mão para medir a concordância. O gabarito é estrito: o caminho equivalente da pergunta 14 conta como erro (com ele, a interpretação iria a 99%). O resultado vale para estas 25 perguntas. A prova de uma consulta confia na etiqueta do comentário; uma conferência entre o texto e o grupo, ou mais comentários por grupo, reduziria o risco visto na resposta não fundamentada.
+
+**Alternativas consideradas:** julgamento manual de uma amostra para validar o juiz (descartada por prazo); o próprio `gemini-3.5-flash-lite` como juiz (descartada: o modelo julgaria as próprias respostas); avaliar só com as perguntas da etapa 6 (descartada: foram usadas nos ajustes).
