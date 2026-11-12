@@ -24,6 +24,7 @@ pydantic>=2.9
 python-dotenv
 langchain
 langchain-google-genai
+langchain-community
 langchain-openai
 langgraph
 

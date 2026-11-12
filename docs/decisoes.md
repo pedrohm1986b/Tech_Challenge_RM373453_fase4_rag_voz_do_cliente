@@ -381,3 +381,30 @@ Produto quebrado: "chegou quebrado" ou "veio danificado" é entrega · avaria no
 **Justificativa:** a contagem bruta de ligações aproximaria os pontos grandes de todos os outros só pelo volume. O lift corrige isso e forma aglomerados de problemas associados de fato, como não recebido com contato sem resposta (3,6 vezes o acaso) e retirada na agência com frete (21 vezes). A régua absoluta de nota mantém visíveis as exceções, como a etiqueta positiva de cancelamento, troca e reembolso, com nota média 2,6.
 
 **Alternativas consideradas:** distância pela contagem bruta (descartada pelo efeito do volume); régua de cor pela faixa observada em cada sentido (descartada: nos positivos, a faixa de 4,5 a 4,8 exageraria diferenças pequenas).
+
+---
+
+## D-028 · Índice de busca dos comentários
+
+**Data:** 12/11/2026 · **Etapa:** Índice de busca
+
+**Decisão:** cada comentário é um documento, sem divisão em pedaços. Só o texto (título e comentário) vira vetor; nota, mês, estado, região, faixa de atraso, categorias e etiquetas vão junto como informação anexa, usada nos filtros. Os vetores vêm do `gemini-embedding-2` com 768 números por comentário, com o prefixo de documento ("title: ... | text: ...") nos comentários e o prefixo de busca ("task: search result | query: ...") nas perguntas, como pede a documentação do modelo. O índice é um FAISS de busca exata (`IndexFlatIP`, produto interno igual ao cosseno, já que os vetores saem normalizados), montado pelo LangChain e gravado em `data/processed/indice_busca/`. A função `buscar` aplica os filtros antes da busca (etiqueta, sentido, tema, detalhe, nota, estado, região, faixa de atraso, categoria e período) e diversifica os resultados pela relevância marginal máxima (MMR) sobre 500 candidatos, com peso 0,3 para relevância. Com filtro de etiqueta, tema ou detalhe, a diversificação é feita sem corte; sem esse filtro, só entram na escolha os candidatos com similaridade até 0,05 abaixo da do primeiro resultado.
+
+**Contexto:** a vetorização dos 40.518 comentários usou 919.767 tokens e custou cerca de US$ 0,18. O limite de 3.000 textos por minuto do plano pago exigiu lotes de 100 com 4 chamadas simultâneas e novas tentativas com espera; cada lote fica gravado e a execução pode ser retomada. A base tem muitos comentários quase iguais ("produto não foi entregue"), e a busca simples devolve cópias da mesma frase.
+
+**Justificativa:** o teste com 12 perguntas, cada uma com a etiqueta esperada, mediu o acerto (resultados com a etiqueta certa entre os 10 primeiros) e a variedade (1 menos a similaridade média entre esses resultados):
+
+| Versão | Acerto | Variedade |
+|---|---|---|
+| sorteio de comentários | 7% | |
+| busca simples | 99% | 0,07 |
+| diversificação sem corte | 81% | 0,21 |
+| diversificação moderada (200 candidatos, peso 0,5) | 91% | 0,16 |
+| diversificação com corte de 0,05 | 96% | 0,11 |
+| com corte e filtro de sentido | 97% | 0,11 |
+
+A diversificação sem corte alcança variedade escolhendo comentários de assuntos vizinhos. O corte descarta esses candidatos antes da escolha. Sem filtro de etiqueta, o projeto prioriza o acerto, porque um comentário fora do assunto apresentado como evidência compromete a resposta. Com filtro de etiqueta, o assunto já está garantido pelo filtro, e a diversificação sem corte acrescenta variedade. Nas perguntas 4 e 5 do enunciado, a regra devolveu oito queixas de assuntos diferentes (filtro de sentido negativo) e oito relatos diferentes de atraso (filtro da etiqueta de prazo); sem o filtro de etiqueta, três dos oito relatos de atraso eram de produtos não recebidos.
+
+**Limitações:** o índice (cerca de 137 MB) e os vetores não são versionados; o notebook os reconstrói com a chave do Google, e a reconstrução refaz as chamadas pagas. A pergunta mais difícil do teste é a de atraso (80% com corte e filtro de sentido), na mesma fronteira entre atraso e não recebido da etiquetagem. O pacote `langchain-community`, que contém o FAISS do LangChain, está sendo descontinuado; a troca por um pacote dedicado fica como evolução.
+
+**Alternativas consideradas:** colocar nota, estado e etiquetas no texto vetorizado (descartada: mistura filtro com sentido e prejudica a busca por assunto); busca aproximada (descartada: 40 mil vetores cabem na busca exata, sem perda de precisão); só a busca simples (descartada: devolve cópias); só a diversificação sem corte (descartada: 81% de acerto sem filtro de etiqueta).

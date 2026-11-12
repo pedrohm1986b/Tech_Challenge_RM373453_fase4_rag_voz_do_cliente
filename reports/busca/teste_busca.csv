@@ -1,0 +1,73 @@
+pergunta,etiqueta esperada,versão,acerto,variedade
+produto não chegou,negativo · entrega · não recebido,acaso,0.101,
+produto não chegou,negativo · entrega · não recebido,busca simples,1.0,0.03
+produto não chegou,negativo · entrega · não recebido,diversificação sem corte,1.0,0.13
+produto não chegou,negativo · entrega · não recebido,diversificação moderada,1.0,0.075
+produto não chegou,negativo · entrega · não recebido,diversificação com corte,1.0,0.095
+produto não chegou,negativo · entrega · não recebido,com corte e filtro de sentido,1.0,0.095
+"entrega atrasada, chegou depois do prazo",negativo · entrega · prazo,acaso,0.042,
+"entrega atrasada, chegou depois do prazo",negativo · entrega · prazo,busca simples,1.0,0.087
+"entrega atrasada, chegou depois do prazo",negativo · entrega · prazo,diversificação sem corte,0.6,0.181
+"entrega atrasada, chegou depois do prazo",negativo · entrega · prazo,diversificação moderada,0.7,0.134
+"entrega atrasada, chegou depois do prazo",negativo · entrega · prazo,diversificação com corte,0.7,0.141
+"entrega atrasada, chegou depois do prazo",negativo · entrega · prazo,com corte e filtro de sentido,0.8,0.134
+veio faltando item do pedido,negativo · entrega · itens faltando,acaso,0.062,
+veio faltando item do pedido,negativo · entrega · itens faltando,busca simples,1.0,0.085
+veio faltando item do pedido,negativo · entrega · itens faltando,diversificação sem corte,0.9,0.217
+veio faltando item do pedido,negativo · entrega · itens faltando,diversificação moderada,0.8,0.143
+veio faltando item do pedido,negativo · entrega · itens faltando,diversificação com corte,1.0,0.106
+veio faltando item do pedido,negativo · entrega · itens faltando,com corte e filtro de sentido,1.0,0.106
+produto chegou quebrado,negativo · entrega · avaria no transporte,acaso,0.024,
+produto chegou quebrado,negativo · entrega · avaria no transporte,busca simples,1.0,0.08
+produto chegou quebrado,negativo · entrega · avaria no transporte,diversificação sem corte,0.8,0.219
+produto chegou quebrado,negativo · entrega · avaria no transporte,diversificação moderada,0.9,0.19
+produto chegou quebrado,negativo · entrega · avaria no transporte,diversificação com corte,1.0,0.066
+produto chegou quebrado,negativo · entrega · avaria no transporte,com corte e filtro de sentido,1.0,0.066
+tive que buscar o pedido na agência dos Correios,negativo · entrega · retirada na agência,acaso,0.011,
+tive que buscar o pedido na agência dos Correios,negativo · entrega · retirada na agência,busca simples,1.0,0.089
+tive que buscar o pedido na agência dos Correios,negativo · entrega · retirada na agência,diversificação sem corte,0.7,0.225
+tive que buscar o pedido na agência dos Correios,negativo · entrega · retirada na agência,diversificação moderada,1.0,0.174
+tive que buscar o pedido na agência dos Correios,negativo · entrega · retirada na agência,diversificação com corte,1.0,0.101
+tive que buscar o pedido na agência dos Correios,negativo · entrega · retirada na agência,com corte e filtro de sentido,1.0,0.101
+produto diferente do anunciado,negativo · produto · conformidade com o anúncio,acaso,0.078,
+produto diferente do anunciado,negativo · produto · conformidade com o anúncio,busca simples,1.0,0.059
+produto diferente do anunciado,negativo · produto · conformidade com o anúncio,diversificação sem corte,0.8,0.205
+produto diferente do anunciado,negativo · produto · conformidade com o anúncio,diversificação moderada,1.0,0.146
+produto diferente do anunciado,negativo · produto · conformidade com o anúncio,diversificação com corte,1.0,0.067
+produto diferente do anunciado,negativo · produto · conformidade com o anúncio,com corte e filtro de sentido,1.0,0.067
+"produto de má qualidade, parou de funcionar",negativo · produto · qualidade,acaso,0.066,
+"produto de má qualidade, parou de funcionar",negativo · produto · qualidade,busca simples,1.0,0.07
+"produto de má qualidade, parou de funcionar",negativo · produto · qualidade,diversificação sem corte,1.0,0.225
+"produto de má qualidade, parou de funcionar",negativo · produto · qualidade,diversificação moderada,1.0,0.183
+"produto de má qualidade, parou de funcionar",negativo · produto · qualidade,diversificação com corte,0.9,0.154
+"produto de má qualidade, parou de funcionar",negativo · produto · qualidade,com corte e filtro de sentido,0.9,0.154
+vendedor não responde as mensagens,negativo · atendimento · contato e resposta,acaso,0.043,
+vendedor não responde as mensagens,negativo · atendimento · contato e resposta,busca simples,0.9,0.142
+vendedor não responde as mensagens,negativo · atendimento · contato e resposta,diversificação sem corte,0.7,0.248
+vendedor não responde as mensagens,negativo · atendimento · contato e resposta,diversificação moderada,0.8,0.226
+vendedor não responde as mensagens,negativo · atendimento · contato e resposta,diversificação com corte,1.0,0.151
+vendedor não responde as mensagens,negativo · atendimento · contato e resposta,com corte e filtro de sentido,1.0,0.151
+quero cancelar a compra e receber meu dinheiro de volta,"negativo · atendimento · cancelamento, troca e reembolso",acaso,0.036,
+quero cancelar a compra e receber meu dinheiro de volta,"negativo · atendimento · cancelamento, troca e reembolso",busca simples,1.0,0.049
+quero cancelar a compra e receber meu dinheiro de volta,"negativo · atendimento · cancelamento, troca e reembolso",diversificação sem corte,0.8,0.246
+quero cancelar a compra e receber meu dinheiro de volta,"negativo · atendimento · cancelamento, troca e reembolso",diversificação moderada,1.0,0.17
+quero cancelar a compra e receber meu dinheiro de volta,"negativo · atendimento · cancelamento, troca e reembolso",diversificação com corte,0.9,0.153
+quero cancelar a compra e receber meu dinheiro de volta,"negativo · atendimento · cancelamento, troca e reembolso",com corte e filtro de sentido,0.9,0.153
+não recebi a nota fiscal,negativo · atendimento · nota fiscal,acaso,0.006,
+não recebi a nota fiscal,negativo · atendimento · nota fiscal,busca simples,1.0,0.087
+não recebi a nota fiscal,negativo · atendimento · nota fiscal,diversificação sem corte,0.8,0.233
+não recebi a nota fiscal,negativo · atendimento · nota fiscal,diversificação moderada,0.9,0.188
+não recebi a nota fiscal,negativo · atendimento · nota fiscal,diversificação com corte,1.0,0.114
+não recebi a nota fiscal,negativo · atendimento · nota fiscal,com corte e filtro de sentido,1.0,0.114
+frete muito caro,negativo · preço · frete,acaso,0.012,
+frete muito caro,negativo · preço · frete,busca simples,1.0,0.038
+frete muito caro,negativo · preço · frete,diversificação sem corte,0.6,0.256
+frete muito caro,negativo · preço · frete,diversificação moderada,0.8,0.223
+frete muito caro,negativo · preço · frete,diversificação com corte,1.0,0.06
+frete muito caro,negativo · preço · frete,com corte e filtro de sentido,1.0,0.06
+chegou antes do prazo,positivo · entrega · prazo,acaso,0.306,
+chegou antes do prazo,positivo · entrega · prazo,busca simples,1.0,0.004
+chegou antes do prazo,positivo · entrega · prazo,diversificação sem corte,1.0,0.111
+chegou antes do prazo,positivo · entrega · prazo,diversificação moderada,1.0,0.076
+chegou antes do prazo,positivo · entrega · prazo,diversificação com corte,1.0,0.078
+chegou antes do prazo,positivo · entrega · prazo,com corte e filtro de sentido,1.0,0.078
