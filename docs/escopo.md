@@ -74,6 +74,8 @@ Toda contagem, percentual e ranking da resposta vem de cálculo em código sobre
 | `divergencia_nota_texto` | quais avaliações têm nota que contradiz o texto |
 | `cobertura` | quantas avaliações existem sob um filtro |
 
+> **Atualização (D-029):** na implementação, as seis ferramentas viraram duas. `consultar_base` recebe um formulário com campos fechados (medida, agrupamento, filtros, segundo grupo para comparação) e cobre o ranking, o detalhe de um tema, a série no tempo, os padrões e a cobertura; `buscar_comentarios` é a busca por sentido. A divergência entre nota e texto ficou fora do MVP. A verificação de dados suficientes passou a ter três faixas: nenhum comentário (recusa), de 1 a 29 (amostra pequena, sem percentual, com aviso) e 30 ou mais (resposta completa).
+
 Regras de comportamento das ferramentas:
 
 - **Toda resposta de contagem também busca comentários**, para citar as avaliações que sustentam o número. Número sem evidência não sai.
