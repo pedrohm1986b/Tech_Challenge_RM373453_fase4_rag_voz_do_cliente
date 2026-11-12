@@ -457,3 +457,19 @@ Os três erros de interpretação são da mesma pergunta (comparação do gasto 
 **Limitações:** por decisão de prazo, o veredito do juiz foi tomado como correto, sem uma amostra julgada à mão para medir a concordância. O gabarito é estrito: o caminho equivalente da pergunta 14 conta como erro (com ele, a interpretação iria a 99%). O resultado vale para estas 25 perguntas. A prova de uma consulta confia na etiqueta do comentário; uma conferência entre o texto e o grupo, ou mais comentários por grupo, reduziria o risco visto na resposta não fundamentada.
 
 **Alternativas consideradas:** julgamento manual de uma amostra para validar o juiz (descartada por prazo); o próprio `gemini-3.5-flash-lite` como juiz (descartada: o modelo julgaria as próprias respostas); avaliar só com as perguntas da etapa 6 (descartada: foram usadas nos ajustes).
+
+---
+
+## D-031 · Aplicação de consulta em Streamlit, com o caminho no grafo
+
+**Data:** 12/11/2026 · **Etapa:** Interface
+
+**Decisão:** a aplicação é uma página em Streamlit (`app.py`, na raiz do projeto) que importa o mesmo grafo da avaliação (`src/fluxo.py`), carregado uma vez quando a aplicação abre. A página tem, de cima para baixo: o título e a identificação do trabalho; o campo de pergunta, com as cinco perguntas de exploração do enunciado como atalhos na barra lateral; um acordeão que mostra cada etapa do grafo no momento em que ela roda e, ao fim, recolhe com o número de etapas, o tempo e o custo; a resposta, com a linha do recorte, o texto, um gráfico de barras da tabela calculada e os comentários citados com o texto original, a nota, o estado, o mês e as etiquetas; o desenho do grafo com o caminho percorrido; e um painel de detalhes técnicos (pergunta transformada, código da consulta, buscas, contexto enviado ao modelo e conferências). No desenho do grafo, cada nó é um cartão com ícone; os nós e as setas percorridos ficam em destaque, numerados na ordem, com o resultado da etapa no subtítulo, e o restante fica apagado; ao passar o mouse, cada nó mostra a sua função e o que fez naquela pergunta. O gráfico tem título, subtítulo com o recorte, rótulo em cada barra e tamanho fixo, para não esticar com a tela. A aplicação roda localmente (`streamlit run app.py`).
+
+**Contexto:** o enunciado pede que a solução mostre a transformação da pergunta, a recuperação, a seleção dos conteúdos, o contexto enviado ao modelo e a resposta final, e que o vídeo demonstre a solução com as evidências recuperadas.
+
+**Justificativa:** o acordeão e o desenho do grafo tornam visível o caminho de cada pergunta: uma consulta acende interpretar, consultar, verificar, provar, redigir, conferir e finalizar; uma recusa acende interpretar, recusar e finalizar. Os detalhes técnicos ficam um clique abaixo, para quem quiser conferir o código e o contexto. Na tela, a recusa troca o cardápio técnico do fluxo pelo resumo em linguagem simples do que o sistema responde.
+
+**Limitações:** a aplicação não é publicada. Publicar exigiria subir o índice de busca (cerca de 137 MB, fora do repositório) e expor a chave do Google num servidor; o README explica como reproduzir localmente. Os ícones do grafo vêm de uma biblioteca carregada pela internet, que a aplicação já exige para chamar o modelo.
+
+**Alternativas consideradas:** lista de etapas em texto no lugar do desenho do grafo (descartada: o desenho mostra o caminho e os desvios num relance); cartões com os três primeiros números no lugar do gráfico (descartada: só servem para ranking, e o gráfico atende também à série no tempo e à comparação); publicação no Streamlit Community Cloud (descartada pelos motivos acima).
