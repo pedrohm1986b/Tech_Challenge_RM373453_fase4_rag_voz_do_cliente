@@ -7,7 +7,7 @@ Sistema de consulta em linguagem natural sobre os comentários de clientes do [B
 
 ## 🎥 Vídeo da apresentação
 
-[Assistir ao vídeo no Google Drive](https://drive.google.com/drive/folders/1busd-2uO3G1CWqHQND0xmyVbTgJ0lyOi)
+[Assistir ao vídeo no Google Drive](https://drive.google.com/file/d/1jm7uQ1AfrptMZlpPYuLEEPt6VWF4c-Qd/view?usp=sharing)
 
 ## Sumário
 
